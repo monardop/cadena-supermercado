@@ -1,8 +1,8 @@
 # Cadena de supermercado
 ---
 ## Pre requisitos
-- **Sistema operativo**: Asegúrate de tener un sistema operativo compatible. PostgreSQL funciona bien en la mayoría de distribuciones Linux, Windows, y macOS.
-- **Permisos de administrador (root o sudo)**: Necesitarás permisos elevados para instalar y configurar PostgreSQL.
+- **Sistema operativo**: sistema operativo compatible. PostgreSQL funciona bien en la mayoría de distribuciones Linux, Windows, y macOS.
+- **Permisos de administrador (root o sudo)**: Se necesitan permisos elevados para instalar y configurar PostgreSQL.
 - **Conectividad a internet**: Necesaria para descargar paquetes si no tienes los archivos locales.
 
 ## Descarga e instalación según OS
