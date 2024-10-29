@@ -1,114 +1,141 @@
-# Cadena de supermercado
+# Informe de Instalación y Configuración de SQL Server para el Proyecto de Gestión de Supermercados
+
+## 1. Introducción
+
+Este documento tiene como objetivo proporcionar una guía técnica detallada para la instalación y configuración de la base de datos **SupermarketDB**, utilizada en el sistema de gestión de supermercados. Esta base de datos almacenará y administrará información crítica sobre ventas, productos, clientes, y otras entidades relacionadas con las operaciones de un supermercado.
+
+### Alcance del Sistema
+
+La base de datos está diseñada para gestionar de manera eficiente las transacciones de ventas, el inventario de productos, y la información sobre clientes y empleados. Los datos están organizados en varias tablas relacionales, previamente especificadas en el modelo ER, optimizadas para consultas frecuentes y actualizaciones concurrentes.
+
 ---
-## Pre requisitos
-- **Sistema operativo**: sistema operativo compatible. PostgreSQL funciona bien en la mayoría de distribuciones Linux, Windows, y macOS.
-- **Permisos de administrador (root o sudo)**: Se necesitan permisos elevados para instalar y configurar PostgreSQL.
-- **Conectividad a internet**: Necesaria para descargar paquetes si no tienes los archivos locales.
 
-## Descarga e instalación según OS
-### Linux
-#### Ubuntu/Debian
-```bash
-sudo apt update && sudo apt upgrade // actualizar repo
-sudo apt install postgresql postgresql-contrib // instalo
-sudo systemctl status postgresql // verificar estado
-```
+## 2. Requisitos Previos
 
-#### RedHat/Fedora/CentOS
-```bash
-// agrego el repositorio
-sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-$(rpm -E %rhel)-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-// instalar
-sudo yum install postgresql15-server postgresql15-contrib
-//inicializar la db
-sudo /usr/pgsql-15/bin/postgresql-15-setup initdb
-Inicio el servicio
-sudo systemctl enable --now postgresql-15
-```
+Antes de proceder con la instalación, asegúrese de que el sistema donde se instalará SQL Server cumple con los siguientes requisitos:
 
-### En Windows
-#### Descarga del instalador
+- **Sistema Operativo:** Windows Server 2016 o superior, o cualquier sistema compatible con SQL Server.
+- **Memoria RAM:** Mínimo de 4 GB (8 GB o más recomendado para entornos de producción).
+- **Espacio en Disco:** Al menos 10 GB libres para la instalación de SQL Server y el almacenamiento de la base de datos.
+- **Permisos Administrativos:** Permisos de administrador para instalar y configurar SQL Server.
 
-1. **Descargar PostgreSQL**: Ve al sitio oficial de PostgreSQL y descarga el instalador para Windows desde [https://www.postgresql.org/download/windows/](https://www.postgresql.org/download/windows/).
-2. **Elegir la versión**: Elige la versión estable más reciente de PostgreSQL compatible con tu sistema operativo. Te sugiero documentar la versión descargada y el sistema operativo donde la instalarás.
-#### 2. Instalación de PostgreSQL en Windows
+### Software Necesario
 
-1. **Ejecutar el instalador**: Una vez descargado, ejecuta el archivo `postgresql-x.x.x-windows.exe` (la versión dependerá de la que hayas descargado).
-2. **Pasos de instalación**: 
-    - **Elige la ubicación**: Selecciona la carpeta donde se instalará PostgreSQL (normalmente `C:\Program Files\PostgreSQL\x.x`).
-    - **Selecciona los componentes**: Asegúrate de seleccionar los siguientes:
-        - PostgreSQL Server
-        - pgAdmin (herramienta gráfica de administración)
-        - Stack Builder (opcional, pero útil para extensiones y herramientas adicionales)
-3. **Contraseña del superusuario `postgres`**: Durante la instalación, se te pedirá que establezcas una contraseña para el usuario administrador `postgres`. Esta contraseña es crucial, ya que es el superusuario por defecto en PostgreSQL. Documenta esta contraseña de manera segura.
-4. **Puerto por defecto**: El puerto estándar para PostgreSQL es el `5432`. Si no tienes conflictos con este puerto, déjalo tal cual.
-5. **Tamaño del cluster de bases de datos**: PostgreSQL te pedirá seleccionar el tamaño del cluster de bases de datos. Déjalo en su configuración predeterminada (UTF8) a menos que tengas un requerimiento específico.
-6. **Finalizar la instalación**: Completa la instalación y asegúrate de marcar la opción para iniciar `Stack Builder` si planeas agregar herramientas adicionales.
-## 3. Configuración inicial post-instalación
-### En Windows
-1. **Acceder a pgAdmin**: pgAdmin es una herramienta gráfica para gestionar tu base de datos PostgreSQL. Iníciala desde el menú de inicio. Al abrir, te pedirá la contraseña de `postgres` que estableciste durante la instalación.
-2. **Acceso mediante la línea de comandos**: Puedes abrir la línea de comandos de PostgreSQL (`SQL Shell` o `psql`) para ejecutar consultas y comandos SQL directamente. Esto es útil para verificar configuraciones o administrar la base de datos desde la terminal:
-```bash
-psql -U postgres
-```
-### En Linux
-- **Configurar la autenticación**: La configuración de acceso se maneja a través del archivo `pg_hba.conf`. Para acceso local, asegúrate de que la línea para `local all all` esté configurada como:
-```shell
-local all all peer
-```
-> Esto permite a los usuarios autenticarse a través de métodos de autenticación de sistema.
+- **Microsoft SQL Server 2019** o superior.
+- **SQL Server Management Studio (SSMS)** para la administración de la base de datos.
 
-- Cambiar la contraseña de usuario Postgres (predeterminado)
+---
 
-```shell
-sudo -u postgres psql
-\password postgres
-```
-## Habilitar el acceso remoto
+## 3. Instalación de SQL Server
 
-Edita el archivo `postgresql.conf` para permitir que escuche en todas las interfaces:
-```shell
-sudo nano /etc/postgresql/15/main/postgresql.conf
-listen_addresses = '*'
-```
+1. **Descargue el instalador de SQL Server** desde el [sitio oficial de Microsoft](https://www.microsoft.com/en-us/sql-server/sql-server-downloads).
+2. **Ejecute el instalador** y seleccione "Nueva instalación independiente de SQL Server o agregar características a una instalación existente".
+3. **Configuración Básica:**
+    - Elija una **Instancia con Nombre**. Se recomienda nombrar la instancia como `SUPERMARKET_INSTANCE` para facilitar su identificación.
+    - Seleccione el **Modo de Autenticación Mixta** y configure una contraseña segura para el usuario `sa` (Administrador de SQL Server).
+4. **Configuración de Características:**
+    - Asegúrese de instalar las siguientes características:
+        - Motor de Base de Datos
+        - Servicios de SQL Server Agent (para automatizar tareas)
+        - SQL Server Management Tools (opcional, pero recomendado)
+5. **Finalice la instalación** y verifique que el servicio de SQL Server esté ejecutándose en el Administrador de Servicios.
 
-En el archivo `pg_hba.conf` agregar una línea para permitir el acceso remoto por IP o rangos de IP permitidos:
-```shell
-host all all 0.0.0.0/0 md
-```
+---
 
-Para finalizar, reinicia el servicio: 
-```shell
-sudo systemctl restart postgresql
-```
+## 4. Configuración de la Base de Datos `SupermarketDB`
 
-En el caso de Windows, esto es simplemente buscar PostgreSQL y reiniciar el servicio.
-## Crear la base de datos
-### En Windows
+### Creación de la Base de Datos
+
+1. Abra **SQL Server Management Studio** y conéctese a la instancia `SUPERMARKET_INSTANCE`.
+2. Ejecute el siguiente script para crear la base de datos:
 ```sql
-CREATE DATABASE supermercado;
-CREATE USER nombre_usuario WITH PASSWORD 'contraseña';
-GRANT ALL PRIVILEGES ON DATABASE supermercado TO nombre_usuario;
+CREATE DATABASE SupermarketDB; GO
 ```
-### En Linux
-
-```shell
-sudo -u postgres createdb supermercado
-sudo -u postgres createuser --interactive
-```
-
-Luego, desde el Shell de Postgre (psql):
+3. **Configurar las Propiedades de la Base de Datos**:
+- Defina el tamaño inicial y el crecimiento automático para los archivos de datos y de log:
 ```sql
-GRANT ALL PRIVILEGES ON DATABASE supermercado TO nombre_usuario;
-```
-## Optimización inicial
-```plain text
-shared_buffers = 256MB
-max_parallel_workers_per_gather = 2
-max_connections = 100
-```
-## Mantenimiento
-```shell
-pg_dump supermercado > backup.sql
-```
+ALTER DATABASE SupermarketDB MODIFY FILE (NAME = 'SupermarketDB', SIZE = 50MB, FILEGROWTH = 10MB);  ALTER DATABASE SupermarketDB MODIFY FILE (NAME = 'SupermarketDB_log', SIZE = 10MB, FILEGROWTH = 5MB);
+```        
 
+---
+
+## 5. Configuración de Usuarios y Roles de Seguridad
+
+Es recomendable seguir las mejores prácticas de seguridad al definir usuarios y permisos:
+1. **Creación de Usuario para la Aplicación**:
+	- Cree un usuario con permisos limitados para la aplicación de gestión de supermercados.
+```sql
+USE SupermarketDB; 
+CREATE LOGIN supermarketUser WITH PASSWORD = 'StrongPassword123!'; 
+CREATE USER supermarketUser FOR LOGIN supermarketUser;
+```
+2. **Asignación de Roles y Permisos**:
+- Otorgue permisos de solo lectura para usuarios que solo necesiten consultar los datos y permisos completos para los administradores de la base de datos.
+``` sql
+-- Permisos de solo lectura 
+GRANT SELECT ON SCHEMA::dbo TO supermarketUser;  
+-- Permisos de escritura para un usuario administrativo 
+CREATE LOGIN adminUser WITH PASSWORD = 'AdminPassword123!'; 
+CREATE USER adminUser FOR LOGIN adminUser; 
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::dbo TO adminUser;
+```
+---
+
+## 6. Importación de Datos Iniciales
+Una vez creada la estructura de la base de datos, se pueden cargar los datos iniciales:
+1. **Ejecute Scripts de Población de Datos**:
+      - Cree scripts para insertar datos en las tablas clave, como `Productos`, `Clientes`, `Ventas`, y `Empleados`.
+    
+```sql
+
+USE SupermarketDB;  
+-- Ejemplo de inserción en la tabla Productos 
+INSERT INTO Productos (Nombre, Precio, Cantidad, Categoria) VALUES ('Manzanas', 1.50, 100, 'Frutas');`
+
+```
+2. **Validación de Datos**:
+    - Asegúrese de que todas las tablas contienen los datos iniciales necesarios para el correcto funcionamiento de la aplicación.
+
+---
+
+## 7. Configuración de Respaldo y Recuperación
+
+Para garantizar la continuidad de las operaciones, configure el respaldo de la base de datos:
+1. **Planificación de Respaldo Completo Diario**:
+    - Configure un respaldo completo de la base de datos `SupermarketDB` de manera diaria utilizando SQL Server Agent.
+```sql
+BACKUP DATABASE SupermarketDB TO DISK = 'C:\Backups\SupermarketDB_Full.bak' WITH FORMAT, MEDIANAME = 'SQLServerBackups';
+```
+    
+2. **Respaldo de Logs de Transacciones**:
+    - Si se requiere un plan de respaldo más detallado, configure respaldos de logs de transacciones cada hora.
+3. **Restauración de la Base de Datos**:
+    - Documente el proceso de restauración, incluyendo los pasos para restaurar tanto los respaldos completos como los de logs de transacciones.
+
+---
+
+## 8. Mantenimiento de la Base de Datos
+
+1. **Índices**:
+- Programe una tarea para reconstruir índices semanalmente para mejorar el rendimiento de las consultas.
+```sql
+ALTER INDEX ALL ON Productos REBUILD;
+```
+2. **Estadísticas**:
+	- Actualice las estadísticas regularmente para mantener la precisión del optimizador de consultas.
+
+---
+
+## 9. Conexión de la Aplicación
+
+Proporcione la cadena de conexión necesaria para que la aplicación acceda a `SupermarketDB`. Asegúrese de utilizar el nombre de usuario y la contraseña de `supermarketUser`.
+
+**Ejemplo de Cadena de Conexión**:
+`Server=SUPERMARKET_INSTANCE;Database=SupermarketDB;User Id=supermarketUser;Password=StrongPassword123!;`
+
+---
+
+## 10. Consideraciones Finales
+Este informe detalla los pasos necesarios para la instalación, configuración, y administración inicial de la base de datos **SupermarketDB** en SQL Server. El mantenimiento regular de la base de datos y la ejecución de respaldos son vitales para la integridad y disponibilidad del sistema.
+
+Para cualquier actualización futura o modificación en el modelo de datos, asegúrese de realizar pruebas exhaustivas en un entorno de desarrollo antes de aplicar los cambios en el entorno de producción.
