@@ -135,7 +135,6 @@ Proporcione la cadena de conexión necesaria para que la aplicación acceda a `S
 
 ---
 
-## 10. Consideraciones Finales
-Este informe detalla los pasos necesarios para la instalación, configuración, y administración inicial de la base de datos **SupermarketDB** en SQL Server. El mantenimiento regular de la base de datos y la ejecución de respaldos son vitales para la integridad y disponibilidad del sistema.
+## 10. Estructura de la base de datos.
+![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jpg)
 
-Para cualquier actualización futura o modificación en el modelo de datos, asegúrese de realizar pruebas exhaustivas en un entorno de desarrollo antes de aplicar los cambios en el entorno de producción.
