@@ -48,10 +48,6 @@ BEGIN
     END
 END;
 
-/*
-
-TODO: Columna inexistente, agegamos la columna o borramos el SP?
-
 GO
 CREATE PROCEDURE CambiarTelefono
     @id_sucursal        SMALLINT,
@@ -61,7 +57,7 @@ BEGIN
     -- Verifica si ya existe la sucursal
     IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE id_sucursal = @id_sucursal AND activo = 1)
     BEGIN
-        UPDATE sucursal.empleado
+        UPDATE sucursal.sucursal
         SET telefono = @nuevo_telefono
         WHERE id_sucursal = @id_sucursal;
         
@@ -71,7 +67,7 @@ BEGIN
     BEGIN
         PRINT 'La sucursal buscada no existe o está inactiva';
     END
-END;*/
+END;
 
 GO
 CREATE PROCEDURE CrearSucursal
