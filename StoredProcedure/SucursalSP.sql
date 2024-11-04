@@ -34,7 +34,7 @@ BEGIN
     -- Verifica si la sucursal existe
     IF EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal = @id_sucursal AND activo = 1)
     BEGIN
-        UPDATE sucursal.empleado
+        UPDATE sucursal.sucursal
         SET ciudad          = @nueva_ciudad,
             reemplazar_por  = @reemplaza_por,
             direccion       = @nueva_direccion
@@ -47,6 +47,10 @@ BEGIN
         PRINT 'La sucursal no existe o fue dada de baja.';
     END
 END;
+
+/*
+
+TODO: Columna inexistente, agegamos la columna o borramos el SP?
 
 GO
 CREATE PROCEDURE CambiarTelefono
@@ -67,7 +71,7 @@ BEGIN
     BEGIN
         PRINT 'La sucursal buscada no existe o está inactiva';
     END
-END;
+END;*/
 
 GO
 CREATE PROCEDURE CrearSucursal
@@ -81,7 +85,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE @ciudad = ciudad AND activo = 1)
         BEGIN
             INSERT INTO sucursal.sucursal 
-            VALUES (@ciudad, @reemplazar_por, @direccion, @horario, @telefono);
+            VALUES (@ciudad, @reemplazar_por, @direccion, @horario, @telefono, 1);
             
             PRINT 'Sucursal creada correctamente.';
         END
