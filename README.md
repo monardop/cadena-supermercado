@@ -6,7 +6,7 @@ Este documento tiene como objetivo proporcionar una guía técnica detallada par
 
 ### Alcance del Sistema
 
-La base de datos está diseñada para gestionar de manera eficiente las transacciones de ventas, el inventario de productos, y la información sobre clientes y empleados. Los datos están organizados en varias tablas relacionales, previamente especificadas en el modelo ER, optimizadas para consultas frecuentes y actualizaciones concurrentes.
+La base de datos está diseñada para gestionar de manera eficiente las transacciones de ventas, el inventario de productos, y la información sobre clientes y empleados. Los datos están organizados en varias tablas relacionales, previamente especificadas en el DER, optimizadas para consultas frecuentes y actualizaciones concurrentes.
 
 ---
 
@@ -49,12 +49,12 @@ Antes de proceder con la instalación, asegúrese de que el sistema donde se ins
 1. Abra **SQL Server Management Studio** y conéctese a la instancia `SUPERMARKET_INSTANCE`.
 2. Ejecute el siguiente script para crear la base de datos:
 ```sql
-CREATE DATABASE SupermarketDB; GO
+CREATE DATABASE Com2900G10; GO
 ```
 3. **Configurar las Propiedades de la Base de Datos**:
 - Defina el tamaño inicial y el crecimiento automático para los archivos de datos y de log:
 ```sql
-ALTER DATABASE SupermarketDB MODIFY FILE (NAME = 'SupermarketDB', SIZE = 50MB, FILEGROWTH = 10MB);  ALTER DATABASE SupermarketDB MODIFY FILE (NAME = 'SupermarketDB_log', SIZE = 10MB, FILEGROWTH = 5MB);
+ALTER DATABASE Com2900G10 MODIFY FILE (NAME = 'Com2900G10', SIZE = 50MB, FILEGROWTH = 10MB);  ALTER DATABASE Com2900G10 MODIFY FILE (NAME = 'Com2900G10_log', SIZE = 10MB, FILEGROWTH = 5MB);
 ```        
 
 ---
