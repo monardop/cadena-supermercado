@@ -1,5 +1,17 @@
+/*
+
+Entrega 3 - Grupo 10 - Piñan, Monardo, Matter, Natario
+
+"Genere store procedures para manejar la inserción, modificado, borrado (si corresponde,
+también debe decidir si determinadas entidades solo admitirán borrado lógico) de cada tabla.
+Los nombres de los store procedures NO deben comenzar con “SP”.
+Genere esquemas para organizar de forma lógica los componentes del sistema y aplique esto
+en la creación de objetos. NO use el esquema “dbo”"
+
+*/
+
 GO
-USE supermercado_aurora;
+USE Com2900G10;
 
 
 -- SP para la tabla sucursal
@@ -34,7 +46,7 @@ BEGIN
     -- Verifica si la sucursal existe
     IF EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal = @id_sucursal AND activo = 1)
     BEGIN
-        UPDATE sucursal.empleado
+        UPDATE sucursal.sucursal
         SET ciudad          = @nueva_ciudad,
             reemplazar_por  = @reemplaza_por,
             direccion       = @nueva_direccion
@@ -57,7 +69,7 @@ BEGIN
     -- Verifica si ya existe la sucursal
     IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE id_sucursal = @id_sucursal AND activo = 1)
     BEGIN
-        UPDATE sucursal.empleado
+        UPDATE sucursal.sucursal
         SET telefono = @nuevo_telefono
         WHERE id_sucursal = @id_sucursal;
         
@@ -81,7 +93,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE @ciudad = ciudad AND activo = 1)
         BEGIN
             INSERT INTO sucursal.sucursal 
-            VALUES (@ciudad, @reemplazar_por, @direccion, @horario, @telefono);
+            VALUES (@ciudad, @reemplazar_por, @direccion, @horario, @telefono, 1);
             
             PRINT 'Sucursal creada correctamente.';
         END

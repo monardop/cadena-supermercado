@@ -1,5 +1,17 @@
+/*
+
+Entrega 3 - Grupo 10 - Piñan, Monardo, Matter, Natario
+
+"Genere store procedures para manejar la inserción, modificado, borrado (si corresponde,
+también debe decidir si determinadas entidades solo admitirán borrado lógico) de cada tabla.
+Los nombres de los store procedures NO deben comenzar con “SP”.
+Genere esquemas para organizar de forma lógica los componentes del sistema y aplique esto
+en la creación de objetos. NO use el esquema “dbo”"
+
+*/
+
 GO
-USE supermercado_aurora;
+USE Com2900G10;
 
 
 -- SP para empleados
