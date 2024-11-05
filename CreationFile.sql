@@ -34,8 +34,8 @@ CREATE TABLE [supermercado_aurora].[sucursal].[sucursal] (
 
 CREATE TABLE [supermercado_aurora].[sucursal].[empleado] ( 
     legajo          INT             PRIMARY KEY,
-    nombre          VARCHAR(60),
-    apellido        VARCHAR(60),
+    nombre          VARCHAR(60) NOT NULL,
+    apellido        VARCHAR(60) NOT NULL,
     dni             INT             NOT NULL,
     direccion       VARCHAR(300),
     email_personal  VARCHAR(300),
@@ -58,11 +58,11 @@ CREATE TABLE [supermercado_aurora].[producto].[categoria_producto] (
 
 CREATE TABLE [supermercado_aurora].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
-    id_categoria_producto SMALLINT,
+    id_categoria_producto SMALLINT NOT NULL,
     nombre_producto       VARCHAR(100)  NOT NULL,
     precio_unitario       DECIMAL(10,4) NOT NULL,
     moneda                CHAR(3)       
-                          CHECK (moneda LIKE '[ARS]' OR moneda LIKE '[USD]'), -- Hay artículos en dólares
+                          CHECK (moneda LIKE 'ARS' OR moneda LIKE 'USD'), -- Hay artículos en dólares
     CONSTRAINT FK_Categoria_Producto 
         FOREIGN KEY (id_categoria_producto)
         REFERENCES [supermercado_aurora].[producto].[categoria_producto](id_categoria_producto)
@@ -77,13 +77,13 @@ CREATE TABLE [supermercado_aurora].[venta].[medio_pago] (
 
 CREATE TABLE [supermercado_aurora].[venta].[factura] (
     id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
-    id_medio_pago       SMALLINT,
-    id_empleado         INT,
-    tipo_factura        CHAR(1),
-    tipo_cliente        VARCHAR(50),
-    genero              VARCHAR(10),
-    fechaHora           DATETIME,
-    id_sucursal         SMALLINT,
+    id_medio_pago       SMALLINT NOT NULL,
+    id_empleado         INT NOT NULL,
+    tipo_factura        CHAR(1) NOT NULL,
+    tipo_cliente        VARCHAR(50) NOT NULL,
+    genero              VARCHAR(10) NOT NULL,
+    fechaHora           DATETIME NOT NULL,
+    id_sucursal         SMALLINT NOT NULL,
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
         REFERENCES [supermercado_aurora].[venta].[medio_pago](id_medio_pago),
@@ -97,8 +97,8 @@ CREATE TABLE [supermercado_aurora].[venta].[factura] (
 
 CREATE TABLE [supermercado_aurora].[venta].[detalle_factura] (
     id_detalle_factura INT        IDENTITY(1,1)   PRIMARY KEY,
-    id_producto        SMALLINT,
-    id_factura         INT,
+    id_producto        SMALLINT NOT NULL,
+    id_factura         INT NOT NULL,
     cantidad           SMALLINT
     CONSTRAINT FK_Producto_Detalle
         FOREIGN KEY(id_producto)
