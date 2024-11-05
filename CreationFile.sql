@@ -68,25 +68,6 @@ CREATE TABLE [supermercado_aurora].[producto].[producto] (
         REFERENCES [supermercado_aurora].[producto].[categoria_producto](id_categoria_producto)
 );
 
-CREATE TABLE [supermercado_aurora].[producto].[catalogo_producto] (
-    id                SMALLINT        PRIMARY KEY,
-    categoria         VARCHAR(60), 
-    -- la categoria = producto en clasificacion_producto, esto hay que CHECKearlo cuando
-    --se hace el bulk insert.
-    nombre            VARCHAR(60),
-    precio            DECIMAL(10,2),
-    precio_referencia DECIMAL(10,2),
-    unidad_referencia CHAR(2)         
-                      CHECK(unidad_referencia LIKE '[kg]' OR unidad_referencia LIKE '[lb]'),
-    fecha             DATE            NOT NULL
-);
-
-CREATE TABLE [supermercado_aurora].[producto].[clasificacion_productos] (
-    id_clasificacion_productos SMALLINT    IDENTITY(1,1) PRIMARY KEY,
-    linea_producto             VARCHAR(60) NOT NULL,
-    producto                   VARCHAR(60) NOT NULL
-);
-
 CREATE TABLE [supermercado_aurora].[venta].[medio_pago] (
     id_medio_pago SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     nombre_eng    VARCHAR(20)   NOT NULL,
@@ -100,7 +81,7 @@ CREATE TABLE [supermercado_aurora].[venta].[factura] (
     id_empleado         INT,
     tipo_factura        CHAR(1),
     tipo_cliente        VARCHAR(50),
-    genero              CHAR(10),
+    genero              VARCHAR(10),
     fechaHora           DATETIME,
     id_sucursal         SMALLINT,
     CONSTRAINT FK_Medio_Pago
