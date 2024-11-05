@@ -82,8 +82,8 @@ CREATE TABLE [Com2900G10].[producto].[producto] (
 
 CREATE TABLE [Com2900G10].[venta].[medio_pago] (
     id_medio_pago SMALLINT      IDENTITY(1,1) PRIMARY KEY,
-    nombre_eng    VARCHAR(20)   NOT NULL,
-    nombre_esp    VARCHAR (20)  NOT NULL
+    nombre_eng    VARCHAR(200)   NOT NULL,
+    nombre_esp    VARCHAR (200)  NOT NULL
 );
 
 
