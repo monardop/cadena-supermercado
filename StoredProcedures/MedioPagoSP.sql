@@ -1,12 +1,12 @@
 /*
 
-Entrega 3 - Grupo 10 - Piñan, Monardo, Matter, Natario
+Entrega 3 - Grupo 10 - Piï¿½an, Monardo, Matter, Natario
 
-"Genere store procedures para manejar la inserción, modificado, borrado (si corresponde,
-también debe decidir si determinadas entidades solo admitirán borrado lógico) de cada tabla.
-Los nombres de los store procedures NO deben comenzar con “SP”.
-Genere esquemas para organizar de forma lógica los componentes del sistema y aplique esto
-en la creación de objetos. NO use el esquema “dbo”"
+"Genere store procedures para manejar la inserciï¿½n, modificado, borrado (si corresponde,
+tambiï¿½n debe decidir si determinadas entidades solo admitirï¿½n borrado lï¿½gico) de cada tabla.
+Los nombres de los store procedures NO deben comenzar con ï¿½SPï¿½.
+Genere esquemas para organizar de forma lï¿½gica los componentes del sistema y aplique esto
+en la creaciï¿½n de objetos. NO use el esquema ï¿½dboï¿½"
 
 */
 
@@ -49,5 +49,3 @@ BEGIN
                 PRINT 'El medio de pago no existe.';
             END
 END;
-
--- TODO: Definir baja de medio de pago
