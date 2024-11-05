@@ -1,9 +1,22 @@
-DROP DATABASE IF EXISTS supermercado_aurora;--Elimino la base de datos si existe.
-CREATE DATABASE supermercado_aurora; --Creo la base de datos
+/*
+
+Entrega 3 - Grupo 10 - Piñan, Monardo, Matter, Natario
+
+"Cree la base de datos, entidades y relaciones. Incluya restricciones y claves. Deberá entregar
+un archivo .sql con el script completo de creación (debe funcionar si se lo ejecuta “tal cual” es
+entregado). Incluya comentarios para indicar qué hace cada módulo de código.
+Genere store procedures para manejar la inserción, modificado, borrado (si corresponde,
+también debe decidir si determinadas entidades solo admitirán borrado lógico) de cada tabla"
+
+*/
+
+
+DROP DATABASE IF EXISTS Com2900G10;--Elimino la base de datos si existe.
+CREATE DATABASE Com2900G10; --Creo la base de datos
 GO
 
 GO
-USE supermercado_aurora;
+USE Com2900G10;
 
 --CREACION DE ESQUEMAS
 DROP SCHEMA IF EXISTS producto;
@@ -20,7 +33,7 @@ CREATE SCHEMA venta;
 GO
 
 ---CREACION DE TABLAS
-CREATE TABLE [supermercado_aurora].[sucursal].[sucursal] (
+CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     id_sucursal     SMALLINT IDENTITY(1,1)    PRIMARY KEY,
     ciudad          VARCHAR(50)   NOT NULL,
     reemplazar_por  VARCHAR(50)   NOT NULL,
@@ -32,7 +45,7 @@ CREATE TABLE [supermercado_aurora].[sucursal].[sucursal] (
     activo          BIT
 );
 
-CREATE TABLE [supermercado_aurora].[sucursal].[empleado] ( 
+CREATE TABLE [Com2900G10].[sucursal].[empleado] ( 
     legajo          INT             PRIMARY KEY,
     nombre          VARCHAR(60) NOT NULL,
     apellido        VARCHAR(60) NOT NULL,
@@ -48,15 +61,15 @@ CREATE TABLE [supermercado_aurora].[sucursal].[empleado] (
     activo          BIT,
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
-        REFERENCES [supermercado_aurora].[sucursal].[sucursal](id_sucursal)
+        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
 );
 
-CREATE TABLE [supermercado_aurora].[producto].[categoria_producto] (
+CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
     id_categoria_producto SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     nombre_categoria      VARCHAR(100)  NOT NULL
 );
 
-CREATE TABLE [supermercado_aurora].[producto].[producto] (
+CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     id_categoria_producto SMALLINT NOT NULL,
     nombre_producto       VARCHAR(100)  NOT NULL,
@@ -65,17 +78,17 @@ CREATE TABLE [supermercado_aurora].[producto].[producto] (
                           CHECK (moneda LIKE 'ARS' OR moneda LIKE 'USD'), -- Hay artículos en dólares
     CONSTRAINT FK_Categoria_Producto 
         FOREIGN KEY (id_categoria_producto)
-        REFERENCES [supermercado_aurora].[producto].[categoria_producto](id_categoria_producto)
+        REFERENCES [Com2900G10].[producto].[categoria_producto](id_categoria_producto)
 );
 
-CREATE TABLE [supermercado_aurora].[venta].[medio_pago] (
+CREATE TABLE [Com2900G10].[venta].[medio_pago] (
     id_medio_pago SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     nombre_eng    VARCHAR(20)   NOT NULL,
     nombre_esp    VARCHAR (20)  NOT NULL
 );
 
 
-CREATE TABLE [supermercado_aurora].[venta].[factura] (
+CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
     id_medio_pago       SMALLINT NOT NULL,
     id_empleado         INT NOT NULL,
@@ -86,26 +99,26 @@ CREATE TABLE [supermercado_aurora].[venta].[factura] (
     id_sucursal         SMALLINT NOT NULL,
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
-        REFERENCES [supermercado_aurora].[venta].[medio_pago](id_medio_pago),
+        REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
     CONSTRAINT FK_Empleado_Factura
         FOREIGN KEY (id_empleado)
-        REFERENCES [supermercado_aurora].[sucursal].[empleado](legajo),
+        REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
     CONSTRAINT FK_Sucursal_Factura
         FOREIGN KEY(id_sucursal)
-        REFERENCES [supermercado_aurora].[sucursal].[sucursal](id_sucursal)
+        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
 );     
 
-CREATE TABLE [supermercado_aurora].[venta].[detalle_factura] (
+CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
     id_detalle_factura INT        IDENTITY(1,1)   PRIMARY KEY,
     id_producto        SMALLINT NOT NULL,
     id_factura         INT NOT NULL,
     cantidad           SMALLINT
     CONSTRAINT FK_Producto_Detalle
         FOREIGN KEY(id_producto)
-        REFERENCES [supermercado_aurora].[producto].[producto](id_producto),
+        REFERENCES [Com2900G10].[producto].[producto](id_producto),
     CONSTRAINT FK_Factura
         FOREIGN KEY(id_factura)
-        REFERENCES [supermercado_aurora].[venta].[factura](id_factura)
+        REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
 
 GO

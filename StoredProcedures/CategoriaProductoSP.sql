@@ -1,5 +1,5 @@
 GO
-USE supermercado_aurora;
+USE Com2900G10;
 
 
 -- SP para la tabla categoria_producto
