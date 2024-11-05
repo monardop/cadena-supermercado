@@ -38,10 +38,9 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     ciudad          VARCHAR(50)   NOT NULL,
     reemplazar_por  VARCHAR(50)   NOT NULL,
     direccion       VARCHAR (300) NOT NULL,
-    horario         VARCHAR (45)  NOT NULL    
-                    CHECK (horario LIKE '[L a V]''[0-12]''[a.m-p.m]''[-]''[0-12]''[a.m-p.m]''[\n]''[S y D]''[0-12]''[a.m-p.m]''[-]''[0-12]''[a.m-p.m]'),
+    horario         VARCHAR (45)  NOT NULL,
     telefono        CHAR(9)       NOT NULL    
-                    CHECK (telefono LIKE '[0-9]''[0-9]''[0-9]''[0-9]''[-]''[0-9]''[0-9]''[0-9]''[0-9]'),
+                    CHECK (telefono NOT LIKE '%[A-Za-z]%' AND telefono NOT LIKE '% %'),
     activo          BIT
 );
 
