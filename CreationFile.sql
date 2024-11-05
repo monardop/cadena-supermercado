@@ -65,6 +65,7 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
 
 CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
     id_categoria_producto SMALLINT      IDENTITY(1,1) PRIMARY KEY,
+	nombre_linea	VARCHAR(100) NOT NULL,
     nombre_categoria      VARCHAR(100)  NOT NULL
 );
 

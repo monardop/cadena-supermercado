@@ -27,33 +27,23 @@ GO
 USE Com2900G10;
 GO
 
--- SP para la importar datos de empleados
+-- SP para la importar datos de clasificacion de productos
 GO
-CREATE OR ALTER PROCEDURE ImportarMediosPago
+CREATE OR ALTER PROCEDURE ImportarCategoriasProductos
 AS
 BEGIN
-
-	CREATE TABLE #importacion_medios_pago(
-		nombre_eng VARCHAR(200),
-		nombre_esp VARCHAR(200)
-	)
-
-	INSERT INTO #importacion_medios_pago(nombre_eng, nombre_esp)
-		SELECT TRIM(F2), TRIM(F3) FROM
-			 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
-						'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
-						'SELECT * FROM [medios de pago$]');
-
-	-- Inserto solo los nuevos
-	INSERT INTO venta.medio_pago(nombre_eng, nombre_esp)
-	SELECT i.*
-		FROM #importacion_medios_pago i 
-			LEFT JOIN venta.medio_pago mp ON i.nombre_esp = mp.nombre_esp
-	WHERE mp.nombre_esp is null
-
+	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
+		SELECT t1.nombre_linea, t1.nombre_categoria FROM (
+			SELECT TRIM([Línea de producto]) as nombre_linea, TRIM([Producto]) as nombre_categoria FROM
+				 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
+							'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
+							'SELECT * FROM [Clasificacion productos$]')
+							) t1
+			LEFT JOIN producto.categoria_producto c ON c.nombre_categoria = t1.nombre_categoria
+			WHERE c.nombre_categoria IS NULL
 END;
 
-/* SELECT * FROM venta.medio_pago;
-DELETE FROM venta.medio_pago
-EXEC ImportarMediosPago;
-SELECT * FROM venta.medio_pago; */
+/* SELECT * FROM producto.categoria_producto;
+DELETE FROM producto.categoria_producto
+EXEC ImportarCategoriasProductos;
+SELECT * FROM producto.categoria_producto; */
