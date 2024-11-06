@@ -16,19 +16,20 @@ USE Com2900G10;
 
 -- SP para la tabla categoria_producto
 GO
-CREATE PROCEDURE CrearCategoriaProducto
+CREATE OR ALTER PROCEDURE CrearCategoriaProducto
+	@linea VARCHAR(100),
 	@nombre VARCHAR(100)
 AS
 BEGIN
 	INSERT INTO producto.categoria_producto 
-    VALUES (@nombre);
+    VALUES (@linea, @nombre);
 
 	PRINT 'Categoria agregada exitosamente.';
 END;
 
 
 GO
-CREATE PROCEDURE ModificarCategoriaProducto
+CREATE OR ALTER PROCEDURE ModificarCategoriaProducto
 	@id_categoria_producto SMALLINT, -- Solo para la busqueda
 	@nombre VARCHAR(100)
 AS

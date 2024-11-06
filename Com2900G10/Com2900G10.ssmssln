@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# SQL Server Management Studio Solution File, Format Version 20.00
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredProcedures", "{229E541C-493B-42A4-B86A-78CA7CDD2455}"
+	ProjectSection(SolutionItems) = preProject
+		..\StoredProcedures\CategoriaProductoSP.sql = ..\StoredProcedures\CategoriaProductoSP.sql
+		..\StoredProcedures\DetalleFacturaSP.sql = ..\StoredProcedures\DetalleFacturaSP.sql
+		..\StoredProcedures\EmpleadosSP.sql = ..\StoredProcedures\EmpleadosSP.sql
+		..\StoredProcedures\FacturaSP.sql = ..\StoredProcedures\FacturaSP.sql
+		..\StoredProcedures\MedioPagoSP.sql = ..\StoredProcedures\MedioPagoSP.sql
+		..\StoredProcedures\ProductoSP.sql = ..\StoredProcedures\ProductoSP.sql
+		..\StoredProcedures\SucursalSP.sql = ..\StoredProcedures\SucursalSP.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "imports", "imports", "{1BE93D2B-F029-4425-B951-19D807C5FDDC}"
+	ProjectSection(SolutionItems) = preProject
+		..\imports\0-configuraciones_ole.sql = ..\imports\0-configuraciones_ole.sql
+		..\imports\1-ImportarEmpleados.sql = ..\imports\1-ImportarEmpleados.sql
+		..\imports\2-ImportarSucursal.sql = ..\imports\2-ImportarSucursal.sql
+		..\imports\3-ImportarMediosPago.sql = ..\imports\3-ImportarMediosPago.sql
+		..\imports\4-ImportarCategoriasProductos.sql = ..\imports\4-ImportarCategoriasProductos.sql
+		..\imports\5-ImportarCatalogo.sql = ..\imports\5-ImportarCatalogo.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB22AED0-FBAD-454D-B131-2E94ED53A2A4}"
+	ProjectSection(SolutionItems) = preProject
+		..\CreationFile.sql = ..\CreationFile.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3637290E-A793-4596-B406-F9241F2B4C3E}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CE1D063-48F9-4630-8F4B-E75F5CE10878}
+	EndGlobalSection
+EndGlobal
