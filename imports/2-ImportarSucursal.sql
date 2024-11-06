@@ -26,20 +26,21 @@ interpretarlo como JSON o CSV).
 GO
 USE Com2900G10;
 
-
 -- SP para la importar datos de sucursales
 GO
 CREATE PROCEDURE ImportarSucursales
+@pathArchivos varchar(200)
 AS
 BEGIN
-	DROP TABLE IF EXISTS #importacion_sucursal;
+	DECLARE @sql varchar(max) = 'SELECT * FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database=' + @pathArchivos + ''', 
+						[sucursal$]);'
+
 	CREATE TABLE #importacion_sucursal(ciudad VARCHAR(100), reemplazar_por VARCHAR(100), direccion VARCHAR(200), horario VARCHAR(100), telefono VARCHAR(30))
 
 	INSERT INTO #importacion_sucursal
-		SELECT * FROM
-			 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
-						'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
-						[sucursal$]);
+		exec sp_executesql @sql;
 
 	-- Si ya existe una direccion pero está inactiva en la BDD, lo activo
 	UPDATE s
@@ -53,6 +54,8 @@ BEGIN
 	FROM #importacion_sucursal t1
 		LEFT JOIN sucursal.sucursal s ON t1.direccion = s.direccion
 	WHERE s.direccion IS NULL
+
+	DROP TABLE #importacion_sucursal
 
 END;
 
