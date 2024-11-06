@@ -99,7 +99,7 @@ END;
 
 
 GO
-CREATE OR ALTER PROCEDURE AltaSucurcursal 
+CREATE OR ALTER PROCEDURE AltaSucursal 
     @id_sucursal SMALLINT
 AS
 BEGIN
