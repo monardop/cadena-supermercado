@@ -42,9 +42,6 @@ BEGIN
 
             PRINT 'Categoria modificada exitosamente.';
         END
-
          ELSE
-            BEGIN
-                PRINT 'La categoria de producto no existe.';
-            END
+			RAISERROR ('La categoria del producto no existe.',10,1);
 END;

@@ -45,7 +45,6 @@ BEGIN
         END
 
          ELSE
-            BEGIN
-                PRINT 'El medio de pago no existe.';
-            END
+             RAISERROR('El medio de pago no existe.',10,1);
+
 END;

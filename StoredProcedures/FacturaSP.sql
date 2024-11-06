@@ -61,7 +61,6 @@ BEGIN
         END
 
          ELSE
-            BEGIN
-                PRINT 'La factura no existe.';
-            END
+             RAISERROR('La factura no existe.',10,1);
+
 END;

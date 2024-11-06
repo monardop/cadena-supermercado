@@ -30,9 +30,7 @@ BEGIN
         PRINT 'Sucursal dada de baja correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no fue encontrada o ya fue dada de baja anteriormente.';
-    END
+		RAISERROR('La sucursal no fue encontrada o ya fue dada de baja anteriormente.',10,1);
 END;
 
 GO
@@ -55,9 +53,7 @@ BEGIN
         PRINT 'Ubicacion actualizado correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no existe o fue dada de baja.';
-    END
+        RAISERROR('La sucursal no existe o fue dada de baja.',10,1);
 END;
 
 GO
@@ -76,9 +72,8 @@ BEGIN
         PRINT 'Telefono actualizado correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal buscada no existe o está inactiva';
-    END
+       RAISERROR('La sucursal buscada no existe o está inactiva',10,1);
+
 END;
 
 GO
@@ -99,9 +94,7 @@ BEGIN
         END
 
     ELSE
-        BEGIN
-        PRINT 'La sucursal ya existe y está activa.';
-    END
+        RAISERROR('La sucursal ya existe y está activa.',10,1);
 END;
 
 
@@ -120,7 +113,5 @@ BEGIN
         PRINT 'Sucursal dada de alta nuevamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no fue encontrada o está activa.';
-    END
+        RAISERROR('La sucursal no fue encontrada o está activa.',10,1);
 END;

@@ -48,9 +48,8 @@ BEGIN
         END
 
          ELSE
-            BEGIN
-                PRINT 'El producto no existe.';
-            END
+             RAISERROR('El producto no existe.',10,1);
+
 END;
 
 -- TODO: Definir baja de producto
