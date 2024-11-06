@@ -30,17 +30,21 @@ GO
 -- SP para la importar datos de clasificacion de productos
 GO
 CREATE OR ALTER PROCEDURE ImportarCategoriasProductos
+@pathArchivos varchar(200)
 AS
 BEGIN
-	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
-		SELECT t1.nombre_linea, t1.nombre_categoria FROM (
+
+declare @sql varchar(200) = 'SELECT t1.nombre_linea, t1.nombre_categoria FROM (
 			SELECT TRIM([Línea de producto]) as nombre_linea, TRIM([Producto]) as nombre_categoria FROM
-				 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
-							'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
-							'SELECT * FROM [Clasificacion productos$]')
+				 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+							''Excel 12.0; Database='+ @pathArchivos+ ''', 
+							''SELECT * FROM [Clasificacion productos$]'')
 							) t1
 			LEFT JOIN producto.categoria_producto c ON c.nombre_categoria = t1.nombre_categoria
-			WHERE c.nombre_categoria IS NULL
+			WHERE c.nombre_categoria IS NULL'
+
+	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
+		exec sp_executesql @sql;
 END;
 
 /* SELECT * FROM producto.categoria_producto;

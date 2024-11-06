@@ -30,8 +30,14 @@ GO
 -- SP para la importar datos de medios de pago
 GO
 CREATE OR ALTER PROCEDURE ImportarMediosPago
+@pathArchivos varchar(200)
 AS
 BEGIN
+
+	DECLARE @sql varchar(max)= 'SELECT TRIM(F2), TRIM(F3) FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database='+ @pathArchivos+''', 
+						''SELECT * FROM [medios de pago$]'')'
 
 	CREATE TABLE #importacion_medios_pago(
 		nombre_eng VARCHAR(200),
@@ -39,10 +45,7 @@ BEGIN
 	)
 
 	INSERT INTO #importacion_medios_pago(nombre_eng, nombre_esp)
-		SELECT TRIM(F2), TRIM(F3) FROM
-			 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
-						'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
-						'SELECT * FROM [medios de pago$]');
+		exec sp_executesp @sql;
 
 	-- Inserto solo los nuevos
 	INSERT INTO venta.medio_pago(nombre_eng, nombre_esp)
@@ -50,6 +53,8 @@ BEGIN
 		FROM #importacion_medios_pago i 
 			LEFT JOIN venta.medio_pago mp ON i.nombre_esp = mp.nombre_esp
 	WHERE mp.nombre_esp is null
+
+	drop table #importacion_medios_pago
 
 END;
 

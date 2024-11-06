@@ -56,8 +56,14 @@ GO
 -- SP para la importar datos de empleados
 GO
 CREATE OR ALTER PROCEDURE ImportarEmpleados
+@pathArchivos varchar(200)
 AS
 BEGIN
+	DECLARE @sql varchar(max) = 'SELECT * FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database=' + @pathArchivos + ''', 
+						[Empleados$]);'
+	
 	CREATE TABLE #importacion_empleado(
 		legajo INT,
 		nombre VARCHAR(60),
@@ -74,10 +80,7 @@ BEGIN
 	)
 
 	INSERT INTO #importacion_empleado(legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, sucursal, turno)
-		SELECT * FROM
-			 OPENROWSET('Microsoft.ACE.OLEDB.12.0',
-						'Excel 12.0; Database=C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\informacion_complementaria.xlsx', 
-						[Empleados$]);
+		EXEC sp_executesql @sql;
 
 	-- Elimino registros invalidos
 	DELETE FROM #importacion_empleado WHERE legajo IS NULL;
@@ -92,6 +95,8 @@ BEGIN
 	INSERT INTO sucursal.empleado
 	SELECT legajo, nombre, apellido, dni, direccion, importacion.sanitizar_y_reemplazar(LOWER(email_personal),'_'), importacion.sanitizar_y_reemplazar(LOWER(email_empresa),'.'), cuil, cargo, id_sucursal, turno, 1
 	FROM #importacion_empleado
+
+	DROP TABLE #importacion_empleado;
 
 END;
 
