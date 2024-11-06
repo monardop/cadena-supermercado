@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla Producto
 GO
-CREATE PROCEDURE CrearProducto
+CREATE OR ALTER PROCEDURE CrearProducto
     @id_categoria_producto SMALLINT,
 	@nombre_producto VARCHAR(100),
 	@precio_unitario DECIMAL(10,4),
@@ -31,7 +31,7 @@ END;
 
 
 GO
-CREATE PROCEDURE ModificarProducto
+CREATE OR ALTER PROCEDURE ModificarProducto
 	@id_producto SMALLINT, -- Solo para la busqueda
 	@id_categoria_producto SMALLINT,
 	@nombre_producto VARCHAR(100),

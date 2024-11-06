@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla sucursal
 GO
-CREATE PROCEDURE BajaSucursal
+CREATE OR ALTER PROCEDURE BajaSucursal
     @id_sucursal SMALLINT
 AS
 BEGIN
@@ -36,7 +36,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CambiarUbicacion
+CREATE OR ALTER PROCEDURE CambiarUbicacion
     @id_sucursal        SMALLINT,
     @nueva_ciudad       VARCHAR(50),
     @reemplaza_por      VARCHAR(50),
@@ -61,7 +61,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CambiarTelefono
+CREATE OR ALTER PROCEDURE CambiarTelefono
     @id_sucursal        SMALLINT,
     @nuevo_telefono     VARCHAR(50)
 AS
@@ -82,7 +82,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CrearSucursal
+CREATE OR ALTER PROCEDURE CrearSucursal
     @ciudad VARCHAR(50),
     @reemplazar_por VARCHAR(50),
     @direccion VARCHAR(300),
@@ -106,7 +106,7 @@ END;
 
 
 GO
-CREATE PROCEDURE AltaSucurcursal 
+CREATE OR ALTER PROCEDURE AltaSucurcursal 
     @id_sucursal SMALLINT
 AS
 BEGIN

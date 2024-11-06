@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla detalle_factura
 GO
-CREATE PROCEDURE CrearDetalleFactura
+CREATE OR ALTER PROCEDURE CrearDetalleFactura
 	@id_producto SMALLINT,
 	@id_factura INT,
 	@cantidad SMALLINT
@@ -30,7 +30,7 @@ END;
 
 
 GO
-CREATE PROCEDURE ModificarDetalleFactura
+CREATE OR ALTER PROCEDURE ModificarDetalleFactura
 	@id_detalle_factura INT, -- Solo para la busqueda
 	@cantidad SMALLINT
 AS

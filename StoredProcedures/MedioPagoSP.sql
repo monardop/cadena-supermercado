@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla medio_pago
 GO
-CREATE PROCEDURE CrearMedioPago
+CREATE OR ALTER PROCEDURE CrearMedioPago
 	@nombre_eng VARCHAR(20),
 	@nombre_esp VARCHAR(20)
 AS
@@ -29,7 +29,7 @@ END;
 
 
 GO
-CREATE PROCEDURE ModificarMedioPago
+CREATE OR ALTER PROCEDURE ModificarMedioPago
 	@id_medio_pago SMALLINT, -- Solo para la busqueda
 	@nombre_eng VARCHAR(20),
 	@nombre_esp VARCHAR(20)
