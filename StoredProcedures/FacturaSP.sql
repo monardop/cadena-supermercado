@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla factura
 GO
-CREATE PROCEDURE CrearFactura
+CREATE OR ALTER PROCEDURE CrearFactura
 	@id_medio_pago SMALLINT,
 	@id_empleado INT,
 	@tipo_factura CHAR(1),
@@ -34,7 +34,7 @@ END;
 
 
 GO
-CREATE PROCEDURE ModificarFactura
+CREATE OR ALTER PROCEDURE ModificarFactura
 	@id_factura INT, -- Solo para la busqueda
 	@id_medio_pago SMALLINT,
 	@id_empleado INT,
@@ -61,7 +61,6 @@ BEGIN
         END
 
          ELSE
-            BEGIN
-                PRINT 'La factura no existe.';
-            END
+             RAISERROR('La factura no existe.',10,1);
+
 END;

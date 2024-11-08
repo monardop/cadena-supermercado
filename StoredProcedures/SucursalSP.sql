@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para la tabla sucursal
 GO
-CREATE PROCEDURE BajaSucursal
+CREATE OR ALTER PROCEDURE BajaSucursal
     @id_sucursal SMALLINT
 AS
 BEGIN
@@ -30,13 +30,11 @@ BEGIN
         PRINT 'Sucursal dada de baja correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no fue encontrada o ya fue dada de baja anteriormente.';
-    END
+		RAISERROR('La sucursal no fue encontrada o ya fue dada de baja anteriormente.',10,1);
 END;
 
 GO
-CREATE PROCEDURE CambiarUbicacion
+CREATE OR ALTER PROCEDURE CambiarUbicacion
     @id_sucursal        SMALLINT,
     @nueva_ciudad       VARCHAR(50),
     @reemplaza_por      VARCHAR(50),
@@ -55,13 +53,11 @@ BEGIN
         PRINT 'Ubicacion actualizado correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no existe o fue dada de baja.';
-    END
+        RAISERROR('La sucursal no existe o fue dada de baja.',10,1);
 END;
 
 GO
-CREATE PROCEDURE CambiarTelefono
+CREATE OR ALTER PROCEDURE CambiarTelefono
     @id_sucursal        SMALLINT,
     @nuevo_telefono     VARCHAR(50)
 AS
@@ -76,13 +72,12 @@ BEGIN
         PRINT 'Telefono actualizado correctamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal buscada no existe o está inactiva';
-    END
+       RAISERROR('La sucursal buscada no existe o está inactiva',10,1);
+
 END;
 
 GO
-CREATE PROCEDURE CrearSucursal
+CREATE OR ALTER PROCEDURE CrearSucursal
     @ciudad VARCHAR(50),
     @reemplazar_por VARCHAR(50),
     @direccion VARCHAR(300),
@@ -99,14 +94,12 @@ BEGIN
         END
 
     ELSE
-        BEGIN
-        PRINT 'La sucursal ya existe y está activa.';
-    END
+        RAISERROR('La sucursal ya existe y está activa.',10,1);
 END;
 
 
 GO
-CREATE PROCEDURE AltaSucurcursal 
+CREATE OR ALTER PROCEDURE AltaSucursal 
     @id_sucursal SMALLINT
 AS
 BEGIN
@@ -120,7 +113,5 @@ BEGIN
         PRINT 'Sucursal dada de alta nuevamente.';
     END
     ELSE
-    BEGIN
-        PRINT 'La sucursal no fue encontrada o está activa.';
-    END
+        RAISERROR('La sucursal no fue encontrada o está activa.',10,1);
 END;

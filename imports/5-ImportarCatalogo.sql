@@ -30,23 +30,27 @@ GO
 -- SP para la importar datos de clasificacion de productos
 GO
 CREATE OR ALTER PROCEDURE ImportarCatalogo
+@pathArchivos varchar(200)
 AS
 BEGIN
-	CREATE TABLE #importacion_catalogo(id INT, categoria VARCHAR(200), nombre VARCHAR(200), precio DECIMAL(6,2), precio_referencia DECIMAL(6,2), unidad_referencia VARCHAR(10), fecha DATETIME)
 
-	-- subo los datos en crudo
-	BULK INSERT #importacion_catalogo
-    FROM 'C:\Users\lucas\OneDrive\Escritorio\repositories\unlam-bdda-supermercado\DataFiles\Productos\catalogo.csv'
+	DECLARE @sql varchar(max) = 'BULK INSERT #importacion_catalogo
+    FROM ''' + @pathArchivos + '''
     WITH
     (
 		FIRSTROW = 2,
-		 CODEPAGE = '65001',
-		FIELDTERMINATOR = ',',  --CSV field delimiter
-		ROWTERMINATOR = '\n',   --Use to shift the control to next row
-        FORMAT = 'CSV',
-        FIELDQUOTE = '"',
+		 CODEPAGE = ''65001'',
+		FIELDTERMINATOR = '','',  --CSV field delimiter
+		ROWTERMINATOR = ''\n'',   --Use to shift the control to next row
+        FORMAT = ''CSV'',
+        FIELDQUOTE = ''"'',
 		TABLOCK
-    )
+    )'
+
+	CREATE TABLE #importacion_catalogo(id INT, categoria VARCHAR(200), nombre VARCHAR(200), precio DECIMAL(6,2), precio_referencia DECIMAL(6,2), unidad_referencia VARCHAR(10), fecha DATETIME)
+
+	-- subo los datos en crudo
+	exec sp_executesql @sql
 
 	-- Sanitizo
 	UPDATE #importacion_catalogo SET categoria = importacion.sanitizar_y_reemplazar(categoria,'');
@@ -67,7 +71,7 @@ BEGIN
 		LEFT JOIN producto.producto p ON i.nombre = p.nombre_producto
 	WHERE p.id_producto IS NULL
 
-	
+	drop table #importacion_catalogo
 END;
 
 /* SELECT * FROM producto.producto;

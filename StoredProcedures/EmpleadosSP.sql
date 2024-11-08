@@ -16,7 +16,7 @@ USE Com2900G10;
 
 -- SP para empleados
 GO
-CREATE PROCEDURE CambiarTurnoEmpleado
+CREATE OR ALTER PROCEDURE CambiarTurnoEmpleado
     @legajo INT,
     @nuevoTurno VARCHAR(50)
 AS
@@ -37,7 +37,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CambiarCargoEmpleado
+CREATE OR ALTER PROCEDURE CambiarCargoEmpleado
     @legajo INT,
     @nuevoCargo VARCHAR(50)
 AS
@@ -58,7 +58,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE AltaEmpleado
+CREATE OR ALTER PROCEDURE AltaEmpleado
     @nombre VARCHAR(50),
     @apellido VARCHAR(50),
     @dni VARCHAR(20),
@@ -86,7 +86,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE BajaEmpleado
+CREATE OR ALTER PROCEDURE BajaEmpleado
     @legajo INT
 AS
 BEGIN
