@@ -49,14 +49,15 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     nombre          VARCHAR(60) NOT NULL,
     apellido        VARCHAR(60) NOT NULL,
     dni             INT             NOT NULL,
-    direccion       VARCHAR(300),
-    email_personal  VARCHAR(300),
-    email_empresa   VARCHAR(300),
-    cuil            VARCHAR(13)     
+    direccion       VARCHAR(100),
+    email_personal  VARCHAR(60),
+    email_empresa   VARCHAR(60),
+    cuil            CHAR(13)     
                     CHECK ([cuil] like '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9]' OR cuil is null),
     cargo           VARCHAR(30),
     id_sucursal     SMALLINT        NOT NULL,
-    turno           VARCHAR(30),
+    turno           VARCHAR(20) 
+					CHECK([turno] IN ('TM', 'TT', 'TN', 'Jornada completa')),
     activo          BIT,
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
@@ -65,7 +66,7 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
 
 CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
     id_categoria_producto SMALLINT      IDENTITY(1,1) PRIMARY KEY,
-	nombre_linea	VARCHAR(100) NOT NULL,
+	nombre_linea		  VARCHAR(100)	NOT NULL,
     nombre_categoria      VARCHAR(100)  NOT NULL
 );
 
