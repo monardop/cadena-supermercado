@@ -33,11 +33,11 @@ EXEC [Com2900G10].[venta].[CrearMedioPago] 'TEST1', 'TEST1';
 EXEC [Com2900G10].[venta].[CrearMedioPago] 'TEST1', 'TEST1';
 
 /*******************************************************************************
-						SP: CrearMedioPago
+						SP: ModificarMedioPago
 *******************************************************************************/
 
 /* Resultado esperado: Modificacion OK */
-EXEC [Com2900G10].[venta].ModificarMedioPago 1, 'TEST2', 'TEST2';
+EXEC [Com2900G10].[venta].[ModificarMedioPago] 1, 'TEST2', 'TEST2';
 
 /* Resultado esperado: Error - "El medio de pago no existe" */
-EXEC [Com2900G10].[venta].ModificarMedioPago 999, 'TEST2', 'TEST2';
+EXEC [Com2900G10].[venta].[ModificarMedioPago] 999, 'TEST2', 'TEST2';
