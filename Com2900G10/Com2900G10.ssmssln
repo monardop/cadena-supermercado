@@ -24,15 +24,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\SucursalSP.sql = StoredProcedures\SucursalSP.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProceduresTests", "StoredProceduresTests", "{A3EB46F8-C1BF-4141-8B9E-3FA192834C96}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B209-4C02-B3CD-BE067C1C337D}"
 	ProjectSection(SolutionItems) = preProject
-		StoredProceduresTests\TestingProductoYCategoriaProductoSP.sql = StoredProceduresTests\TestingProductoYCategoriaProductoSP.sql
-		StoredProceduresTests\TestingSucursalSP.sql = StoredProceduresTests\TestingSucursalSP.sql
+		CreationFile.sql = CreationFile.sql
+		CreationFileTests.sql = CreationFileTests.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
+	ProjectSection(SolutionItems) = preProject
+		StoredProcedures\Tests\CategoriaProductoSPTests.sql = StoredProcedures\Tests\CategoriaProductoSPTests.sql
+		StoredProcedures\Tests\MedioPagoSPTests.sql = StoredProcedures\Tests\MedioPagoSPTests.sql
+		StoredProcedures\Tests\ProductoSPTests.sql = StoredProcedures\Tests\ProductoSPTests.sql
+		StoredProcedures\Tests\SucursalSPTests.sql = StoredProcedures\Tests\SucursalSPTests.sql
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB92CB77-A24D-436C-A645-2CC2737B46A0}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C969901C-5534-42DC-B683-179B06E7CF3E} = {976697C6-1CE5-4509-B961-8CD297303AB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CE1D063-48F9-4630-8F4B-E75F5CE10878}
