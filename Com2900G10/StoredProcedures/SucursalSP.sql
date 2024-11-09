@@ -25,7 +25,7 @@ USE Com2900G10;
 
 -- SP para la tabla sucursal
 GO
-CREATE OR ALTER PROCEDURE BajaSucursal
+CREATE OR ALTER PROCEDURE sucursal.BajaSucursal
     @id_sucursal SMALLINT
 AS
 BEGIN
@@ -43,7 +43,7 @@ BEGIN
 END;
 
 GO
-CREATE OR ALTER PROCEDURE CambiarUbicacion
+CREATE OR ALTER PROCEDURE sucursal.CambiarUbicacion
     @id_sucursal        SMALLINT,
     @nueva_ciudad       VARCHAR(50),
     @reemplaza_por      VARCHAR(50),
@@ -66,13 +66,13 @@ BEGIN
 END;
 
 GO
-CREATE OR ALTER PROCEDURE CambiarTelefono
+CREATE OR ALTER PROCEDURE sucursal.CambiarTelefono
     @id_sucursal        SMALLINT,
     @nuevo_telefono     VARCHAR(50)
 AS
 BEGIN
     -- Verifica si ya existe la sucursal
-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE id_sucursal = @id_sucursal AND activo = 1)
+    IF EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal = @id_sucursal AND activo = 1)
     BEGIN
         UPDATE sucursal.sucursal
         SET telefono = @nuevo_telefono
@@ -86,7 +86,7 @@ BEGIN
 END;
 
 GO
-CREATE OR ALTER PROCEDURE CrearSucursal
+CREATE OR ALTER PROCEDURE sucursal.CrearSucursal
     @ciudad VARCHAR(50),
     @reemplazar_por VARCHAR(50),
     @direccion VARCHAR(300),
@@ -94,7 +94,7 @@ CREATE OR ALTER PROCEDURE CrearSucursal
     @telefono CHAR(9)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE @ciudad = ciudad AND activo = 1)
+    IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE @ciudad = ciudad)
         BEGIN
             INSERT INTO sucursal.sucursal 
             VALUES (@ciudad, @reemplazar_por, @direccion, @horario, @telefono, 1);
@@ -103,12 +103,12 @@ BEGIN
         END
 
     ELSE
-        RAISERROR('La sucursal ya existe y está activa.',10,1);
+        RAISERROR('La sucursal ya existe.',10,1);
 END;
 
 
 GO
-CREATE OR ALTER PROCEDURE AltaSucursal 
+CREATE OR ALTER PROCEDURE sucursal.AltaSucursal 
     @id_sucursal SMALLINT
 AS
 BEGIN
