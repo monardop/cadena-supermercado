@@ -24,49 +24,8 @@ USE Com2900G10;
 
 -- SP para empleados
 GO
-CREATE OR ALTER PROCEDURE CambiarTurnoEmpleado
-    @legajo INT,
-    @nuevoTurno VARCHAR(50)
-AS
-BEGIN
-    -- Verifica si el empleado existe y está activo
-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
-    BEGIN
-        UPDATE sucursal.empleado
-        SET turno = @nuevoTurno
-        WHERE legajo = @legajo;
-        
-        PRINT 'Turno actualizado correctamente.';
-    END
-    ELSE
-    BEGIN
-        PRINT 'El empleado no existe o está inactivo.';
-    END
-END;
-
-GO
-CREATE OR ALTER PROCEDURE CambiarCargoEmpleado
-    @legajo INT,
-    @nuevoCargo VARCHAR(50)
-AS
-BEGIN
-    -- Verifica si el empleado existe y está activo
-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
-    BEGIN
-        UPDATE sucursal.empleado
-        SET cargo = @nuevoCargo
-        WHERE legajo = @legajo;
-        
-        PRINT 'Cargo actualizado correctamente.';
-    END
-    ELSE
-    BEGIN
-        PRINT 'El empleado no existe o está inactivo.';
-    END
-END;
-
-GO
-CREATE OR ALTER PROCEDURE AltaEmpleado
+CREATE OR ALTER PROCEDURE sucursal.ModificarEmpleado
+	@legajo INT,
     @nombre VARCHAR(50),
     @apellido VARCHAR(50),
     @dni VARCHAR(20),
@@ -79,22 +38,81 @@ CREATE OR ALTER PROCEDURE AltaEmpleado
     @id_sucursal INT
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal =  @id_sucursal AND activo = 1)
-        BEGIN
-            INSERT INTO sucursal.empleado (nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, turno, id_sucursal, activo)
-            VALUES (@nombre, @apellido, @dni, @direccion, @email_personal, @email_empresa, @cuil, @cargo, @turno, @id_sucursal, 1);
-            
-            PRINT 'Empleado agregado exitosamente.';
-        END
+	IF @legajo IS NULL
+	BEGIN
+		RAISERROR('Debe ingresar el legajo del empleado a actualizar',10,1);
 
-         ELSE
-            BEGIN
-                PRINT 'La sucursal no existe o se encuentra inactiva.';
-            END
+		RETURN
+	END
+
+	IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal = @id_sucursal and activo = 1)
+	BEGIN
+		RAISERROR('La sucursal del empleado no existe o esta inactiva',10,1);
+
+		RETURN
+	END
+
+    -- Verifica si el empleado existe y está activo
+    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
+    BEGIN
+        UPDATE sucursal.empleado
+        SET
+			nombre = @nombre,
+			apellido = @apellido,
+			dni = @dni,
+			direccion = @direccion,
+			email_personal = @email_personal,
+			email_empresa = @email_empresa,
+			cuil = @cuil,
+			cargo = @cargo,
+			turno = @turno,
+			id_sucursal = @id_sucursal
+        WHERE legajo = @legajo;
+        
+        PRINT 'Empleado actualizado correctamente.';
+    END
+    ELSE
+    BEGIN
+		RAISERROR('El empleado no existe o está inactivo',10,1);
+    END
 END;
 
 GO
-CREATE OR ALTER PROCEDURE BajaEmpleado
+CREATE OR ALTER PROCEDURE sucursal.CrearEmpleado
+	@legajo INT,
+    @nombre VARCHAR(50),
+    @apellido VARCHAR(50),
+    @dni VARCHAR(20),
+    @direccion VARCHAR(100),
+    @email_personal VARCHAR(100),
+    @email_empresa VARCHAR(100),
+    @cuil VARCHAR(20),
+    @cargo VARCHAR(50),
+    @turno VARCHAR(50),
+    @id_sucursal INT
+AS
+BEGIN
+	IF @legajo IS NULL 
+	BEGIN
+		RAISERROR('Debe ingresar un legajo para el empleado',10,1);
+
+		RETURN
+	END
+
+    IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal =  @id_sucursal AND activo = 1)
+    BEGIN
+		RAISERROR('La sucursal del empleado no existe o esta inactiva',10,1);
+
+		RETURN
+    END
+
+	INSERT INTO sucursal.empleado (legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, turno, id_sucursal, activo)
+    VALUES (@legajo, @nombre, @apellido, @dni, @direccion, @email_personal, @email_empresa, @cuil, @cargo, @turno, @id_sucursal, 1);
+     
+END;
+
+GO
+CREATE OR ALTER PROCEDURE sucursal.BajaEmpleado
     @legajo INT
 AS
 BEGIN
@@ -109,6 +127,26 @@ BEGIN
     END
     ELSE
     BEGIN
-        PRINT 'El empleado no existe o ya está inactivo.';
+		RAISERROR('El empleado no existe o ya esta dado de baja',10,1);
+    END
+END;
+GO
+
+CREATE OR ALTER PROCEDURE sucursal.AltaEmpleado
+    @legajo INT
+AS
+BEGIN
+    -- Verifica si el empleado existe y está activo
+    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 0)
+    BEGIN
+        UPDATE sucursal.empleado
+        SET activo = 1
+        WHERE legajo = @legajo;
+        
+        PRINT 'Empleado dado de alta.';
+    END
+    ELSE
+    BEGIN
+		RAISERROR('El empleado no existe o ya esta dado de alta',10,1);
     END
 END;
