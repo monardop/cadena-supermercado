@@ -52,6 +52,25 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     activo          BIT
 );
 
+CREATE TABLE [Com2900G10].[sucursal].[puesto_venta] (
+	id_punto_venta int identity(1,1) PRIMARY KEY,
+	descripcion varchar(60),
+	id_sucursal int NOT NULL,
+	CONSTRAINT FK_sucursal FOREIGN KEY
+	REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
+);
+
+CREATE TABLE [Com2900G10].[sucursal].[puesto_venta_empleado] (
+	id_puesto_venta_empleado int identity(1,1) primary key,
+	id_puesto_venta int NOT NULL,
+	id_empleado int NOT NULL,
+	activo bit,
+	CONSTRAINT FK_puesto_venta FOREIGN KEY
+	REFERENCES [Com2900G10].[sucursal].[puesto_venta](id_puesto_venta),
+	CONSTRAINT FK_empleado FOREIGN KEY
+	REFERENCES [Com2900G10].[sucursal].[empleado](id_empleado)
+);
+
 CREATE TABLE [Com2900G10].[sucursal].[empleado] ( 
     legajo          INT         PRIMARY KEY,
     nombre          VARCHAR(60) NOT NULL,
@@ -63,7 +82,7 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     cuil            CHAR(13)     
                     CHECK ([cuil] like '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9]' OR cuil is null),
     cargo           VARCHAR(30),
-    id_sucursal     SMALLINT        NOT NULL,
+    id_sucursal     SMALLINT NOT NULL,
     turno           VARCHAR(20) 
 					CHECK([turno] IN ('TM', 'TT', 'TN', 'Jornada completa')),
     activo          BIT,
