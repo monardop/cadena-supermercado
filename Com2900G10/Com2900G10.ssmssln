@@ -28,6 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B
 	ProjectSection(SolutionItems) = preProject
 		CreationFile.sql = CreationFile.sql
 		CreationFileTests.sql = CreationFileTests.sql
+		ScriptBackupDiario.sql = ScriptBackupDiario.sql
+		ScriptBackupSemanal.sql = ScriptBackupSemanal.sql
+		ScriptBackupTLOG.sql = ScriptBackupTLOG.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
@@ -43,7 +46,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CB92CB77-A24D-436C-A645-2CC2737B46A0}.Default|Default.ActiveCfg = Default
+		{CBBDA60E-E642-412C-942C-237CB4DF5234}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
