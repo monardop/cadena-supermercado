@@ -19,55 +19,27 @@
 *                                                                             *
 *******************************************************************************/
 
+USE [Com2900G10]
 GO
-USE Com2900G10;
+/*******************************************************************************
+						SP: CrearDetalleFactura
+*******************************************************************************/
 
+/* Resultado esperado: Insercion OK*/
+EXEC [Com2900G10].[venta].[CrearDetalleFactura] 1, 1, 10;
 
--- SP para la tabla detalle_factura
-GO
-CREATE OR ALTER PROCEDURE venta.CrearDetalleFactura
-	@id_factura INT,
-	@id_producto SMALLINT,
-	@cantidad SMALLINT
-AS
-BEGIN
-	IF NOT EXISTS ( SELECT 1 FROM venta.factura WHERE id_factura = @id_factura)
-	BEGIN
-		RAISERROR('La factura a la que intenta asociar el detalle no existe.',10,1);
+/* Resultado esperado: Error - "La factura a la que intenta asociar el detalle no existe" */
+EXEC [Com2900G10].[venta].[CrearDetalleFactura] 99, 1, 10;
 
-		RETURN
-	END
+/* Resultado esperado: Error - "El producto del detalle no existe no existe" */
+EXEC [Com2900G10].[venta].[CrearDetalleFactura] 1, 99, 10;
 
-	IF NOT EXISTS ( SELECT 1 FROM producto.producto WHERE id_producto = @id_producto)
-	BEGIN
-		RAISERROR('El producto del detalle no existe no existe.',10,1);
+/*******************************************************************************
+						SP: ModificarDetalleFactura
+*******************************************************************************/
 
-		RETURN
-	END
+/* Resultado esperado: Modificacion OK*/
+EXEC [Com2900G10].[venta].[ModificarDetalleFactura] 1, 11;
 
-	INSERT INTO venta.detalle_factura 
-    VALUES (@id_producto, @id_factura, @cantidad);
-
-	PRINT 'Detalle de factura agregado exitosamente.';
-END;
-
-
-GO
-CREATE OR ALTER PROCEDURE venta.ModificarDetalleFactura
-	@id_detalle_factura INT, -- Solo para la busqueda
-	@cantidad SMALLINT
-AS
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM venta.detalle_factura WHERE id_detalle_factura =  @id_detalle_factura)
-	BEGIN
-        RAISERROR('El detalle que quiere modificar no existe.',10,1);
-
-		RETURN
-    END
-
-	UPDATE venta.detalle_factura 
-		SET cantidad = @cantidad
-	WHERE id_detalle_factura = @id_detalle_factura;
-
-	PRINT 'Detalle de factura modificado exitosamente.';
-END;
+/* Resultado esperado: Error - "El detalle que quiere modificar no existe" */
+EXEC [Com2900G10].[venta].[ModificarDetalleFactura] 99, 11;
