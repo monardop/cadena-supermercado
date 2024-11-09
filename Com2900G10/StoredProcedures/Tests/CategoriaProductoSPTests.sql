@@ -32,6 +32,11 @@ EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas';
 /* Resultado esperado: Error - Ese nombre de categoria ya existe */
 EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas';
 
+
+/*******************************************************************************
+						SP: ModificarCategoriaProducto
+*******************************************************************************/
+
 /* Resultado esperado: Modificacion OK */
 EXEC [Com2900G10].[producto].[ModificarCategoriaProducto] 1, 'Herramientas', 'Jardineria';
 
@@ -45,5 +50,5 @@ EXEC [Com2900G10].[producto].[ModificarCategoriaProducto] NULL, 'Herramientas', 
 EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas1';
 EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas2';
 DECLARE @ultimaCategoria SMALLINT;
-SELECT @ultimaCategoria = IDENT_CURRENT('producto.categoria_producto');
+SELECT @ultimaCategoria = IDENT_CURRENT('Com2900G10.producto.categoria_producto');
 EXEC [Com2900G10].[producto].[ModificarCategoriaProducto] @ultimaCategoria, 'Bebidas', 'Gaseosas1';

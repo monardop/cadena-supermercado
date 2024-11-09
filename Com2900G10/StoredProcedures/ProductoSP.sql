@@ -25,7 +25,7 @@ USE Com2900G10;
 
 -- SP para la tabla Producto
 GO
-CREATE OR ALTER PROCEDURE CrearProducto
+CREATE OR ALTER PROCEDURE producto.CrearProducto
     @id_categoria_producto SMALLINT,
 	@nombre_producto VARCHAR(100),
 	@precio_unitario DECIMAL(10,4),
@@ -50,7 +50,7 @@ END;
 
 
 GO
-CREATE OR ALTER PROCEDURE ModificarProducto
+CREATE OR ALTER PROCEDURE producto.ModificarProducto
 	@id_producto SMALLINT, -- Solo para la busqueda
 	@id_categoria_producto SMALLINT,
 	@nombre_producto VARCHAR(100),
@@ -78,5 +78,3 @@ BEGIN
          ELSE
              RAISERROR('El producto no existe.',10,1);
 END;
-
--- TODO: Definir baja de producto
