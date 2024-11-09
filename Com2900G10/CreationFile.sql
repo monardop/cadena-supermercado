@@ -52,25 +52,6 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     activo          BIT
 );
 
-CREATE TABLE [Com2900G10].[sucursal].[puesto_venta] (
-	id_punto_venta int identity(1,1) PRIMARY KEY,
-	descripcion varchar(60),
-	id_sucursal int NOT NULL,
-	CONSTRAINT FK_sucursal FOREIGN KEY
-	REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
-);
-
-CREATE TABLE [Com2900G10].[sucursal].[puesto_venta_empleado] (
-	id_puesto_venta_empleado int identity(1,1) primary key,
-	id_puesto_venta int NOT NULL,
-	id_empleado int NOT NULL,
-	activo bit,
-	CONSTRAINT FK_puesto_venta FOREIGN KEY
-	REFERENCES [Com2900G10].[sucursal].[puesto_venta](id_puesto_venta),
-	CONSTRAINT FK_empleado FOREIGN KEY
-	REFERENCES [Com2900G10].[sucursal].[empleado](id_empleado)
-);
-
 CREATE TABLE [Com2900G10].[sucursal].[empleado] ( 
     legajo          INT         PRIMARY KEY,
     nombre          VARCHAR(60) NOT NULL,
@@ -89,6 +70,25 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
+);
+
+CREATE TABLE [Com2900G10].[sucursal].[punto_venta] (
+	id_punto_venta INT IDENTITY(1,1) PRIMARY KEY,
+	descripcion VARCHAR(60),
+	id_sucursal SMALLINT NOT NULL,
+	CONSTRAINT FK_sucursal FOREIGN KEY (id_sucursal)
+	REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
+);
+
+CREATE TABLE [Com2900G10].[sucursal].[punto_venta_empleado] (
+	id_punto_venta_empleado int identity(1,1) primary key,
+	id_punto_venta int NOT NULL,
+	legajo_empleado int NOT NULL,
+	activo bit,
+	CONSTRAINT FK_puesto_venta FOREIGN KEY (id_punto_venta)
+	REFERENCES [Com2900G10].[sucursal].[punto_venta](id_punto_venta),
+	CONSTRAINT FK_empleado FOREIGN KEY (legajo_empleado)
+	REFERENCES [Com2900G10].[sucursal].[empleado](legajo)
 );
 
 CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
