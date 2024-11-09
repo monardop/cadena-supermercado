@@ -33,7 +33,7 @@ EXEC [Com2900G10].[sucursal].[BajaSucursal] 999
 
 /* Resultado esperado: OK */
 EXEC [Com2900G10].[sucursal].[CrearSucursal] 'Haedo','Ramos Mejia','Calle Falsa 123','Tarde','1234-5678'
-SELECT * FROM [Com2900G10].[sucursal].[sucursal]
+-- SELECT * FROM [Com2900G10].[sucursal].[sucursal]
 
 /* Resultado esperado: Error - "La sucursal ya existe" */
 EXEC [Com2900G10].[sucursal].[CrearSucursal] 'Haedo','Ramos Mejia','Calle Falsa 123','Tarde','1234-5678'
@@ -54,7 +54,7 @@ EXEC [Com2900G10].[sucursal].[AltaSucursal] 999
 
 /* Resultado esperado: OK */
 EXEC [Com2900G10].[sucursal].[BajaSucursal] 1
-SELECT * FROM [Com2900G10].[sucursal].[sucursal];
+-- SELECT * FROM [Com2900G10].[sucursal].[sucursal];
 
 /* Resultado esperado: Error - "La sucursal no fue encontrada o ya fue dada de baja anteriormente"  */
 EXEC [Com2900G10].[sucursal].[BajaSucursal] 1

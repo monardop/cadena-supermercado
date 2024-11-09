@@ -39,7 +39,7 @@ GO
 /* Resultado esperado: Error - "La moneda que se quiere ingresar es invalida" */
 DECLARE @idCategoria SMALLINT;
 SELECT @idCategoria = IDENT_CURRENT('COM2900G10.producto.categoria_producto'); -- Obtengo una categoria cualquiera válida
-EXEC [Com2900G10].[producto].[CrearProducto] @idCategoria2, 'Coca Cola', 10.5, 'PAT';
+EXEC [Com2900G10].[producto].[CrearProducto] @idCategoria, 'Coca Cola', 10.5, 'PAT';
 
 GO
 /*******************************************************************************

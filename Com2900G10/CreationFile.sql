@@ -97,10 +97,22 @@ CREATE TABLE [Com2900G10].[venta].[medio_pago] (
 );
 
 
+CREATE TABLE [Com2900G10].[venta].[cliente] (
+    id_cliente          INT         IDENTITY(1,1)   PRIMARY KEY,
+	nombre          VARCHAR(60) NOT NULL,
+    apellido        VARCHAR(60) NOT NULL,
+    dni             INT		    NOT NULL,
+	direccion       VARCHAR(100),
+	cuil            CHAR(13)     
+                    CHECK ([cuil] like '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9]' OR cuil is null)
+					NOT NULL ,
+);     
+
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
     id_medio_pago       SMALLINT NOT NULL,
-    legajo_empleado         INT NOT NULL,
+    legajo_empleado     INT NOT NULL,
+	id_cliente			INT NOT NULL,
     tipo_factura        CHAR(1) NOT NULL,
     tipo_cliente        VARCHAR(50) NOT NULL,
     fechaHora           DATETIME NOT NULL,
@@ -111,10 +123,13 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
     CONSTRAINT FK_Empleado_Factura
         FOREIGN KEY (legajo_empleado)
         REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
+    CONSTRAINT FK_Cliente_factura
+        FOREIGN KEY (id_cliente)
+        REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
     CONSTRAINT FK_Sucursal_Factura
         FOREIGN KEY(id_sucursal)
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
-);     
+); 
 
 CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
     id_detalle_factura INT        IDENTITY(1,1)   PRIMARY KEY,

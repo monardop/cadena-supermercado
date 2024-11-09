@@ -24,7 +24,7 @@ GO
 /*******************************************************************************
 						SP: CrearCategoriaProducto
 *******************************************************************************/
-SELECT * FROM [Com2900G10].[producto].[categoria_producto];
+-- SELECT * FROM [Com2900G10].[producto].[categoria_producto];
 
 /* Resultado esperado: Creación OK */
 EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas';

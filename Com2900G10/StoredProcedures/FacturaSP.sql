@@ -28,6 +28,7 @@ GO
 CREATE OR ALTER PROCEDURE venta.CrearFactura
 	@id_medio_pago SMALLINT,
 	@legajo INT,
+	@id_cliente INT,
 	@tipo_factura CHAR(1),
 	@tipo_cliente VARCHAR(50),
 	@fechaHora DATETIME,
@@ -44,6 +45,13 @@ BEGIN
 	IF NOT EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
 	BEGIN
 		RAISERROR('El empleado generador de la factura no existe o esta inactivo.',10,1);
+
+		RETURN
+	END
+
+	IF NOT EXISTS (SELECT 1 FROM venta.cliente WHERE id_cliente = @id_cliente)
+	BEGIN
+		RAISERROR('El cliente a facturar no existe.',10,1);
 
 		RETURN
 	END
@@ -56,7 +64,7 @@ BEGIN
 	END
 
 	INSERT INTO venta.factura 
-    VALUES (@id_medio_pago, @legajo, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal);
+    VALUES (@id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal);
 
 	PRINT 'Factura agregada exitosamente.';
 END;
@@ -67,6 +75,7 @@ CREATE OR ALTER PROCEDURE venta.ModificarFactura
 	@id_factura INT, -- Solo para la busqueda
 	@id_medio_pago SMALLINT,
 	@legajo INT,
+	@id_cliente INT,
 	@tipo_factura CHAR(1),
 	@tipo_cliente VARCHAR(50),
 	@fechaHora DATETIME,
@@ -83,6 +92,14 @@ BEGIN
 	IF NOT EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
 	BEGIN
 		RAISERROR('El empleado generador de la factura no existe o esta inactivo.',10,1);
+
+		RETURN
+	END
+
+	
+	IF NOT EXISTS (SELECT 1 FROM venta.cliente WHERE id_cliente = @id_cliente)
+	BEGIN
+		RAISERROR('El cliente a facturar no existe.',10,1);
 
 		RETURN
 	END
@@ -105,6 +122,7 @@ BEGIN
 	UPDATE venta.factura 
 		SET id_medio_pago = @id_medio_pago,
 		legajo_empleado = @legajo,
+		id_cliente = @id_cliente,
 		tipo_factura = @tipo_factura,
 		tipo_cliente = @tipo_cliente,
 		fechaHora = @fechaHora,

@@ -36,6 +36,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
 	ProjectSection(SolutionItems) = preProject
 		StoredProcedures\Tests\CategoriaProductoSPTests.sql = StoredProcedures\Tests\CategoriaProductoSPTests.sql
+		StoredProcedures\Tests\DetalleFacturaSPTests.sql = StoredProcedures\Tests\DetalleFacturaSPTests.sql
+		StoredProcedures\Tests\EmpleadoSPTests.sql = StoredProcedures\Tests\EmpleadoSPTests.sql
+		StoredProcedures\Tests\FacturaSPTests.sql = StoredProcedures\Tests\FacturaSPTests.sql
 		StoredProcedures\Tests\MedioPagoSPTests.sql = StoredProcedures\Tests\MedioPagoSPTests.sql
 		StoredProcedures\Tests\ProductoSPTests.sql = StoredProcedures\Tests\ProductoSPTests.sql
 		StoredProcedures\Tests\SucursalSPTests.sql = StoredProcedures\Tests\SucursalSPTests.sql
@@ -46,7 +49,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CBBDA60E-E642-412C-942C-237CB4DF5234}.Default|Default.ActiveCfg = Default
+		{297140B9-B1BB-4D6F-960A-FDB323F5432B}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

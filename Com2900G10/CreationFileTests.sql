@@ -122,6 +122,20 @@ VALUES
 ('Cash', NULL);
 
 /*******************************************************************************
+						Entidad: Tabla - venta.cliente
+*******************************************************************************/
+/* Resultado esperado: Creación OK */
+INSERT INTO [Com2900G10].[venta].[cliente]
+VALUES
+('Foo', 'Bar', 32948373, 'Av Siempre Viva 123', '20-32948373-5');
+
+
+/* Resultado esperado: Fallo por constraint CHECK cuil */
+INSERT INTO [Com2900G10].[venta].[cliente]
+VALUES
+('Foo', 'Bar', 32948373, 'Av Siempre Viva 123', '20-ABC-5');
+
+/*******************************************************************************
 						Entidad: Tabla - venta.factura
 *******************************************************************************/
 
@@ -130,22 +144,27 @@ SELECT * FROM [Com2900G10].[venta].[factura];
 /* Resultado esperado: Creación OK */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,1234, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
+(1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
 
 /* Resultado esperado: Fallo por constraint FK medio de pago */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(999,1234, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
+(999,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
 
 /* Resultado esperado: Fallo por constraint FK empleado */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,99999, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
+(1,99999, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
 
 /* Resultado esperado: Fallo por constraint FK sucursal */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,1234, 'A', 'Consumidor Final', '2024-08-11 09:00', 999);
+(1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 999);
+
+/* Resultado esperado: Fallo por constraint FK cliente */
+INSERT INTO [Com2900G10].[venta].[factura]
+VALUES
+(1,1234, 99, 'A', 'Consumidor Final', '2024-08-11 09:00', 999);
 
 /*******************************************************************************
 						Entidad: Tabla - venta.detalle_factura
