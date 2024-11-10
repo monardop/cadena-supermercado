@@ -122,8 +122,10 @@ BEGIN
         UPDATE sucursal.empleado
         SET activo = 0
         WHERE legajo = @legajo;
-        
+
         PRINT 'Empleado dado de baja.';
+
+		EXEC BajaPuntoVentaEmpleadoPorEmpleado @legajo
     END
     ELSE
     BEGIN

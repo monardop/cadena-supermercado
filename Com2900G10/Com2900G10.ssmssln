@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
 		StoredProcedures\MedioPagoSP.sql = StoredProcedures\MedioPagoSP.sql
 		StoredProcedures\ProductoSP.sql = StoredProcedures\ProductoSP.sql
+		StoredProcedures\PuntoVentaSP.sql = StoredProcedures\PuntoVentaSP.sql
 		StoredProcedures\SucursalSP.sql = StoredProcedures\SucursalSP.sql
 	EndProjectSection
 EndProject
@@ -52,7 +53,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{297140B9-B1BB-4D6F-960A-FDB323F5432B}.Default|Default.ActiveCfg = Default
+		{0F109E99-7F53-401D-9249-E592880FC10A}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
