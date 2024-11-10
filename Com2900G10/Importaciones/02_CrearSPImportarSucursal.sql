@@ -35,14 +35,15 @@ USE Com2900G10;
 
 -- SP para la importar datos de sucursales
 GO
-CREATE PROCEDURE ImportarSucursales
-@pathArchivos varchar(200)
+CREATE OR ALTER PROCEDURE importacion.ImportarSucursales
+@pathArchivos VARCHAR(200),
+@hojaArchivo VARCHAR(100)
 AS
 BEGIN
-	DECLARE @sql varchar(max) = 'SELECT * FROM
+	DECLARE @sql NVARCHAR(max) = 'SELECT * FROM
 			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
 						''Excel 12.0; Database=' + @pathArchivos + ''', 
-						[sucursal$]);'
+						''SELECT * FROM ['+@hojaArchivo+'$]'');'
 
 	CREATE TABLE #importacion_sucursal(ciudad VARCHAR(100), reemplazar_por VARCHAR(100), direccion VARCHAR(200), horario VARCHAR(100), telefono VARCHAR(30))
 
@@ -65,7 +66,3 @@ BEGIN
 	DROP TABLE #importacion_sucursal
 
 END;
-
-/* SELECT * FROM sucursal.sucursal;
-EXEC ImportarSucursales;
-SELECT * FROM sucursal.sucursal; */

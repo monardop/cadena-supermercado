@@ -6,11 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importaciones", "Importaciones", "{15FBDD63-0AEC-4E84-B67B-BA7EE8DB813F}"
 	ProjectSection(SolutionItems) = preProject
 		Importaciones\0-ConfiguracionesOLE.sql = Importaciones\0-ConfiguracionesOLE.sql
-		Importaciones\1-ImportarEmpleados.sql = Importaciones\1-ImportarEmpleados.sql
-		Importaciones\2-ImportarSucursal.sql = Importaciones\2-ImportarSucursal.sql
-		Importaciones\3-ImportarMediosPago.sql = Importaciones\3-ImportarMediosPago.sql
-		Importaciones\4-ImportarCategoriasProductos.sql = Importaciones\4-ImportarCategoriasProductos.sql
-		Importaciones\5-ImportarCatalogo.sql = Importaciones\5-ImportarCatalogo.sql
+		Importaciones\01_CrearSPImportarEmpleados.sql = Importaciones\01_CrearSPImportarEmpleados.sql
+		Importaciones\02_CrearSPImportarSucursal.sql = Importaciones\02_CrearSPImportarSucursal.sql
+		Importaciones\03_CrearSPImportarMediosPago.sql = Importaciones\03_CrearSPImportarMediosPago.sql
+		Importaciones\04_CrearSPImportarCategoriasProductos.sql = Importaciones\04_CrearSPImportarCategoriasProductos.sql
+		Importaciones\05_CrearSPImportarCatalogo.sql = Importaciones\05_CrearSPImportarCatalogo.sql
+		Importaciones\EjecutarImportaciones.sql = Importaciones\EjecutarImportaciones.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredProcedures", "{976697C6-1CE5-4509-B961-8CD297303AB4}"
@@ -22,7 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
 		StoredProcedures\MedioPagoSP.sql = StoredProcedures\MedioPagoSP.sql
 		StoredProcedures\ProductoSP.sql = StoredProcedures\ProductoSP.sql
-		StoredProcedures\PuntoVentaSP.sql = StoredProcedures\PuntoVentaSP.sql
 		StoredProcedures\SucursalSP.sql = StoredProcedures\SucursalSP.sql
 	EndProjectSection
 EndProject
@@ -53,7 +53,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0F109E99-7F53-401D-9249-E592880FC10A}.Default|Default.ActiveCfg = Default
+		{297140B9-B1BB-4D6F-960A-FDB323F5432B}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

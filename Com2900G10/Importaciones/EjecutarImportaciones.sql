@@ -29,3 +29,26 @@
 *                                                                             *
 *******************************************************************************/
 
+DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
+DECLARE @pathInfoComplementaria VARCHAR(500) = @pathDataFiles + 'Informacion_complementaria.xlsx';
+DECLARE @pathProductosCatalogo VARCHAR(400) = @pathDataFiles + 'Productos\catalogo.csv'
+
+DECLARE @hojaSucursales VARCHAR(100) = 'sucursal';
+EXEC [Com2900G10].[importacion].[ImportarSucursales] @pathInfoComplementaria, @hojaSucursales;
+-- SELECT * FROM [Com2900G10].[sucursal].[sucursal]
+
+DECLARE @hojaEmpleados VARCHAR(100) = 'Empleados';
+EXEC [Com2900G10].[importacion].[ImportarEmpleados] @pathInfoComplementaria, @hojaEmpleados;
+-- SELECT * FROM [Com2900G10].[sucursal].[empleado]
+
+DECLARE @hojaMediosDePago VARCHAR(100) = 'medios de pago';
+EXEC [Com2900G10].[importacion].[ImportarMediosPago] @pathInfoComplementaria, @hojaMediosDePago;
+-- SELECT * FROM [Com2900G10].[venta].[medio_pago]
+
+DECLARE @hojaCategoriasProductos VARCHAR(100) = 'Clasificacion productos';
+EXEC [Com2900G10].[importacion].[ImportarCategoriasProductos] @pathInfoComplementaria, @hojaCategoriasProductos;
+-- SELECT * FROM [Com2900G10].[producto].[categoria_producto]
+
+-- Sin hoja por ser CSV
+EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo;
+-- SELECT * FROM [Com2900G10].[producto].[producto]

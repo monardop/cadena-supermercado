@@ -62,14 +62,15 @@ GO
 
 -- SP para la importar datos de empleados
 GO
-CREATE OR ALTER PROCEDURE ImportarEmpleados
-@pathArchivos varchar(200)
+CREATE OR ALTER PROCEDURE importacion.ImportarEmpleados
+@pathArchivos VARCHAR(500),
+@hojaArchivo VARCHAR(100)
 AS
 BEGIN
-	DECLARE @sql varchar(max) = 'SELECT * FROM
+	DECLARE @sql NVARCHAR(max) = 'SELECT * FROM
 			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
 						''Excel 12.0; Database=' + @pathArchivos + ''', 
-						[Empleados$]);'
+						''SELECT * FROM ['+@hojaArchivo+'$]'');'
 	
 	CREATE TABLE #importacion_empleado(
 		legajo INT,
@@ -89,6 +90,9 @@ BEGIN
 	INSERT INTO #importacion_empleado(legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, sucursal, turno)
 		EXEC sp_executesql @sql;
 
+	-- Pongo cuil default para los que no tengan cuil
+	UPDATE #importacion_empleado SET cuil = '00-00000000-0' WHERE cuil IS NULL;
+
 	-- Elimino registros invalidos
 	DELETE FROM #importacion_empleado WHERE legajo IS NULL;
 
@@ -99,9 +103,23 @@ BEGIN
 		INNER JOIN sucursal.sucursal s ON s.reemplazar_por = i.sucursal
 
 
+	-- Inserto solo los nuevos
 	INSERT INTO sucursal.empleado
-	SELECT legajo, nombre, apellido, dni, direccion, importacion.sanitizar_y_reemplazar(LOWER(email_personal),'_'), importacion.sanitizar_y_reemplazar(LOWER(email_empresa),'.'), cuil, cargo, id_sucursal, turno, 1
-	FROM #importacion_empleado
+	SELECT 
+		i.legajo, 
+		i.nombre, 
+		i.apellido, 
+		i.dni, 
+		i.direccion, 
+		importacion.sanitizar_y_reemplazar(LOWER(i.email_personal),'_'), importacion.sanitizar_y_reemplazar(LOWER(i.email_empresa),'.'), 
+		i.cuil, 
+		i.cargo, 
+		i.id_sucursal, 
+		i.turno, 
+		1
+	FROM #importacion_empleado i
+		LEFT JOIN sucursal.empleado s ON s.legajo = i.legajo
+	WHERE s.legajo IS NULL;
 
 	DROP TABLE #importacion_empleado;
 

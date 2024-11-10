@@ -36,12 +36,12 @@ GO
 
 -- SP para la importar datos de clasificacion de productos
 GO
-CREATE OR ALTER PROCEDURE ImportarCatalogo
-@pathArchivos varchar(200)
+CREATE OR ALTER PROCEDURE importacion.ImportarCatalogo
+	@pathArchivos VARCHAR(200)
 AS
 BEGIN
 
-	DECLARE @sql varchar(max) = 'BULK INSERT #importacion_catalogo
+	DECLARE @sql NVARCHAR(max) = 'BULK INSERT #importacion_catalogo
     FROM ''' + @pathArchivos + '''
     WITH
     (
@@ -54,7 +54,15 @@ BEGIN
 		TABLOCK
     )'
 
-	CREATE TABLE #importacion_catalogo(id INT, categoria VARCHAR(200), nombre VARCHAR(200), precio DECIMAL(6,2), precio_referencia DECIMAL(6,2), unidad_referencia VARCHAR(10), fecha DATETIME)
+	CREATE TABLE #importacion_catalogo(
+		id INT, 
+		categoria VARCHAR(200), 
+		nombre VARCHAR(200), 
+		precio DECIMAL(6,2), 
+		precio_referencia DECIMAL(6,2), 
+		unidad_referencia VARCHAR(10), 
+		fecha DATETIME
+	)
 
 	-- subo los datos en crudo
 	exec sp_executesql @sql
@@ -62,7 +70,7 @@ BEGIN
 	-- Sanitizo
 	UPDATE #importacion_catalogo SET categoria = importacion.sanitizar_y_reemplazar(categoria,'');
 
-	-- Agrego una columna para cruzar los ID de cateogira
+	-- Agrego una columna para cruzar los ID de categoria
 	ALTER TABLE #importacion_catalogo ADD id_categoria SMALLINT;
 	
 	-- Actualizo el ID de Categoria
@@ -80,8 +88,3 @@ BEGIN
 
 	drop table #importacion_catalogo
 END;
-
-/* SELECT * FROM producto.producto;
-DELETE FROM producto.producto
-EXEC ImportarCatalogo;
-SELECT * FROM producto.producto; */

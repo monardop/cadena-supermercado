@@ -36,25 +36,32 @@ GO
 
 -- SP para la importar datos de clasificacion de productos
 GO
-CREATE OR ALTER PROCEDURE ImportarCategoriasProductos
-@pathArchivos varchar(200)
+CREATE OR ALTER PROCEDURE importacion.ImportarCategoriasProductos
+	@pathArchivos VARCHAR(200),
+	@hojaArchivo VARCHAR(100)
 AS
 BEGIN
+	declare @sql NVARCHAR(MAX) = '
+		SELECT 
+			*
+		FROM
+				OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database='+ @pathArchivos+ ''', 
+						''SELECT * FROM ['+@hojaArchivo+'$]''
+						)';
 
-declare @sql varchar(200) = 'SELECT t1.nombre_linea, t1.nombre_categoria FROM (
-			SELECT TRIM([Línea de producto]) as nombre_linea, TRIM([Producto]) as nombre_categoria FROM
-				 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
-							''Excel 12.0; Database='+ @pathArchivos+ ''', 
-							''SELECT * FROM [Clasificacion productos$]'')
-							) t1
-			LEFT JOIN producto.categoria_producto c ON c.nombre_categoria = t1.nombre_categoria
-			WHERE c.nombre_categoria IS NULL'
+	CREATE TABLE #importacion_categoria_producto(linea VARCHAR(500), categoria VARCHAR(500));
 
-	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
+	INSERT INTO #importacion_categoria_producto(linea, categoria)
 		exec sp_executesql @sql;
-END;
 
-/* SELECT * FROM producto.categoria_producto;
-DELETE FROM producto.categoria_producto
-EXEC ImportarCategoriasProductos;
-SELECT * FROM producto.categoria_producto; */
+	-- Inserto solo los nuevos
+	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
+	SELECT
+		i.linea, 
+		i.categoria
+	FROM #importacion_categoria_producto i
+		LEFT JOIN producto.categoria_producto c ON c.nombre_categoria = i.categoria
+	WHERE c.nombre_categoria IS NULL;
+
+END;
