@@ -26,7 +26,7 @@ GO
 *******************************************************************************/
 
 /* Resultado esperado: Insercion OK*/
-EXEC [Com2900G10].[sucursal].[CrearEmpleado] 1, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
+EXEC [Com2900G10].[sucursal].[CrearEmpleado] 1234, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
 
 /* Resultado esperado: Error - "Debe ingresar un legajo para el empleado" */
 EXEC [Com2900G10].[sucursal].[CrearEmpleado] NULL, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
@@ -36,7 +36,7 @@ EXEC [Com2900G10].[sucursal].[CrearEmpleado] NULL, 'John', 'Doe', '40397273', ''
 *******************************************************************************/
 
 /* Resultado esperado: Baja OK */
-EXEC [Com2900G10].[sucursal].[BajaEmpleado] 1;
+EXEC [Com2900G10].[sucursal].[BajaEmpleado] 1234;
 
 /* Resultado esperado: Error - "El empleado no existe o ya está dado de baja." */
 EXEC [Com2900G10].[sucursal].[BajaEmpleado] 999;
@@ -46,7 +46,7 @@ EXEC [Com2900G10].[sucursal].[BajaEmpleado] 999;
 *******************************************************************************/
 
 /* Resultado esperado: Alta OK */
-EXEC [Com2900G10].[sucursal].[AltaEmpleado] 1;
+EXEC [Com2900G10].[sucursal].[AltaEmpleado] 1234;
 
 /* Resultado esperado: Error - "El empleado no existe o ya está dado de alta." */
 EXEC [Com2900G10].[sucursal].[AltaEmpleado] 999;
@@ -56,13 +56,13 @@ EXEC [Com2900G10].[sucursal].[AltaEmpleado] 999;
 *******************************************************************************/
 
 /* Resultado esperado: Modificacion OK*/
-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
+EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1234, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
 
 /* Resultado esperado: Error - "Debe ingresar el legajo del empleado a actualizar" */
 EXEC [Com2900G10].[sucursal].[ModificarEmpleado] NULL, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
 
 /* Resultado esperado: Error - "La sucursal del empleado no existe o esta inactiva" */
-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 999;
+EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1234, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 999;
 
 /* Resultado esperado: Error - "El empleado no existe o está inactivo" */
 EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 999, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;

@@ -22,36 +22,34 @@
 USE [Com2900G10]
 GO
 /*******************************************************************************
-						SP: CrearFactura
+						SP: CrearCliente
 *******************************************************************************/
---SELECT * FROM [Com2900G10].[sucursal].[empleado]
+--SELECT * FROM [Com2900G10].[venta].[cliente]
 /* Resultado esperado: Insercion OK*/
-EXEC [Com2900G10].[venta].[CrearFactura] 1,1234, 1, 'A','Consumidor Final','2024-11-09 09:00',1
+EXEC [Com2900G10].[venta].[CrearCliente] 'Foo', 'Bar', 41928373, '', '20-41928373-5';
 
-/* Resultado esperado: Error - "El medio de pago de la factura no existe" */
-EXEC [Com2900G10].[venta].[CrearFactura] 999,1234,1,'A','Consumidor Final','2024-11-09 09:00',1
+/* Resultado esperado: Error - "El CUIL ingresado es invalido." */
+EXEC [Com2900G10].[venta].[CrearCliente] 'Foo', 'Bar', 41928373, '', '20-AAA-5';
 
-/* Resultado esperado: Error - "El empleado generador de la factura no existe o esta inactivo" */
-EXEC [Com2900G10].[venta].[CrearFactura] 1,9999,1,'A','Consumidor Final','2024-11-09 09:00',1
-
-/* Resultado esperado: Error - "La sucursal de la factura no existe o esta inactiva" */
-EXEC [Com2900G10].[venta].[CrearFactura] 1,1234,1,'A','Consumidor Final','2024-11-09 09:00', 999
-
-/* Resultado esperado: Error - "El cliente a facturar no existe" */
-EXEC [Com2900G10].[venta].[CrearFactura] 1,1234, 99, 'A','Consumidor Final','2024-11-09 09:00',1
+/* Resultado esperado: Error - "El CUIL ingresado es invalido." */
+EXEC [Com2900G10].[venta].[CrearCliente] 'Foo', 'Bar', 41928373, '', NULL;
 
 /*******************************************************************************
-						SP: ModificarFactura
+						SP: ModificarCliente
 *******************************************************************************/
 
 /* Resultado esperado: Modificacion OK*/
-EXEC [Com2900G10].[venta].[ModificarFactura] 1, 1,1234,1,'B','Consumidor Final','2024-11-09 09:00',1
+EXEC [Com2900G10].[venta].[ModificarCliente] 1, 'Foo2', 'Bar2', 31928373, '', '21-41928373-5';
+-- SELECT * FROM [Com2900G10].[venta].[cliente] 
 
-/* Resultado esperado: Error - "La factura no existe" */
-EXEC [Com2900G10].[venta].[ModificarFactura] 999, 1,1234,1,'B','Consumidor Final','2024-11-09 09:00',1
+/* Resultado esperado: Error - "El CUIL ingresado es invalido." */
+EXEC [Com2900G10].[venta].[ModificarCliente] 1, 'Foo2', 'Bar2', 31928373, '', '21-41AAAA8373-5';
 
-/* Resultado esperado: Error - "El medio de pago de la factura no existe" */
-EXEC [Com2900G10].[venta].[ModificarFactura] 1, 999,1234,1,'B','Consumidor Final','2024-11-09 09:00',1
+/* Resultado esperado: Error - "Nombre, apellido y DNI son datos obligatorios.." */
+EXEC [Com2900G10].[venta].[ModificarCliente] 1, NULL, 'Bar2', 31928373, '', '21-41928373-5';
 
-/* Resultado esperado: Error - "El cliente a facturar no existe." */
-EXEC [Com2900G10].[venta].[ModificarFactura] 2, 1,1234,99,'B','Consumidor Final','2024-11-09 09:00',1
+/* Resultado esperado: Error - "Nombre, apellido y DNI son datos obligatorios.." */
+EXEC [Com2900G10].[venta].[ModificarCliente] 1, 'Foo2', NULL, 31928373, '', '21-41928373-5';
+
+/* Resultado esperado: Error - "Nombre, apellido y DNI son datos obligatorios.." */
+EXEC [Com2900G10].[venta].[ModificarCliente] 1, 'Foo2', 'Bar2', NULL, '', '21-41928373-5';

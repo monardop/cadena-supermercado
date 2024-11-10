@@ -24,7 +24,7 @@ GO
 /*******************************************************************************
 						SP: CrearFactura
 *******************************************************************************/
---SELECT * FROM [Com2900G10].[sucursal].[empleado]
+--SELECT * FROM [Com2900G10].[venta].[Factura]
 /* Resultado esperado: Insercion OK*/
 EXEC [Com2900G10].[venta].[CrearFactura] 1,1234, 1, 'A','Consumidor Final','2024-11-09 09:00',1
 

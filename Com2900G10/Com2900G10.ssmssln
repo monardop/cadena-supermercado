@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredProcedures", "{976697C6-1CE5-4509-B961-8CD297303AB4}"
 	ProjectSection(SolutionItems) = preProject
 		StoredProcedures\CategoriaProductoSP.sql = StoredProcedures\CategoriaProductoSP.sql
+		StoredProcedures\ClienteSP.sql = StoredProcedures\ClienteSP.sql
 		StoredProcedures\DetalleFacturaSP.sql = StoredProcedures\DetalleFacturaSP.sql
 		StoredProcedures\EmpleadosSP.sql = StoredProcedures\EmpleadosSP.sql
 		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
@@ -35,13 +36,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
 	ProjectSection(SolutionItems) = preProject
-		StoredProcedures\Tests\CategoriaProductoSPTests.sql = StoredProcedures\Tests\CategoriaProductoSPTests.sql
-		StoredProcedures\Tests\DetalleFacturaSPTests.sql = StoredProcedures\Tests\DetalleFacturaSPTests.sql
-		StoredProcedures\Tests\EmpleadoSPTests.sql = StoredProcedures\Tests\EmpleadoSPTests.sql
-		StoredProcedures\Tests\FacturaSPTests.sql = StoredProcedures\Tests\FacturaSPTests.sql
-		StoredProcedures\Tests\MedioPagoSPTests.sql = StoredProcedures\Tests\MedioPagoSPTests.sql
-		StoredProcedures\Tests\ProductoSPTests.sql = StoredProcedures\Tests\ProductoSPTests.sql
-		StoredProcedures\Tests\SucursalSPTests.sql = StoredProcedures\Tests\SucursalSPTests.sql
+		StoredProcedures\Tests\1-CategoriaProductoSPTests.sql = StoredProcedures\Tests\1-CategoriaProductoSPTests.sql
+		StoredProcedures\Tests\2-SucursalSPTests.sql = StoredProcedures\Tests\2-SucursalSPTests.sql
+		StoredProcedures\Tests\3-MedioPagoSPTests.sql = StoredProcedures\Tests\3-MedioPagoSPTests.sql
+		StoredProcedures\Tests\4-ProductoSPTests.sql = StoredProcedures\Tests\4-ProductoSPTests.sql
+		StoredProcedures\Tests\5-EmpleadoSPTests.sql = StoredProcedures\Tests\5-EmpleadoSPTests.sql
+		StoredProcedures\Tests\6-ClienteSPTests.sql = StoredProcedures\Tests\6-ClienteSPTests.sql
+		StoredProcedures\Tests\6-FacturaSPTests.sql = StoredProcedures\Tests\6-FacturaSPTests.sql
+		StoredProcedures\Tests\7-FacturaSPTests.sql = StoredProcedures\Tests\7-FacturaSPTests.sql
+		StoredProcedures\Tests\8-DetalleFacturaSPTests.sql = StoredProcedures\Tests\8-DetalleFacturaSPTests.sql
 	EndProjectSection
 EndProject
 Global
