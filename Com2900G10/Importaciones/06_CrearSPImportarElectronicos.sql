@@ -29,31 +29,42 @@
 *                                                                             *
 *******************************************************************************/
 
-DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
-DECLARE @pathInfoComplementaria VARCHAR(500) = @pathDataFiles + 'Informacion_complementaria.xlsx';
-DECLARE @pathProductosCatalogo VARCHAR(400) = @pathDataFiles + 'Productos\catalogo.csv'
-DECLARE @pathProductosElectronicos VARCHAR(400) = @pathDataFiles + 'Productos\Electronic accessories.xlsx'
 
-DECLARE @hojaSucursales VARCHAR(100) = 'sucursal';
-EXEC [Com2900G10].[importacion].[ImportarSucursales] @pathInfoComplementaria, @hojaSucursales;
--- SELECT * FROM [Com2900G10].[sucursal].[sucursal]
+GO
+USE Com2900G10;
+GO
 
-DECLARE @hojaEmpleados VARCHAR(100) = 'Empleados';
-EXEC [Com2900G10].[importacion].[ImportarEmpleados] @pathInfoComplementaria, @hojaEmpleados;
--- SELECT * FROM [Com2900G10].[sucursal].[empleado]
+-- SP para la importar datos de clasificacion de productos
+GO
+CREATE OR ALTER PROCEDURE importacion.ImportarElectronicos
+	@pathArchivos VARCHAR(200),
+	@hojaArchivo VARCHAR(100)
+AS
+BEGIN
+	DECLARE @id_default_categoria SMALLINT = 1;
+	declare @sql NVARCHAR(MAX) = '
+		SELECT 
+			*
+		FROM
+				OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database='+ @pathArchivos+ ''', 
+						''SELECT * FROM ['+@hojaArchivo+'$]''
+						)';
 
-DECLARE @hojaMediosDePago VARCHAR(100) = 'medios de pago';
-EXEC [Com2900G10].[importacion].[ImportarMediosPago] @pathInfoComplementaria, @hojaMediosDePago;
--- SELECT * FROM [Com2900G10].[venta].[medio_pago]
+	CREATE TABLE #importacion_electronicos(producto VARCHAR(500), precio_unitario_dolares DECIMAL(6,2));
 
-DECLARE @hojaCategoriasProductos VARCHAR(100) = 'Clasificacion productos';
-EXEC [Com2900G10].[importacion].[ImportarCategoriasProductos] @pathInfoComplementaria, @hojaCategoriasProductos;
--- SELECT * FROM [Com2900G10].[producto].[categoria_producto]
+	
+	INSERT INTO #importacion_electronicos
+		exec sp_executesql @sql;
 
--- Sin hoja por ser CSV
-EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo;
--- SELECT * FROM [Com2900G10].[producto].[producto]
-
-DECLARE @hojaElectronicos VARCHAR(100) = 'Sheet1';
-EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronicos, @hojaElectronicos;
--- SELECT * FROM [Com2900G10].[producto].[producto]
+	-- Inserto los nuevos
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
+		SELECT 
+			@id_default_categoria,
+			i.producto, 
+			i.precio_unitario_dolares, 
+			'USD'
+		FROM #importacion_electronicos i
+			LEFT JOIN producto.producto p ON p.nombre_producto = i.producto
+		WHERE p.nombre_producto IS NULL;
+END;
