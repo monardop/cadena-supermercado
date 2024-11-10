@@ -30,24 +30,79 @@
 *******************************************************************************/
 
 
--- source: https://stackoverflow.com/questions/14544221/how-to-enable-ad-hoc-distributed-queries
-USE [master] 
-GO 
-
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
 GO
-EXEC sp_configure 'ad hoc distributed queries', 1
-RECONFIGURE
+USE Com2900G10;
 GO
 
--- source: https://www.aspsnippets.com/Articles/96/The-OLE-DB-provider-Microsoft.Ace.OLEDB.12.0-for-linked-server-null/
+DROP SCHEMA IF EXISTS importacion;
+GO
 
-USE [master] 
-GO 
+CREATE SCHEMA importacion;
+GO
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'AllowInProcess', 1 
-GO 
+CREATE OR ALTER FUNCTION importacion.sanitizar_y_reemplazar(@sanitizar VARCHAR(300), @reemplazar VARCHAR(5))
+RETURNS VARCHAR(300)
+AS 
+BEGIN
+	RETURN replace(
+			replace(
+				replace(
+					replace(
+					 @sanitizar
+					 ,char(9) /*tab*/,@reemplazar
+					)
+					 ,char(10) /*newline*/,@reemplazar
+				)
+					 ,char(13) /*carriage return*/,@reemplazar
+			)
+					,char(32) /*space*/,@reemplazar
+		)
+END;
+GO
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'DynamicParameters', 1 
-GO 
+-- SP para la importar datos de empleados
+GO
+CREATE OR ALTER PROCEDURE ImportarEmpleados
+@pathArchivos varchar(200)
+AS
+BEGIN
+	DECLARE @sql varchar(max) = 'SELECT * FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database=' + @pathArchivos + ''', 
+						[Empleados$]);'
+	
+	CREATE TABLE #importacion_empleado(
+		legajo INT,
+		nombre VARCHAR(60),
+		apellido VARCHAR(60),
+		dni INT,
+		direccion VARCHAR(300),
+		email_personal VARCHAR(300),
+		email_empresa VARCHAR(300),
+		cuil VARCHAR(13),
+		cargo VARCHAR(30),
+		sucursal VARCHAR(50),
+		id_sucursal SMALLINT,
+		turno VARCHAR(30),
+	)
+
+	INSERT INTO #importacion_empleado(legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, sucursal, turno)
+		EXEC sp_executesql @sql;
+
+	-- Elimino registros invalidos
+	DELETE FROM #importacion_empleado WHERE legajo IS NULL;
+
+	-- Cruzo el ID Sucursal para preparar la insercion final
+	UPDATE i 
+		SET i.id_sucursal = s.id_sucursal
+	FROM #importacion_empleado i 
+		INNER JOIN sucursal.sucursal s ON s.reemplazar_por = i.sucursal
+
+
+	INSERT INTO sucursal.empleado
+	SELECT legajo, nombre, apellido, dni, direccion, importacion.sanitizar_y_reemplazar(LOWER(email_personal),'_'), importacion.sanitizar_y_reemplazar(LOWER(email_empresa),'.'), cuil, cargo, id_sucursal, turno, 1
+	FROM #importacion_empleado
+
+	DROP TABLE #importacion_empleado;
+
+END;

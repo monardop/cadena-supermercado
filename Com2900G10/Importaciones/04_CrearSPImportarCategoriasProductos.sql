@@ -30,24 +30,31 @@
 *******************************************************************************/
 
 
--- source: https://stackoverflow.com/questions/14544221/how-to-enable-ad-hoc-distributed-queries
-USE [master] 
-GO 
-
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
 GO
-EXEC sp_configure 'ad hoc distributed queries', 1
-RECONFIGURE
+USE Com2900G10;
 GO
 
--- source: https://www.aspsnippets.com/Articles/96/The-OLE-DB-provider-Microsoft.Ace.OLEDB.12.0-for-linked-server-null/
+-- SP para la importar datos de clasificacion de productos
+GO
+CREATE OR ALTER PROCEDURE ImportarCategoriasProductos
+@pathArchivos varchar(200)
+AS
+BEGIN
 
-USE [master] 
-GO 
+declare @sql varchar(200) = 'SELECT t1.nombre_linea, t1.nombre_categoria FROM (
+			SELECT TRIM([Línea de producto]) as nombre_linea, TRIM([Producto]) as nombre_categoria FROM
+				 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+							''Excel 12.0; Database='+ @pathArchivos+ ''', 
+							''SELECT * FROM [Clasificacion productos$]'')
+							) t1
+			LEFT JOIN producto.categoria_producto c ON c.nombre_categoria = t1.nombre_categoria
+			WHERE c.nombre_categoria IS NULL'
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'AllowInProcess', 1 
-GO 
+	INSERT INTO producto.categoria_producto(nombre_linea, nombre_categoria)
+		exec sp_executesql @sql;
+END;
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'DynamicParameters', 1 
-GO 
+/* SELECT * FROM producto.categoria_producto;
+DELETE FROM producto.categoria_producto
+EXEC ImportarCategoriasProductos;
+SELECT * FROM producto.categoria_producto; */

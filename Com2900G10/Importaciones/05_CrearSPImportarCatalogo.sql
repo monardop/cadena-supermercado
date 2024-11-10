@@ -30,24 +30,58 @@
 *******************************************************************************/
 
 
--- source: https://stackoverflow.com/questions/14544221/how-to-enable-ad-hoc-distributed-queries
-USE [master] 
-GO 
-
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
 GO
-EXEC sp_configure 'ad hoc distributed queries', 1
-RECONFIGURE
+USE Com2900G10;
 GO
 
--- source: https://www.aspsnippets.com/Articles/96/The-OLE-DB-provider-Microsoft.Ace.OLEDB.12.0-for-linked-server-null/
+-- SP para la importar datos de clasificacion de productos
+GO
+CREATE OR ALTER PROCEDURE ImportarCatalogo
+@pathArchivos varchar(200)
+AS
+BEGIN
 
-USE [master] 
-GO 
+	DECLARE @sql varchar(max) = 'BULK INSERT #importacion_catalogo
+    FROM ''' + @pathArchivos + '''
+    WITH
+    (
+		FIRSTROW = 2,
+		 CODEPAGE = ''65001'',
+		FIELDTERMINATOR = '','',  --CSV field delimiter
+		ROWTERMINATOR = ''\n'',   --Use to shift the control to next row
+        FORMAT = ''CSV'',
+        FIELDQUOTE = ''"'',
+		TABLOCK
+    )'
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'AllowInProcess', 1 
-GO 
+	CREATE TABLE #importacion_catalogo(id INT, categoria VARCHAR(200), nombre VARCHAR(200), precio DECIMAL(6,2), precio_referencia DECIMAL(6,2), unidad_referencia VARCHAR(10), fecha DATETIME)
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'DynamicParameters', 1 
-GO 
+	-- subo los datos en crudo
+	exec sp_executesql @sql
+
+	-- Sanitizo
+	UPDATE #importacion_catalogo SET categoria = importacion.sanitizar_y_reemplazar(categoria,'');
+
+	-- Agrego una columna para cruzar los ID de cateogira
+	ALTER TABLE #importacion_catalogo ADD id_categoria SMALLINT;
+	
+	-- Actualizo el ID de Categoria
+	UPDATE i 
+	SET i.id_categoria = c.id_categoria_producto
+	FROM #importacion_catalogo i
+		INNER JOIN producto.categoria_producto c ON c.nombre_categoria = i.categoria
+
+	-- Inserto los productos validando de no repetir nombre
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
+	SELECT i.id_categoria, i.nombre, i.precio, 'ARS'
+	FROM #importacion_catalogo i
+		LEFT JOIN producto.producto p ON i.nombre = p.nombre_producto
+	WHERE p.id_producto IS NULL
+
+	drop table #importacion_catalogo
+END;
+
+/* SELECT * FROM producto.producto;
+DELETE FROM producto.producto
+EXEC ImportarCatalogo;
+SELECT * FROM producto.producto; */

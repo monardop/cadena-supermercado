@@ -30,24 +30,42 @@
 *******************************************************************************/
 
 
--- source: https://stackoverflow.com/questions/14544221/how-to-enable-ad-hoc-distributed-queries
-USE [master] 
-GO 
-
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
 GO
-EXEC sp_configure 'ad hoc distributed queries', 1
-RECONFIGURE
+USE Com2900G10;
+
+-- SP para la importar datos de sucursales
 GO
+CREATE PROCEDURE ImportarSucursales
+@pathArchivos varchar(200)
+AS
+BEGIN
+	DECLARE @sql varchar(max) = 'SELECT * FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database=' + @pathArchivos + ''', 
+						[sucursal$]);'
 
--- source: https://www.aspsnippets.com/Articles/96/The-OLE-DB-provider-Microsoft.Ace.OLEDB.12.0-for-linked-server-null/
+	CREATE TABLE #importacion_sucursal(ciudad VARCHAR(100), reemplazar_por VARCHAR(100), direccion VARCHAR(200), horario VARCHAR(100), telefono VARCHAR(30))
 
-USE [master] 
-GO 
+	INSERT INTO #importacion_sucursal
+		exec sp_executesql @sql;
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'AllowInProcess', 1 
-GO 
+	-- Si ya existe una direccion pero está inactiva en la BDD, lo activo
+	UPDATE s
+		SET activo = 1
+	FROM sucursal.sucursal s 
+		INNER JOIN #importacion_sucursal t1 ON t1.direccion = s.direccion
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'DynamicParameters', 1 
-GO 
+	-- Inserto las nuevas sucursales
+	INSERT INTO sucursal.sucursal(ciudad, reemplazar_por, direccion, horario, telefono, activo)
+	SELECT t1.ciudad, t1.reemplazar_por, t1.direccion, t1.horario, t1.telefono, 1
+	FROM #importacion_sucursal t1
+		LEFT JOIN sucursal.sucursal s ON t1.direccion = s.direccion
+	WHERE s.direccion IS NULL
+
+	DROP TABLE #importacion_sucursal
+
+END;
+
+/* SELECT * FROM sucursal.sucursal;
+EXEC ImportarSucursales;
+SELECT * FROM sucursal.sucursal; */

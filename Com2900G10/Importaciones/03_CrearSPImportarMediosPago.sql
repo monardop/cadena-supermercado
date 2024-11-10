@@ -30,24 +30,42 @@
 *******************************************************************************/
 
 
--- source: https://stackoverflow.com/questions/14544221/how-to-enable-ad-hoc-distributed-queries
-USE [master] 
-GO 
-
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
 GO
-EXEC sp_configure 'ad hoc distributed queries', 1
-RECONFIGURE
+USE Com2900G10;
 GO
 
--- source: https://www.aspsnippets.com/Articles/96/The-OLE-DB-provider-Microsoft.Ace.OLEDB.12.0-for-linked-server-null/
+-- SP para la importar datos de medios de pago
+GO
+CREATE OR ALTER PROCEDURE ImportarMediosPago
+@pathArchivos varchar(200)
+AS
+BEGIN
 
-USE [master] 
-GO 
+	DECLARE @sql varchar(max)= 'SELECT TRIM(F2), TRIM(F3) FROM
+			 OPENROWSET(''Microsoft.ACE.OLEDB.12.0'',
+						''Excel 12.0; Database='+ @pathArchivos+''', 
+						''SELECT * FROM [medios de pago$]'')'
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'AllowInProcess', 1 
-GO 
+	CREATE TABLE #importacion_medios_pago(
+		nombre_eng VARCHAR(200),
+		nombre_esp VARCHAR(200)
+	)
 
-EXEC master.dbo.sp_MSset_oledb_prop N'Microsoft.ACE.OLEDB.12.0', N'DynamicParameters', 1 
-GO 
+	INSERT INTO #importacion_medios_pago(nombre_eng, nombre_esp)
+		exec sp_executesp @sql;
+
+	-- Inserto solo los nuevos
+	INSERT INTO venta.medio_pago(nombre_eng, nombre_esp)
+	SELECT i.*
+		FROM #importacion_medios_pago i 
+			LEFT JOIN venta.medio_pago mp ON i.nombre_esp = mp.nombre_esp
+	WHERE mp.nombre_esp is null
+
+	drop table #importacion_medios_pago
+
+END;
+
+/* SELECT * FROM venta.medio_pago;
+DELETE FROM venta.medio_pago
+EXEC ImportarMediosPago;
+SELECT * FROM venta.medio_pago; */
