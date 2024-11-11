@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importaciones", "Importacio
 		Importaciones\05_CrearSPImportarCatalogo.sql = Importaciones\05_CrearSPImportarCatalogo.sql
 		Importaciones\06_CrearSPImportarElectronicos.sql = Importaciones\06_CrearSPImportarElectronicos.sql
 		Importaciones\07_CrearSPImportarProductosImportados.sql = Importaciones\07_CrearSPImportarProductosImportados.sql
+		Importaciones\08_CrearSPImportarVentas.sql = Importaciones\08_CrearSPImportarVentas.sql
 		Importaciones\EjecutarImportaciones.sql = Importaciones\EjecutarImportaciones.sql
 	EndProjectSection
 EndProject
