@@ -32,7 +32,10 @@ BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[sucursal] s WHERE s.id_sucursal = @id_sucursal)
 		IF NOT EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp
 		WHERE pp.numero_punto_venta = @nro_punto_venta and pp.id_sucursal = @id_sucursal)
+		BEGIN
 			INSERT INTO [Com2900G10].[sucursal].[punto_venta] VALUES (@nro_punto_venta, @id_sucursal,1)
+			PRINT ('Punto de venta insertado exitosamente.')
+		END
 		ELSE
 		BEGIN
 			RAISERROR ('El punto de venta que se esta queriendo crear ya existe',10,1)
@@ -56,7 +59,7 @@ CREATE OR ALTER PROCEDURE BajaPuntoVenta
 AS
 BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp 
-	WHERE pp.numero_punto_venta = @nro_punto_venta AND pp.id_sucursal = @id_sucursal)
+	WHERE pp.numero_punto_venta = @nro_punto_venta AND pp.id_sucursal = @id_sucursal AND activo = 1)
 		BEGIN
 			UPDATE [Com2900G10].[sucursal].[punto_venta]
 			SET activo = 0
@@ -68,7 +71,30 @@ BEGIN
 		END
 	ELSE
 	BEGIN
-		RAISERROR('El punto de venta que se quiere dar de baja no existe',10,1)
+		RAISERROR('El punto de venta que se quiere dar de baja no existe / ya se encuentra dado de baja.',10,1)
+		RETURN
+	END
+END
+GO
+
+CREATE OR ALTER PROCEDURE AltaPuntoVenta 
+@nro_punto_venta int,
+@id_sucursal smallint
+AS
+BEGIN
+	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp 
+	WHERE pp.numero_punto_venta = @nro_punto_venta AND pp.id_sucursal = @id_sucursal AND activo = 0)
+		BEGIN
+			UPDATE [Com2900G10].[sucursal].[punto_venta]
+			SET activo = 1
+			WHERE numero_punto_venta = @nro_punto_venta AND id_sucursal = @id_sucursal
+
+			PRINT('Punto de venta dado de alta exitosamente.')
+
+		END
+	ELSE
+	BEGIN
+		RAISERROR('El punto de venta que se quiere dar de alta no existe / ya se encuentra dado de alta',10,1)
 		RETURN
 	END
 END
