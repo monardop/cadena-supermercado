@@ -58,7 +58,7 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleado
 AS
 BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
-	WHERE id_punto_venta_empleado = @id_punto_venta_empleado)
+	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 1)
 	BEGIN
 		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
 		SET activo = 0
@@ -66,7 +66,28 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		RAISERROR('La asociacion de punto de venta con empleado que esta queriendo dar de baja no existe.',10,1)
+		RAISERROR('La asociacion de punto de venta con empleado que esta queriendo dar de baja no existe o ya fue dado de baja.',10,1)
+		RETURN
+	END
+END
+GO
+
+CREATE OR ALTER PROCEDURE AltaPuntoVentaEmpleado
+@id_punto_venta_empleado int
+AS
+BEGIN
+	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
+	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 0)
+	BEGIN
+		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		SET activo = 1
+		WHERE id_punto_venta_empleado = @id_punto_venta_empleado
+
+		PRINT ('Asociacion de empleado y punto de venta dada de alta exitosamente.')
+	END
+	ELSE
+	BEGIN
+		RAISERROR('La asociacion de punto de venta con empleado que esta queriendo dar de alta no existe.',10,1)
 		RETURN
 	END
 END
@@ -77,15 +98,16 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorEmpleado
 AS
 BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
-	WHERE legajo_empleado = @legajo_empleado_baja)
+	WHERE legajo_empleado = @legajo_empleado_baja and activo = 1)
 	BEGIN
 		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
 		SET activo = 0
 		WHERE legajo_empleado = @legajo_empleado_baja
+		print('Asociacion de empleado y punto de venta dada de baja exitosamente.')
 	END
 	ELSE
 	BEGIN
-		RAISERROR ('El empleado no se encuentra registrado en la tabla punto_venta_empleado',10,1)
+		RAISERROR ('El empleado no se encuentra registrado en la tabla punto_venta_empleado o ya fue dado de baja.',10,1)
 		RETURN
 	END
 END
@@ -96,17 +118,17 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorSucursal
 AS
 BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado] 
-	WHERE id_sucursal = @id_sucursal_baja)
+	WHERE id_sucursal = @id_sucursal_baja and activo = 1)
 	BEGIN
 		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
 		SET activo = 0
-		WHERE legajo_empleado = @id_sucursal_baja
+		WHERE id_sucursal = @id_sucursal_baja
 
 		PRINT('Punto de venta empleado dado de baja exitosamente.')
 	END
 	ELSE
 	BEGIN
-		RAISERROR ('El empleado no se encuentra registrado en la tabla punto_venta_empleado',10,1)
+		RAISERROR ('El punto de venta empleado no se encuentra registrado en la tabla punto_venta_empleado o ya fue dado de baja',10,1)
 		RETURN
 	END
 END
@@ -118,15 +140,21 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorPuntoVentaSucursal
 AS
 BEGIN
 	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado] 
-	WHERE id_sucursal = @id_sucursal_baja AND numero_punto_venta = @nro_punto_venta_baja)
+	WHERE id_sucursal = @id_sucursal_baja AND numero_punto_venta = @nro_punto_venta_baja
+	AND activo = 1)
 	BEGIN
 		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
 		SET activo = 0
-		WHERE legajo_empleado = @id_sucursal_baja
+		WHERE id_sucursal = @id_sucursal_baja and numero_punto_venta = @nro_punto_venta_baja
+
+		PRINT('Puntos de venta empleado dados de baja exitosamente.')
+
 	END
 	ELSE
 	BEGIN
-		RAISERROR ('El empleado no se encuentra registrado en la tabla punto_venta_empleado',10,1)
+		RAISERROR ('Los puntos de venta empleado solicitados para dar de baja no existen o ya fueron dados de baja',10,1)
 		RETURN
 	END
 END
+
+--Considerar Altas para estos metodos especificos, sería necesario? considerarlo.

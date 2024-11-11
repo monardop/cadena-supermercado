@@ -143,6 +143,7 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
     tipo_cliente        VARCHAR(50) NOT NULL,
     fechaHora           DATETIME NOT NULL,
     id_sucursal         SMALLINT NOT NULL,
+	total				DECIMAL(12,2) NOT NULL,
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
         REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
@@ -161,7 +162,8 @@ CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
     id_detalle_factura INT        IDENTITY(1,1)   PRIMARY KEY,
     id_producto        SMALLINT NOT NULL,
     id_factura         INT NOT NULL,
-    cantidad           SMALLINT
+    cantidad           SMALLINT,
+	subtotal		   DECIMAL(12,2),
     CONSTRAINT FK_Producto_Detalle
         FOREIGN KEY(id_producto)
         REFERENCES [Com2900G10].[producto].[producto](id_producto),
@@ -169,5 +171,4 @@ CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
         FOREIGN KEY(id_factura)
         REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
-
 GO
