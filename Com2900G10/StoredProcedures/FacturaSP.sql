@@ -63,8 +63,9 @@ BEGIN
 		RETURN
 	END
 
-	INSERT INTO venta.factura 
-    VALUES (@id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal);
+
+	INSERT INTO venta.factura
+    VALUES (@id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal,0.0);
 
 	PRINT 'Factura agregada exitosamente.';
 END;
@@ -130,5 +131,33 @@ BEGIN
 	WHERE id_factura = @id_factura;
 
 	PRINT 'Factura modificada exitosamente.';
-
 END;
+GO
+
+CREATE OR ALTER PROCEDURE SumarAlTotal
+@id_factura INT,
+@subtotal DECIMAL (12,2)
+AS
+BEGIN
+DECLARE @totalTemp DECIMAL(12,2)
+	IF EXISTS (SELECT * FROM [Com2900G10].[venta].[factura]
+	WHERE id_factura = @id_factura)
+	BEGIN
+
+		SET @totalTemp = (SELECT total FROM [Com2900G10].[venta].[factura]
+		WHERE id_factura = @id_factura)
+
+		SET @totalTemp = SUM(@totalTemp + @subtotal)
+
+		UPDATE [Com2900G10].[venta].[factura]
+		SET total = @totalTemp
+		WHERE id_factura = @id_factura
+
+		PRINT('Total de la factura actualizado exitosamente.')
+	END
+	ELSE
+	BEGIN
+		RAISERROR('La factura a la que se le está intentando actualizar el saldo no existe',10,1)
+		RETURN
+	END
+END
