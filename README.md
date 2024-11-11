@@ -25,7 +25,8 @@ Por último, se habilitó la opción `Ad Hoc Distributed Queries` ejecutando com
 
 ### Backups
 Para las copias de seguridad / backup se estableció una politica de ejecuciones periodicas segun el siguiente esquema:
-![image](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
+
+![](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
 
 Que conciste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada hora, luego una ejecucion diaria (preferentemente en horarios nocturnos o de deshuso) de copias **DIFERENCIALES** y una ejecucion semanal de copias del tipo FULL.
 Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias.
