@@ -133,6 +133,10 @@ CREATE TABLE [Com2900G10].[venta].[cliente] (
 					NOT NULL ,
 );     
 
+-- Reservo primer ID para cliente default en importaciones (Inserto en este momento para que no se pierda el ID al correr los tests
+INSERT INTO [Com2900G10].[venta].[cliente] 
+VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-00000000-0');
+
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
 	numero_factura VARCHAR(11) NOT NULL UNIQUE,
