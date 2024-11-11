@@ -100,6 +100,9 @@ CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
     nombre_categoria      VARCHAR(100)  NOT NULL
 );
 
+-- Reservo primer ID para categoria default en importaciones (Inserto en este momento para que no se pierda el ID al correr los tests
+INSERT INTO [Com2900G10].[producto].[categoria_producto] VALUES ('Importaciones-Default', 'Importaciones-Default');
+
 CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     id_categoria_producto SMALLINT		NOT NULL,

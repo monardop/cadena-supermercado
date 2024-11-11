@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importaciones", "Importacio
 		Importaciones\03_CrearSPImportarMediosPago.sql = Importaciones\03_CrearSPImportarMediosPago.sql
 		Importaciones\04_CrearSPImportarCategoriasProductos.sql = Importaciones\04_CrearSPImportarCategoriasProductos.sql
 		Importaciones\05_CrearSPImportarCatalogo.sql = Importaciones\05_CrearSPImportarCatalogo.sql
+		Importaciones\06_CrearSPImportarElectronicos.sql = Importaciones\06_CrearSPImportarElectronicos.sql
 		Importaciones\EjecutarImportaciones.sql = Importaciones\EjecutarImportaciones.sql
 	EndProjectSection
 EndProject
@@ -53,7 +54,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{297140B9-B1BB-4D6F-960A-FDB323F5432B}.Default|Default.ActiveCfg = Default
+		{5CB0F842-FF47-4638-8E9C-52056FBEB1F9}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
