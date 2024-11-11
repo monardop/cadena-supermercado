@@ -34,6 +34,7 @@ DECLARE @pathInfoComplementaria VARCHAR(500) = @pathDataFiles + 'Informacion_com
 DECLARE @pathProductosCatalogo VARCHAR(400) = @pathDataFiles + 'Productos\catalogo.csv'
 DECLARE @pathProductosElectronicos VARCHAR(400) = @pathDataFiles + 'Productos\Electronic accessories.xlsx'
 DECLARE @pathProductosImportados VARCHAR(400) = @pathDataFiles + 'Productos\Productos_importados.xlsx'
+DECLARE @pathVentas VARCHAR(400) = @pathDataFiles + 'Ventas_registradas.csv'
 
 DECLARE @hojaSucursales VARCHAR(100) = 'sucursal';
 EXEC [Com2900G10].[importacion].[ImportarSucursales] @pathInfoComplementaria, @hojaSucursales;
@@ -62,3 +63,6 @@ EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronico
 DECLARE @hojaProductosImportados VARCHAR(100) = 'Listado de Productos';
 EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
+
+EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas;
+-- SELECT * FROM [Com2900G10].[venta].[factura]

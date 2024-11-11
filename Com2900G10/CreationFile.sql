@@ -135,6 +135,7 @@ CREATE TABLE [Com2900G10].[venta].[cliente] (
 
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
+	numero_factura VARCHAR(11) NOT NULL UNIQUE,
     id_medio_pago       SMALLINT NOT NULL,
     legajo_empleado     INT NOT NULL,
 	id_cliente			INT NOT NULL,
