@@ -3,19 +3,19 @@
 *                           Entrega 3 - Grupo 10                              *
 *																			  *
 *                           Integrantes:                                      *
-*                           43.988.577 Juan Piñan                             *
+*                           43.988.577 Juan Piï¿½an                             *
 *                           43.049.457 Matias Matter                          *
 *                           42.394.230 Lucas Natario                          *
 *                           40.429.974 Pablo Monardo                          *
 *                                                                             *
 *                                                                             *
 * "Cree la base de datos, entidades y relaciones. Incluya restricciones y     *
-* claves. Deberá entregar un archivo .sql con el script completo de creación  *
-* (debe funcionar si se lo ejecuta “tal cual” es entregado). Incluya          *
-* comentarios para indicar qué hace cada módulo de código.                    *
-* Genere store procedures para manejar la inserción, modificación, borrado    *
-* (si corresponde, también debe decidir si determinadas entidades solo        *
-* admitirán borrado lógico) de cada tabla."                                   *
+* claves. Deberï¿½ entregar un archivo .sql con el script completo de creaciï¿½n  *
+* (debe funcionar si se lo ejecuta ï¿½tal cualï¿½ es entregado). Incluya          *
+* comentarios para indicar quï¿½ hace cada mï¿½dulo de cï¿½digo.                    *
+* Genere store procedures para manejar la inserciï¿½n, modificaciï¿½n, borrado    *
+* (si corresponde, tambiï¿½n debe decidir si determinadas entidades solo        *
+* admitirï¿½n borrado lï¿½gico) de cada tabla."                                   *
 *                                                                             *
 *******************************************************************************/
 
@@ -70,8 +70,14 @@ BEGIN
 		RETURN
     END
 
+	DECLARE @cantidadActual int = (SELECT cantidad FROM venta.detalle_factura WHERE id_detalle_factura =  @id_detalle_factura);
+	DECLARE @subtotalActual DECIMAL(12,2) = (SELECT subtotal FROM venta.detalle_factura WHERE id_detalle_factura =  @id_detalle_factura);
+	DECLARE @precio DECIMAL(10,2) = @subtotalActual / @cantidadActual;
+
 	UPDATE venta.detalle_factura 
-		SET cantidad = @cantidad
+
+		SET cantidad = @cantidad,
+			subtotal = @precio * (@cantidadActual - @cantidad)
 	WHERE id_detalle_factura = @id_detalle_factura;
 
 	PRINT 'Detalle de factura modificado exitosamente.';
