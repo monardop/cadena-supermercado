@@ -80,6 +80,9 @@ GRANT INSERT  ON SCHEMA::sucursal to supervisor
 GRANT UPDATE ON SCHEMA::producto to supervisor
 
 GRANT SELECT ON SCHEMA::venta to supervisor
+
+GRANT EXECUTE ON SCHEMA::reportes to supervisor
+
 -- Para la venta somos mas estrictos y damos permisos por SP unicamente
 GRANT EXECUTE ON OBJECT::venta.CrearFactura to supervisor
 GRANT EXECUTE ON OBJECT::venta.ModificarFactura to supervisor
