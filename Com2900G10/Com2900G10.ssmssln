@@ -19,17 +19,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importaciones", "Importacio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredProcedures", "{976697C6-1CE5-4509-B961-8CD297303AB4}"
 	ProjectSection(SolutionItems) = preProject
-		StoredProcedures\CategoriaProductoSP.sql = StoredProcedures\CategoriaProductoSP.sql
-		StoredProcedures\ClienteSP.sql = StoredProcedures\ClienteSP.sql
-		StoredProcedures\DetalleFacturaSP.sql = StoredProcedures\DetalleFacturaSP.sql
-		StoredProcedures\EmpleadosSP.sql = StoredProcedures\EmpleadosSP.sql
-		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
-		StoredProcedures\MedioPagoSP.sql = StoredProcedures\MedioPagoSP.sql
-		StoredProcedures\NotaCreditoSP.sql = StoredProcedures\NotaCreditoSP.sql
-		StoredProcedures\ProductoSP.sql = StoredProcedures\ProductoSP.sql
-		StoredProcedures\PuntoVentaEmpleadoSP.sql = StoredProcedures\PuntoVentaEmpleadoSP.sql
-		StoredProcedures\PuntoVentaSP.sql = StoredProcedures\PuntoVentaSP.sql
-		StoredProcedures\SucursalSP.sql = StoredProcedures\SucursalSP.sql
+		StoredProcedures\1-CategoriaProductoSP.sql = StoredProcedures\1-CategoriaProductoSP.sql
+		StoredProcedures\10-DetalleFacturaSP.sql = StoredProcedures\10-DetalleFacturaSP.sql
+		StoredProcedures\11-EmpleadosSP.sql = StoredProcedures\11-EmpleadosSP.sql
+		StoredProcedures\2-ClienteSP.sql = StoredProcedures\2-ClienteSP.sql
+		StoredProcedures\3-FacturaSP.sql = StoredProcedures\3-FacturaSP.sql
+		StoredProcedures\4-MedioPagoSP.sql = StoredProcedures\4-MedioPagoSP.sql
+		StoredProcedures\5-NotaCreditoSP.sql = StoredProcedures\5-NotaCreditoSP.sql
+		StoredProcedures\6-ProductoSP.sql = StoredProcedures\6-ProductoSP.sql
+		StoredProcedures\7-PuntoVentaEmpleadoSP.sql = StoredProcedures\7-PuntoVentaEmpleadoSP.sql
+		StoredProcedures\8-PuntoVentaSP.sql = StoredProcedures\8-PuntoVentaSP.sql
+		StoredProcedures\9-SucursalSP.sql = StoredProcedures\9-SucursalSP.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B209-4C02-B3CD-BE067C1C337D}"
@@ -73,7 +73,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A1A8ADE0-7F42-4046-829F-8B326E7F1F2D}.Default|Default.ActiveCfg = Default
+		{33836617-652F-46B1-9021-840B4C0A128A}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
