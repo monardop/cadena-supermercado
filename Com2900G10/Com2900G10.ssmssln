@@ -49,9 +49,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C
 		StoredProcedures\Tests\5-EmpleadoSPTests.sql = StoredProcedures\Tests\5-EmpleadoSPTests.sql
 		StoredProcedures\Tests\6-ClienteSPTests.sql = StoredProcedures\Tests\6-ClienteSPTests.sql
 		StoredProcedures\Tests\6-FacturaSPTests.sql = StoredProcedures\Tests\6-FacturaSPTests.sql
-		StoredProcedures\Tests\7-FacturaSPTests.sql = StoredProcedures\Tests\7-FacturaSPTests.sql
-		StoredProcedures\Tests\8-DetalleFacturaSPTests.sql = StoredProcedures\Tests\8-DetalleFacturaSPTests.sql
-		StoredProcedures\Tests\9 - PuntoVentaSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaSPTests.sql
+		StoredProcedures\Tests\7-DetalleFacturaSPTests.sql = StoredProcedures\Tests\7-DetalleFacturaSPTests.sql
+		StoredProcedures\Tests\8 - PuntoVentaSPTests.sql = StoredProcedures\Tests\8 - PuntoVentaSPTests.sql
+		StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql
 	EndProjectSection
 EndProject
 Global

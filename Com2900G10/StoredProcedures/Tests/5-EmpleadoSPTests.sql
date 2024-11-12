@@ -26,7 +26,7 @@ GO
 *******************************************************************************/
 
 /* Resultado esperado: Insercion OK*/
-EXEC [Com2900G10].[sucursal].[CrearEmpleado] 1234, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
+EXEC [Com2900G10].[sucursal].[CrearEmpleado] 123456, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
 
 /* Resultado esperado: Error - "Debe ingresar un legajo para el empleado" */
 EXEC [Com2900G10].[sucursal].[CrearEmpleado] NULL, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;
@@ -36,7 +36,7 @@ EXEC [Com2900G10].[sucursal].[CrearEmpleado] NULL, 'John', 'Doe', '40397273', ''
 *******************************************************************************/
 
 /* Resultado esperado: Baja OK */
-EXEC [Com2900G10].[sucursal].[BajaEmpleado] 1234;
+EXEC [Com2900G10].[sucursal].[BajaEmpleado] 123456;
 
 /* Resultado esperado: Error - "El empleado no existe o ya está dado de baja." */
 EXEC [Com2900G10].[sucursal].[BajaEmpleado] 999;
@@ -46,7 +46,7 @@ EXEC [Com2900G10].[sucursal].[BajaEmpleado] 999;
 *******************************************************************************/
 
 /* Resultado esperado: Alta OK */
-EXEC [Com2900G10].[sucursal].[AltaEmpleado] 1234;
+EXEC [Com2900G10].[sucursal].[AltaEmpleado] 123456;
 
 /* Resultado esperado: Error - "El empleado no existe o ya está dado de alta." */
 EXEC [Com2900G10].[sucursal].[AltaEmpleado] 999;
