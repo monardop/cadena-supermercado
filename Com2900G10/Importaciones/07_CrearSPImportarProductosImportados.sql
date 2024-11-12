@@ -38,7 +38,8 @@ GO
 GO
 CREATE OR ALTER PROCEDURE importacion.ImportarProductosImportados
 	@pathArchivos VARCHAR(200),
-	@hojaArchivo VARCHAR(100)
+	@hojaArchivo VARCHAR(100),
+	@valorDolar DECIMAL(12,2)
 AS
 BEGIN
 	declare @sql NVARCHAR(MAX) = '
@@ -86,12 +87,11 @@ BEGIN
 
 
 	-- Inserto los nuevos
-	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario)
 		SELECT 
 			i.id_categoria,
 			i.producto, 
-			i.precio_unitario_dolares, 
-			'USD'
+			i.precio_unitario_dolares * @valorDolar
 		FROM #importacion_productos_importados i
 			LEFT JOIN producto.producto p ON p.nombre_producto = i.producto
 		WHERE p.nombre_producto IS NULL;

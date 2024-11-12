@@ -112,9 +112,7 @@ CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     id_categoria_producto SMALLINT		NOT NULL,
     nombre_producto       VARCHAR(100)  NOT NULL,
-    precio_unitario       DECIMAL(10,4) NOT NULL,
-    moneda                CHAR(3)       
-                          CHECK (moneda LIKE 'ARS' OR moneda LIKE 'USD'), -- Hay artículos en dólares
+    precio_unitario       DECIMAL(10,4) NOT NULL
     CONSTRAINT FK_Categoria_Producto 
         FOREIGN KEY (id_categoria_producto)
         REFERENCES [Com2900G10].[producto].[categoria_producto](id_categoria_producto)

@@ -35,6 +35,7 @@ DECLARE @pathProductosCatalogo VARCHAR(400) = @pathDataFiles + 'Productos\catalo
 DECLARE @pathProductosElectronicos VARCHAR(400) = @pathDataFiles + 'Productos\Electronic accessories.xlsx'
 DECLARE @pathProductosImportados VARCHAR(400) = @pathDataFiles + 'Productos\Productos_importados.xlsx'
 DECLARE @pathVentas VARCHAR(400) = @pathDataFiles + 'Ventas_registradas.csv'
+DECLARE @valorDolar DECIMAL(12,2) = 100
 
 DECLARE @hojaSucursales VARCHAR(100) = 'sucursal';
 EXEC [Com2900G10].[importacion].[ImportarSucursales] @pathInfoComplementaria, @hojaSucursales;
@@ -57,11 +58,11 @@ EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
 DECLARE @hojaElectronicos VARCHAR(100) = 'Sheet1';
-EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronicos, @hojaElectronicos;
+EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronicos, @hojaElectronicos, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
 DECLARE @hojaProductosImportados VARCHAR(100) = 'Listado de Productos';
-EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados;
+EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
 EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas;

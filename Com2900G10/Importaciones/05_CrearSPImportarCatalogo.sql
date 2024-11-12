@@ -80,8 +80,8 @@ BEGIN
 		INNER JOIN producto.categoria_producto c ON c.nombre_categoria = i.categoria
 
 	-- Inserto los productos validando de no repetir nombre
-	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
-	SELECT i.id_categoria, i.nombre, i.precio, 'ARS'
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario)
+	SELECT i.id_categoria, i.nombre, i.precio
 	FROM #importacion_catalogo i
 		LEFT JOIN producto.producto p ON i.nombre = p.nombre_producto
 	WHERE p.id_producto IS NULL

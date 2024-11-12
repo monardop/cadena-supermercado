@@ -62,15 +62,15 @@ BEGIN
 	-- Agrego productos inexistentes, sin duplicados
 	DECLARE @id_categoria_default SMALLINT = 1;
 
-	WITH CTE (id_categoria, nombre, precio, moneda, seq)
+	WITH CTE (id_categoria, nombre, precio, seq)
 	AS (
-		SELECT @id_categoria_default, i.producto, i.precio_unitario, 'ARS', ROW_NUMBER() OVER(PARTITION BY i.producto ORDER BY i.producto)
+		SELECT @id_categoria_default, i.producto, i.precio_unitario, ROW_NUMBER() OVER(PARTITION BY i.producto ORDER BY i.producto)
 		FROM #importacion_ventas i
 			LEFT JOIN producto.producto p ON p.nombre_producto = i.producto
 		WHERE p.id_producto IS NULL
 	)
-	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
-	SELECT id_categoria, nombre,precio,moneda FROM CTE WHERE seq = 1;
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario)
+	SELECT id_categoria, nombre,precio FROM CTE WHERE seq = 1;
 
 	-- actualizo id_producto en tmp
 	UPDATE i

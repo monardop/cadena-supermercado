@@ -38,7 +38,8 @@ GO
 GO
 CREATE OR ALTER PROCEDURE importacion.ImportarElectronicos
 	@pathArchivos VARCHAR(200),
-	@hojaArchivo VARCHAR(100)
+	@hojaArchivo VARCHAR(100),
+	@valorDolar Decimal(12,2)
 AS
 BEGIN
 	DECLARE @id_default_categoria SMALLINT = 1;
@@ -58,12 +59,11 @@ BEGIN
 		exec sp_executesql @sql;
 
 	-- Inserto los nuevos
-	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario, moneda)
+	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario)
 		SELECT 
 			@id_default_categoria,
 			i.producto, 
-			i.precio_unitario_dolares, 
-			'USD'
+			i.precio_unitario_dolares * @valorDolar
 		FROM #importacion_electronicos i
 			LEFT JOIN producto.producto p ON p.nombre_producto = i.producto
 		WHERE p.nombre_producto IS NULL;
