@@ -186,3 +186,13 @@ CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
         REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
 GO
+
+CREATE TABLE [Com2900G10].[venta].[nota_credito] (
+    id_nota_credito      INT         IDENTITY(1,1)   PRIMARY KEY,
+	numero_nota_credito      VARCHAR(11)     NOT NULL        UNIQUE,
+    id_factura INT NOT NULL, 
+	importe		   DECIMAL(12,2) NOT NULL,
+	CONSTRAINT FK_Factura_NC
+        FOREIGN KEY(id_factura)
+        REFERENCES [Com2900G10].[venta].[factura](id_factura)
+);
