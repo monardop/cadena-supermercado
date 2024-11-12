@@ -36,6 +36,21 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE DesencriptarEmpleados
+AS
+BEGIN
+	OPEN SYMMETRIC KEY clave_simetrica_empleado DECRYPTION BY CERTIFICATE certificado_encriptacion_empleado WITH PASSWORD= 'clave123';
+		UPDATE sucursal.empleado SET 
+			direccion= CONVERT(varchar(256),DECRYPTBYKEY(direccion)),
+			cuil= CONVERT(varchar(256),DECRYPTBYKEY(cuil)),
+			dni= CONVERT(varchar(256),DECRYPTBYKEY(dni)),
+			email_personal= CONVERT(varchar(256),DECRYPTBYKEY(email_personal)),
+			encriptado= 0
+		WHERE encriptado = 1
+	CLOSE SYMMETRIC KEY clave_simetrica_empleado;
+END;
+GO
+
 CREATE OR ALTER PROCEDURE LeerEmpleadoEncriptado
 AS
 BEGIN
@@ -52,3 +67,4 @@ BEGIN
 	CLOSE SYMMETRIC KEY clave_simetrica_empleado;
 END;
 GO
+
