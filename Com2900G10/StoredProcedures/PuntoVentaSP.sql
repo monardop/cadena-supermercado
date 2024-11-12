@@ -67,7 +67,7 @@ BEGIN
 		END
 	ELSE
 	BEGIN
-		RAISERROR('El punto de venta que se quiere dar de baja no existe / ya se encuentra dado de baja.',10,1)
+		RAISERROR('El punto de venta que se quiere dar de baja no existe o ya se encuentra dado de baja.',10,1)
 		RETURN
 	END
 END
@@ -90,7 +90,7 @@ BEGIN
 		END
 	ELSE
 	BEGIN
-		RAISERROR('El punto de venta que se quiere dar de alta no existe / ya se encuentra dado de alta',10,1)
+		RAISERROR('El punto de venta que se quiere dar de alta no existe o ya se encuentra dado de alta',10,1)
 		RETURN
 	END
 END
