@@ -25,7 +25,7 @@ BEGIN
             WHEN 7 THEN 'Sábado'
         END AS DiaSemana,
         SUM(total) AS Ventas
-    FROM ventas.factura
+    FROM venta.factura
     WHERE 
         YEAR(fechaHora) = @year AND
         MONTH(fechaHora) = @mes
