@@ -29,11 +29,11 @@ CREATE OR ALTER PROCEDURE CrearPuntoVenta
 @id_sucursal SMALLINT
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[sucursal] s WHERE s.id_sucursal = @id_sucursal)
-		IF NOT EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp
+	IF EXISTS (SELECT * FROM [sucursal].[sucursal] s WHERE s.id_sucursal = @id_sucursal)
+		IF NOT EXISTS (SELECT * FROM [sucursal].[punto_venta] pp
 		WHERE pp.numero_punto_venta = @nro_punto_venta and pp.id_sucursal = @id_sucursal)
 		BEGIN
-			INSERT INTO [Com2900G10].[sucursal].[punto_venta] VALUES (@nro_punto_venta, @id_sucursal,1)
+			INSERT INTO [sucursal].[punto_venta] VALUES (@nro_punto_venta, @id_sucursal,1)
 			PRINT ('Punto de venta insertado exitosamente.')
 		END
 		ELSE
@@ -49,19 +49,15 @@ BEGIN
 END
 GO
 
---No veo la utilidad de modificar un punto de venta. Seria necesario? un punto de venta que cambia de numero, es el mismo punto de venta?
---no registramos mas informacion que esa, cual seria la diferencia con crear directamente un punto de venta nuevo y dar de baja el antiguo?
---a lo sumo la modificacion podria dar de baja el viejo y crear uno nuevo.
-
 CREATE OR ALTER PROCEDURE BajaPuntoVenta 
 @nro_punto_venta int,
 @id_sucursal smallint
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp 
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta] pp 
 	WHERE pp.numero_punto_venta = @nro_punto_venta AND pp.id_sucursal = @id_sucursal AND activo = 1)
 		BEGIN
-			UPDATE [Com2900G10].[sucursal].[punto_venta]
+			UPDATE [sucursal].[punto_venta]
 			SET activo = 0
 			WHERE numero_punto_venta = @nro_punto_venta AND id_sucursal = @id_sucursal
 
@@ -82,10 +78,10 @@ CREATE OR ALTER PROCEDURE AltaPuntoVenta
 @id_sucursal smallint
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta] pp 
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta] pp 
 	WHERE pp.numero_punto_venta = @nro_punto_venta AND pp.id_sucursal = @id_sucursal AND activo = 0)
 		BEGIN
-			UPDATE [Com2900G10].[sucursal].[punto_venta]
+			UPDATE [sucursal].[punto_venta]
 			SET activo = 1
 			WHERE numero_punto_venta = @nro_punto_venta AND id_sucursal = @id_sucursal
 

@@ -139,9 +139,8 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE SumarAlTotal
-@id_factura INT,
-@subtotal DECIMAL (12,2)
+CREATE OR ALTER PROCEDURE venta.RecalcularTotalFactura
+@id_factura INT
 AS
 BEGIN
 DECLARE @totalTemp DECIMAL(12,2)
@@ -149,13 +148,11 @@ DECLARE @totalTemp DECIMAL(12,2)
 	WHERE id_factura = @id_factura)
 	BEGIN
 
-		SET @totalTemp = (SELECT total FROM [Com2900G10].[venta].[factura]
-		WHERE id_factura = @id_factura)
+		DECLARE @total DECIMAL(12,2)
+		SELECT @total = SUM(subtotal) FROM  venta.detalle_factura WHERE id_factura = @id_factura;
 
-		SET @totalTemp = SUM(@totalTemp + @subtotal)
-
-		UPDATE [Com2900G10].[venta].[factura]
-		SET total = @totalTemp
+		UPDATE[venta].[factura]
+		SET total = @total
 		WHERE id_factura = @id_factura
 
 		PRINT('Total de la factura actualizado exitosamente.')

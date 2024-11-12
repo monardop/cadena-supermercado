@@ -30,13 +30,13 @@ CREATE OR ALTER PROCEDURE CrearPuntoVentaEmpleado
 @legajo_empleado INT
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[empleado]
+	IF EXISTS (SELECT * FROM [sucursal].[empleado]
 	WHERE legajo = @legajo_empleado AND id_sucursal = @id_sucursal) --Si el empleado existe y trabaja en la sucursal que se quiere asociar el punto de venta
 	BEGIN
-		IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta]
+		IF EXISTS (SELECT * FROM [sucursal].[punto_venta]
 		WHERE numero_punto_venta = @nro_punto_venta and id_sucursal = @id_sucursal)
 		BEGIN
-			INSERT INTO [Com2900G10].[sucursal].[punto_venta_empleado] VALUES (@nro_punto_venta,@id_sucursal,@legajo_empleado,1)
+			INSERT INTO [sucursal].[punto_venta_empleado] VALUES (@nro_punto_venta,@id_sucursal,@legajo_empleado,1)
 			PRINT ('Puesto de venta asociado exitosamente con empleado.')
 		END
 		ELSE
@@ -57,10 +57,10 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleado
 @id_punto_venta_empleado int
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado]
 	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 1)
 	BEGIN
-		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		UPDATE [sucursal].[punto_venta_empleado]
 		SET activo = 0
 		WHERE id_punto_venta_empleado = @id_punto_venta_empleado
 	END
@@ -76,10 +76,10 @@ CREATE OR ALTER PROCEDURE AltaPuntoVentaEmpleado
 @id_punto_venta_empleado int
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado]
 	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 0)
 	BEGIN
-		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		UPDATE [sucursal].[punto_venta_empleado]
 		SET activo = 1
 		WHERE id_punto_venta_empleado = @id_punto_venta_empleado
 
@@ -97,10 +97,10 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorEmpleado
 @legajo_empleado_baja int
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado]
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado]
 	WHERE legajo_empleado = @legajo_empleado_baja and activo = 1)
 	BEGIN
-		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		UPDATE [sucursal].[punto_venta_empleado]
 		SET activo = 0
 		WHERE legajo_empleado = @legajo_empleado_baja
 		print('Asociacion de empleado y punto de venta dada de baja exitosamente.')
@@ -117,10 +117,10 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorSucursal
 @id_sucursal_baja smallint
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado] 
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado] 
 	WHERE id_sucursal = @id_sucursal_baja and activo = 1)
 	BEGIN
-		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		UPDATE [sucursal].[punto_venta_empleado]
 		SET activo = 0
 		WHERE id_sucursal = @id_sucursal_baja
 
@@ -139,11 +139,11 @@ CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorPuntoVentaSucursal
 @nro_punto_venta_baja int
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado] 
+	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado] 
 	WHERE id_sucursal = @id_sucursal_baja AND numero_punto_venta = @nro_punto_venta_baja
 	AND activo = 1)
 	BEGIN
-		UPDATE [Com2900G10].[sucursal].[punto_venta_empleado]
+		UPDATE [sucursal].[punto_venta_empleado]
 		SET activo = 0
 		WHERE id_sucursal = @id_sucursal_baja and numero_punto_venta = @nro_punto_venta_baja
 
@@ -156,5 +156,3 @@ BEGIN
 		RETURN
 	END
 END
-
---Considerar Altas para estos metodos especificos, sería necesario? considerarlo.

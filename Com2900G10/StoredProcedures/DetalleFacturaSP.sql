@@ -46,19 +46,18 @@ BEGIN
 
 	DECLARE @subtotal DECIMAL (12,2)
 
-	SET @subtotal = (SELECT SUM(@cantidad * p.precio_unitario ) FROM [Com2900G10].[producto].[producto] p
+	SET @subtotal = (SELECT SUM(@cantidad * p.precio_unitario ) FROM [producto].[producto] p
 	WHERE p.id_producto = @id_producto)
 
 	INSERT INTO venta.detalle_factura
     VALUES (@id_producto, @id_factura, @cantidad,@subtotal);
 
-	EXEC SumarAlTotal @id_factura,@subtotal
+	EXEC venta.RecalcularTotalFactura @id_factura
 
 	PRINT 'Detalle de factura agregado exitosamente.';
 END;
 GO
 
---##HAY QUE CAMBIAR ESTA SP POR EL TEMA DEL SUBTOTAL Y EL TOTAL##--
 CREATE OR ALTER PROCEDURE venta.ModificarDetalleFactura
 	@id_detalle_factura INT, -- Solo para la busqueda
 	@cantidad SMALLINT
@@ -70,15 +69,23 @@ BEGIN
 		RETURN
     END
 
-	DECLARE @cantidadActual int = (SELECT cantidad FROM venta.detalle_factura WHERE id_detalle_factura =  @id_detalle_factura);
-	DECLARE @subtotalActual DECIMAL(12,2) = (SELECT subtotal FROM venta.detalle_factura WHERE id_detalle_factura =  @id_detalle_factura);
+	DECLARE @cantidadActual int
+	DECLARE @subtotalActual DECIMAL(12,2)
+	DECLARE @idFactura INT
+
+	SELECT @idFactura = id_factura, @cantidadActual = cantidad, @subtotalActual = subtotal 
+	FROM venta.detalle_factura 
+	WHERE id_detalle_factura =  @id_detalle_factura
+
 	DECLARE @precio DECIMAL(10,2) = @subtotalActual / @cantidadActual;
 
 	UPDATE venta.detalle_factura 
 
 		SET cantidad = @cantidad,
-			subtotal = @precio * (@cantidadActual - @cantidad)
+			subtotal = @precio * @cantidad
 	WHERE id_detalle_factura = @id_detalle_factura;
+
+	EXEC venta.RecalcularTotalFactura @idFactura
 
 	PRINT 'Detalle de factura modificado exitosamente.';
 END;
