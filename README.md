@@ -6,18 +6,38 @@ Este documento tiene como objetivo proporcionar una guía técnica detallada par
 
 - **Objetivo**: Generar un sistema de bases de datos que registre las ventas realizadas en cada sucursal.
 - **Límite**: Desde que se realizas la inserción del catálogo de productos hasta que se registra la venta.
-#### SGBD
-En este sistema se utilizará Microsoft SQL Server 2022, en su versión Express 20.2, con número de compilación 20.2.30.0
+#### Motor de base de datos
+En este sistema se utilizará **Microsoft SQL Server 2022**, en su versión **Express 20.2**, con número de compilación **20.2.30.0**
 ### Detalles de la Instalación 
+#### Configuraciones generales
+- **Memoria total asignada:** 10GB
+- **Procesadores asignados:** 2
+- **Directorio raiz:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL*
+- **Server collation:** *SQL_Latin1_General_CP1_CI_AS*
+- **Default index fill factor:** 0
+- **Numero maximo de conexiones concurrentes:** Ilimitado *(Valor explicito: 0)*
+
 #### Ubicación de los archivos
-- C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10.mdf
-- C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10_log.ldf
+- **Datos:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10.mdf*
+- **Logs:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10_log.ldf*
+- **Backup:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup*
+
 #### Asignación de memoria.
-SQL Server Express tiene un límite de uso de memoria de 1.4GB.
+- **Memoria minima del servidor:** 100 MB 
+- **Memoria maxima del servidor:** 3GB
+- **Memoria para creacion de indices:** Modo dinamico *(Valor explicito: 0)*
+- **Memoria minima por query:** 1MB
+
 #### Puertos 
-SQL Server utiliza el puerto 1433 por defecto para conexiones TCP/IP. 
+SQL Server utiliza el **puerto 1433** por defecto para conexiones TCP/IP. 
 #### Modo de autenticación
 Se utilizó el modo **Autenticación de Windows**.
+
+### Especificaciones de Sistema Operativo
+- **Version:** Windows 11 Pro x64 (Build: 22631.4317)
+- **Procesador:** Intel Core i7
+- **Memoria:** 10GB
+
 ### Detalles extra
 #### OLE DB
 Para poder importar archivos .xlsx se instaló **Microsoft OLE DB Driver for SQL Server** desde el sitio oficial de Microsoft. Tras la instalación, se le otorgaron permisos de lectura a la cuenta de servicio de SQL en la carpeta donde se encuentran los archivos (`./DataFiles`).
