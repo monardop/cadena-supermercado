@@ -1,7 +1,15 @@
 USE Com2900G10;
 
+DROP PROCEDURE IF EXISTS reportes.reporte_mensual
+DROP PROCEDURE IF EXISTS reportes.reporte_trimestral
+
+
+DROP SCHEMA IF EXISTS reportes
 GO
-CREATE PROCEDURE reporte_mensual
+CREATE SCHEMA reportes
+GO
+
+CREATE OR ALTER PROCEDURE reportes.reporte_mensual
     @mes    INT,
     @year   INT
 AS
@@ -26,7 +34,7 @@ BEGIN
 END
 
 GO
-CREATE PROCEDURE reporte_trimestral
+CREATE OR ALTER PROCEDURE reportes.reporte_trimestral
 AS
     -- Busco el trimestre actual
     BEGIN
@@ -52,18 +60,19 @@ AS
 
     -- Empieza la consulta
     SELECT
-        CASE
-            WHEN DATEPART(HOUR, FechaHora) < 12 THEN 'Mañana'
-            WHEN DATEPART(HOUR, FechaHora) >= 12 AND DATEPART(HOUR, FechaHora) < 19 THEN 'Tarde'
+        CASE 
+            WHEN DATEPART(HOUR, fechaHora) < 12 THEN 'Mañana'
+            WHEN DATEPART(HOUR, fechaHora) >= 12 AND DATEPART(HOUR, fechaHora) < 19 THEN 'Tarde'
             ELSE 'Noche'
         END AS Turno,
         SUM(total) AS Ventas
-    WHERE YEAR(FechaHora) = @currYear
-        AND MONTH(FechaHora) BETWEEN @TrimestreInicio AND @TrimestreFin
+	FROM venta.factura
+    WHERE YEAR(fechaHora) = @currYear
+        AND MONTH(fechaHora) BETWEEN @TrimestreInicio AND @TrimestreFin
     GROUP BY
              CASE
-                 WHEN DATEPART(HOUR, FechaHora) < 12 THEN 'Mañana'
-                 WHEN DATEPART(HOUR, FechaHora) >= 12 AND DATEPART(HOUR, FechaHora) < 19 THEN 'Tarde'
+                 WHEN DATEPART(HOUR, fechaHora) < 12 THEN 'Mañana'
+                 WHEN DATEPART(HOUR, fechaHora) >= 12 AND DATEPART(HOUR, fechaHora) < 19 THEN 'Tarde'
                  ELSE 'Noche'
              END
     FOR XML RAW, ELEMENTS, ROOT('XML')
