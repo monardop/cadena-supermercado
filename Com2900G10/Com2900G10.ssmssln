@@ -61,6 +61,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reportes", "Reportes", "{29
 		Reportes\SPReportes.sql = Reportes\SPReportes.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Permisos", "Permisos", "{6E861A9D-58C4-4BAA-BC86-4CE42EA53CEC}"
+	ProjectSection(SolutionItems) = preProject
+		Permisos\Permisos.sql = Permisos\Permisos.sql
+		Permisos\PermisosTests.sql = Permisos\PermisosTests.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
