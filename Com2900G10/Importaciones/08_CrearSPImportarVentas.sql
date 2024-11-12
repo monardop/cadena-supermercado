@@ -107,7 +107,7 @@ BEGIN
 		FROM #importacion_ventas i
 			LEFT JOIN sucursal.punto_venta p ON p.id_sucursal = i.id_sucursal AND numero_punto_venta = 1
 		WHERE p.numero_punto_venta IS NULL
-		GROUP BY 1, i.id_sucursal
+		GROUP BY i.id_sucursal
 	)
 	INSERT INTO sucursal.punto_venta(numero_punto_venta, id_sucursal, activo)
 	SELECT numero_punto_venta, id_sucursal, 1
