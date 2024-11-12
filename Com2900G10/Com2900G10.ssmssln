@@ -54,6 +54,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C
 		StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reportes", "Reportes", "{297ABF45-A251-4D9F-B18B-315E8F7A57BB}"
+	ProjectSection(SolutionItems) = preProject
+		Reportes\SPReportes.sql = Reportes\SPReportes.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
