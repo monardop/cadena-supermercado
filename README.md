@@ -48,10 +48,8 @@ Para las copias de seguridad / backup se estableció una politica de ejecuciones
 
 ![](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
 
-Que consiste en copias incrementales de los **logs transaccionales** que se ejecutan cada hora, luego una ejecución diaria (preferentemente en horarios nocturnos o de deshuso) de **copias diferenciales** y una ejecucion semanal de copias del **tipo full**.
- Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias. <br>
-En cuanto a la restauración, al tratarse de copias FULL es posible recuperar la semana anterior, sumar los días que hayan transcurrido de la semana actual y recuperar las transacciones realizadas durante el día, teniendo una precisión de incluso +/- 1 hora dependiendo de cuando suceda el error.
-
+Que conciste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada hora, luego una ejecucion diaria (preferentemente en horarios nocturnos o de deshuso) de copias **DIFERENCIALES** y una ejecucion semanal de copias del tipo FULL.
+Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias.
 
 ---
 
