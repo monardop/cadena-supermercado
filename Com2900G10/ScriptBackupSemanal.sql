@@ -18,10 +18,9 @@
 * repositorio,a continuacion se adjunta la ejecucion de la misma              *
 *******************************************************************************/
 
-DECLARE @PathLocal varchar(50) = 'D:\Backup\Local\Semanal\FULL' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' --105 fuerza el formato italiano dd-mm-yyyy
+DECLARE @PathLocal varchar(MAX) = 'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\FULL' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' --105 fuerza el formato italiano dd-mm-yyyy
 --Genero el path y nombre de archivo para el backup, el resultado final es por ejemplo D:\Backup\Local\Mensual\FULL09-11-2024.bak
-DECLARE @PathRemoto  varchar(50) = 'D:\Backup\Remoto\Semanal\FULL' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' 
---Tambien genero un path en "Remoto" para hacer una copia MIRRO en alguna nube/dispositivo secundario
+
 
 DECLARE @Retencion int = 731
 --Declaro un entero (debe ser explicito para RETAINDAYS) para definir dos años de retencion (incluso ante biciestos) de los documentos

@@ -55,6 +55,7 @@ SELECT
     perms.state_desc AS State,
     permission_name AS [Permission],
     obj.name AS [on Object],
+	--perms.*,
     dp.name AS [to User Name]
 FROM sys.database_permissions AS perms
 JOIN sys.database_principals AS dp

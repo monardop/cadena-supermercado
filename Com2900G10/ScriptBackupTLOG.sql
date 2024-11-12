@@ -18,7 +18,9 @@
 * repositorio,a continuacion se adjunta la ejecucion de la misma              *
 *******************************************************************************/
 
-DECLARE @PathLocal varchar(50)= 'D:\Backup\Local\Diario\LOG' + CONVERT(varchar(10), GETDATE(), 120) +'.bak' --120 fuerza el formato OBDC Canonico yyyy-mm-dd hh:mi:ss
+ALTER DATABASE Com2900G10 SET RECOVERY FULL;
+
+DECLARE @PathLocal varchar(MAX) = 'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\LOG' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' --105 fuerza el formato italiano dd-mm-yyyy
 -- Genero el path y nombre de archivo para el backup, el resultado final es por ejemplo D:\Backup\Local\Mensual\FULL09-11-2024.bak
 DECLARE @Retencion date= DATEADD(dd,2,GETDATE())
 --Declaro una fecha de eliminacion igual a DOS dias despues de la ejecucion de este log.
