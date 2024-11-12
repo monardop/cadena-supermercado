@@ -40,7 +40,7 @@ EXEC [Com2900G10].[producto].[CrearCategoriaProducto] 'Bebidas', 'Gaseosas';
 /* Resultado esperado: Modificacion OK */
 EXEC [Com2900G10].[producto].[ModificarCategoriaProducto] 1, 'Herramientas', 'Jardineria';
 
-/* Resultado esperado: Error - la categoria no existe */
+/* Resultado esperado: Error - Ese nombre de categoria ya existe */
 EXEC [Com2900G10].[producto].[ModificarCategoriaProducto] 1, 'Herramientas', 'Jardineria';
 
 /* Resultado esperado: Error - la categoria no existe */
