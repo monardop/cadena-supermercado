@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\EmpleadosSP.sql = StoredProcedures\EmpleadosSP.sql
 		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
 		StoredProcedures\MedioPagoSP.sql = StoredProcedures\MedioPagoSP.sql
+		StoredProcedures\NotaCreditoSP.sql = StoredProcedures\NotaCreditoSP.sql
 		StoredProcedures\ProductoSP.sql = StoredProcedures\ProductoSP.sql
 		StoredProcedures\PuntoVentaEmpleadoSP.sql = StoredProcedures\PuntoVentaEmpleadoSP.sql
 		StoredProcedures\PuntoVentaSP.sql = StoredProcedures\PuntoVentaSP.sql
@@ -43,6 +44,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
 	ProjectSection(SolutionItems) = preProject
 		StoredProcedures\Tests\1-CategoriaProductoSPTests.sql = StoredProcedures\Tests\1-CategoriaProductoSPTests.sql
+		StoredProcedures\Tests\10-NotaCreditoSPTests.sql = StoredProcedures\Tests\10-NotaCreditoSPTests.sql
 		StoredProcedures\Tests\2-SucursalSPTests.sql = StoredProcedures\Tests\2-SucursalSPTests.sql
 		StoredProcedures\Tests\3-MedioPagoSPTests.sql = StoredProcedures\Tests\3-MedioPagoSPTests.sql
 		StoredProcedures\Tests\4-ProductoSPTests.sql = StoredProcedures\Tests\4-ProductoSPTests.sql
@@ -54,12 +56,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C
 		StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reportes", "Reportes", "{297ABF45-A251-4D9F-B18B-315E8F7A57BB}"
+	ProjectSection(SolutionItems) = preProject
+		Reportes\SPReportes.sql = Reportes\SPReportes.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Permisos", "Permisos", "{6E861A9D-58C4-4BAA-BC86-4CE42EA53CEC}"
+	ProjectSection(SolutionItems) = preProject
+		Permisos\Permisos.sql = Permisos\Permisos.sql
+		Permisos\PermisosTests.sql = Permisos\PermisosTests.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B35FDFC-C15B-433A-847E-E4BEC23372E5}.Default|Default.ActiveCfg = Default
+		{D436C189-05E0-4EBC-BF74-432468ECC4C5}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

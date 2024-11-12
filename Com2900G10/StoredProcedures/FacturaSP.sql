@@ -27,6 +27,7 @@ USE Com2900G10;
 GO
 CREATE OR ALTER PROCEDURE venta.CrearFactura
 	@numero_factura VARCHAR(11),
+	@id_punto_venta_empleado INT,
 	@id_medio_pago SMALLINT,
 	@legajo INT,
 	@id_cliente INT,
@@ -36,6 +37,13 @@ CREATE OR ALTER PROCEDURE venta.CrearFactura
 	@id_sucursal SMALLINT
 AS
 BEGIN
+	IF NOT EXISTS (SELECT 1 FROM sucursal.punto_venta_empleado WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 1)
+	BEGIN
+		RAISERROR('El punto de venta no existe o esta inactivo.',10,1);
+
+		RETURN
+	END
+
 	IF NOT EXISTS (SELECT 1 FROM venta.medio_pago WHERE id_medio_pago = @id_medio_pago)
 	BEGIN
 		RAISERROR('El medio de pago de la factura no existe.',10,1);
@@ -64,9 +72,16 @@ BEGIN
 		RETURN
 	END
 
+	IF NOT EXISTS (SELECT 1 FROM sucursal.punto_venta_empleado WHERE id_punto_venta_empleado = @id_punto_venta_empleado and id_sucursal = @id_sucursal AND legajo_empleado = @legajo)
+	BEGIN
+		RAISERROR('El punto de venta no se encuentra asignado a la sucursal y el empleado ingresados.',10,1);
+
+		RETURN
+	END
+
 
 	INSERT INTO venta.factura
-    VALUES (@numero_factura, @id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal,0.0);
+    VALUES (@numero_factura, @id_punto_venta_empleado, @id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal,0.0,0); -- se inserta no pagada
 
 	PRINT 'Factura agregada exitosamente.';
 END;
@@ -75,6 +90,7 @@ END;
 GO
 CREATE OR ALTER PROCEDURE venta.ModificarFactura
 	@id_factura INT, -- Solo para la busqueda
+	@id_punto_venta_empleado INT,
 	@numero_factura VARCHAR(11),
 	@id_medio_pago SMALLINT,
 	@legajo INT,
@@ -86,6 +102,13 @@ CREATE OR ALTER PROCEDURE venta.ModificarFactura
 	@total DECIMAL(12,2)
 AS
 BEGIN
+	IF NOT EXISTS (SELECT 1 FROM sucursal.punto_venta_empleado WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 1)
+	BEGIN
+		RAISERROR('El punto de venta no existe o esta inactivo.',10,1);
+
+		RETURN
+	END
+
 	IF NOT EXISTS (SELECT 1 FROM venta.medio_pago WHERE id_medio_pago = @id_medio_pago)
 	BEGIN
 		RAISERROR('El medio de pago de la factura no existe.',10,1);
@@ -123,8 +146,18 @@ BEGIN
 		RETURN
 	END
 
+	
+	IF NOT EXISTS (SELECT 1 FROM sucursal.punto_venta_empleado WHERE id_punto_venta_empleado = @id_punto_venta_empleado and id_sucursal = @id_sucursal AND legajo_empleado = @legajo)
+	BEGIN
+		RAISERROR('El punto de venta no se encuentra asignado a la sucursal y el empleado ingresados.',10,1);
+
+		RETURN
+	END
+
 	UPDATE venta.factura 
-		SET numero_factura = @numero_factura,
+		SET 
+		numero_factura = @numero_factura,
+		id_punto_venta_empleado = @id_punto_venta_empleado,
 		id_medio_pago = @id_medio_pago,
 		legajo_empleado = @legajo,
 		id_cliente = @id_cliente,
@@ -144,7 +177,7 @@ CREATE OR ALTER PROCEDURE venta.RecalcularTotalFactura
 AS
 BEGIN
 DECLARE @totalTemp DECIMAL(12,2)
-	IF EXISTS (SELECT * FROM [Com2900G10].[venta].[factura]
+	IF EXISTS (SELECT * FROM [venta].[factura]
 	WHERE id_factura = @id_factura)
 	BEGIN
 
@@ -160,6 +193,29 @@ DECLARE @totalTemp DECIMAL(12,2)
 	ELSE
 	BEGIN
 		RAISERROR('La factura a la que se le está intentando actualizar el saldo no existe',10,1)
+		RETURN
+	END
+END
+GO
+
+CREATE OR ALTER PROCEDURE venta.SetFacturaPagada
+@id_factura INT
+AS
+BEGIN
+DECLARE @totalTemp DECIMAL(12,2)
+	IF EXISTS (SELECT * FROM [venta].[factura]
+	WHERE id_factura = @id_factura AND pagada = 1)
+	BEGIN
+
+		UPDATE[venta].[factura]
+		SET pagada = 1
+		WHERE id_factura = @id_factura
+
+		PRINT('Estado de la factura actualizado exitosamente.')
+	END
+	ELSE
+	BEGIN
+		RAISERROR('La factura no existe o ya esta pagada',10,1)
 		RETURN
 	END
 END

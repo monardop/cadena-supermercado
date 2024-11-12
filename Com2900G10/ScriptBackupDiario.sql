@@ -27,7 +27,6 @@ DECLARE @Retencion int = 731 --Declaro un entero (debe ser explicito para RETAIN
 
 BACKUP DATABASE [Com2900G10] 
 To DISK=@PathLocal
-MIRROR To DISK=@PathRemoto
 WITH FORMAT, DIFFERENTIAL,CHECKSUM,STOP_ON_ERROR,
 MEDIANAME = 'Com2900G10-CadenaSupermercado',
 NAME = 'DIFF-TransaccionesDiarias',
