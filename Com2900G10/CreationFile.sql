@@ -74,24 +74,28 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
 );
 
 CREATE TABLE [Com2900G10].[sucursal].[punto_venta] (
-	numero_punto_venta INT NOT NULL,
-	id_sucursal SMALLINT NOT NULL,
+	numero_punto_venta  INT      NOT NULL,
+	id_sucursal         SMALLINT NOT NULL,
 	activo bit,
-	CONSTRAINT FK_sucursal FOREIGN KEY (id_sucursal)
-	REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
-	CONSTRAINT PK_punto_venta PRIMARY KEY (numero_punto_venta, id_sucursal)
+	CONSTRAINT FK_sucursal 
+        FOREIGN KEY (id_sucursal)
+	    REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
+	CONSTRAINT PK_punto_venta 
+        PRIMARY KEY (numero_punto_venta, id_sucursal)
 );
 
 CREATE TABLE [Com2900G10].[sucursal].[punto_venta_empleado] (
-	id_punto_venta_empleado int identity(1,1) primary key,
-	numero_punto_venta int NOT NULL,
-	id_sucursal SMALLINT NOT NULL,
-	legajo_empleado int NOT NULL,
+	id_punto_venta_empleado INT         IDENTITY(1,1) PRIMARY KEY,
+	numero_punto_venta      INT         NOT NULL,
+	id_sucursal             SMALLINT    NOT NULL,
+	legajo_empleado         INT         NOT NULL,
 	activo bit,
-	CONSTRAINT FK_puesto_venta FOREIGN KEY (numero_punto_venta,id_sucursal)
-	REFERENCES [Com2900G10].[sucursal].[punto_venta](numero_punto_venta,id_sucursal),
-	CONSTRAINT FK_empleado FOREIGN KEY (legajo_empleado)
-	REFERENCES [Com2900G10].[sucursal].[empleado](legajo)
+	CONSTRAINT FK_puesto_venta 
+        FOREIGN KEY (numero_punto_venta,id_sucursal)
+	    REFERENCES [Com2900G10].[sucursal].[punto_venta](numero_punto_venta,id_sucursal),
+	CONSTRAINT FK_empleado 
+        FOREIGN KEY (legajo_empleado)
+	    REFERENCES [Com2900G10].[sucursal].[empleado](legajo)
 );
 
 CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
@@ -101,7 +105,8 @@ CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
 );
 
 -- Reservo primer ID para categoria default en importaciones (Inserto en este momento para que no se pierda el ID al correr los tests
-INSERT INTO [Com2900G10].[producto].[categoria_producto] VALUES ('Importaciones-Default', 'Importaciones-Default');
+INSERT INTO [Com2900G10].[producto].[categoria_producto] 
+    VALUES ('Importaciones-Default', 'Importaciones-Default');
 
 CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
@@ -116,14 +121,14 @@ CREATE TABLE [Com2900G10].[producto].[producto] (
 );
 
 CREATE TABLE [Com2900G10].[venta].[medio_pago] (
-    id_medio_pago SMALLINT      IDENTITY(1,1) PRIMARY KEY,
+    id_medio_pago SMALLINT       IDENTITY(1,1) PRIMARY KEY,
     nombre_eng    VARCHAR(200)   NOT NULL,
     nombre_esp    VARCHAR (200)  NOT NULL
 );
 
 
 CREATE TABLE [Com2900G10].[venta].[cliente] (
-    id_cliente          INT         IDENTITY(1,1)   PRIMARY KEY,
+    id_cliente      INT         IDENTITY(1,1)   PRIMARY KEY,
 	nombre          VARCHAR(60) NOT NULL,
     apellido        VARCHAR(60) NOT NULL,
     dni             INT		    NOT NULL,
@@ -138,16 +143,16 @@ INSERT INTO [Com2900G10].[venta].[cliente]
 VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-00000000-0');
 
 CREATE TABLE [Com2900G10].[venta].[factura] (
-    id_factura          INT         IDENTITY(1,1)   PRIMARY KEY,
-	numero_factura      VARCHAR(11) NOT NULL UNIQUE,
-    id_medio_pago       SMALLINT NOT NULL,
-    legajo_empleado     INT NOT NULL,
-	id_cliente			INT NOT NULL,
-    tipo_factura        CHAR(1) NOT NULL,
-    tipo_cliente        VARCHAR(50) NOT NULL,
-    fechaHora           DATETIME NOT NULL,
-    id_sucursal         SMALLINT NOT NULL,
-	total				DECIMAL(12,2) NOT NULL,
+    id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
+	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
+    id_medio_pago       SMALLINT        NOT NULL,
+    legajo_empleado     INT             NOT NULL,
+	id_cliente			INT             NOT NULL,
+    tipo_factura        CHAR(1)         NOT NULL,
+    tipo_cliente        VARCHAR(50)     NOT NULL,
+    fechaHora           DATETIME        NOT NULL,
+    id_sucursal         SMALLINT        NOT NULL,
+	total				DECIMAL(12,2)   NOT NULL,
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
         REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
@@ -163,9 +168,9 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
 ); 
 
 CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
-    id_detalle_factura INT        IDENTITY(1,1)   PRIMARY KEY,
-    id_producto        SMALLINT NOT NULL,
-    id_factura         INT NOT NULL,
+    id_detalle_factura INT          IDENTITY(1,1)   PRIMARY KEY,
+    id_producto        SMALLINT     NOT NULL,
+    id_factura         INT          NOT NULL,
     cantidad           SMALLINT,
 	subtotal		   DECIMAL(12,2),
     CONSTRAINT FK_Producto_Detalle
