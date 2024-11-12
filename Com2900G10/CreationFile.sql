@@ -145,6 +145,7 @@ VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-0000
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
 	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
+	id_punto_venta_empleado INT NOT NULL,
     id_medio_pago       SMALLINT        NOT NULL,
     legajo_empleado     INT             NOT NULL,
 	id_cliente			INT             NOT NULL,
@@ -153,6 +154,7 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
     fechaHora           DATETIME        NOT NULL,
     id_sucursal         SMALLINT        NOT NULL,
 	total				DECIMAL(12,2)   NOT NULL,
+	pagada BIT NOT NULL DEFAULT 0
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
         REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
@@ -164,7 +166,10 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
         REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
     CONSTRAINT FK_Sucursal_Factura
         FOREIGN KEY(id_sucursal)
-        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
+        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
+	CONSTRAINT FK_Punto_Venta_Empleado
+        FOREIGN KEY(id_punto_venta_empleado)
+        REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),
 ); 
 
 CREATE TABLE [Com2900G10].[venta].[detalle_factura] (

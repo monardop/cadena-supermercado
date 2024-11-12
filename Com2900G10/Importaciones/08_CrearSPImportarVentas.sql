@@ -1,46 +1,7 @@
-/*******************************************************************************
-*                                                                             *
-*                           Entrega 3 - Grupo 10                              *
-*                                                                             *
-*                           Integrantes:                                      *
-*                           43.988.577 Juan Piñan                             *
-*                           43.049.457 Matias Matter                          *
-*                           42.394.230 Lucas Natario                          *
-*                           40.429.974 Pablo Monardo                          *
-*                                                                             *
-*                                                                             *
-* "Se requiere que importe toda la información antes mencionada a la base de  *
-* datos:                                                                      *
-* • Genere los objetos necesarios (store procedures, funciones, etc.) para    *
-*   importar los archivos antes mencionados. Tenga en cuenta que cada mes se  *
-*   recibirán archivos de novedades con la misma estructura, pero datos nuevos*
-*   para agregar a cada maestro.                                              *
-* • Considere este comportamiento al generar el código. Debe admitir la       *
-*   importación de novedades periódicamente.                                  *
-* • Cada maestro debe importarse con un SP distinto. No se aceptarán scripts  *
-*   que realicen tareas por fuera de un SP.                                   *
-* • La estructura/esquema de las tablas a generar será decisión suya. Puede   *
-*   que deba realizar procesos de transformación sobre los maestros recibidos *
-*   para adaptarlos a la estructura requerida.                                *
-* • Los archivos CSV/JSON no deben modificarse. En caso de que haya datos mal *
-*   cargados, incompletos, erróneos, etc., deberá contemplarlo y realizar las *
-*   correcciones en el fuente SQL. (Sería una excepción si el archivo está    *
-*   malformado y no es posible interpretarlo como JSON o CSV)."               *
-*                                                                             *
-*******************************************************************************/
-
-
-GO
-USE Com2900G10;
-GO
-
--- SP para la importar datos de clasificacion de productos
-GO
 CREATE OR ALTER PROCEDURE importacion.ImportarVentas
 	@pathArchivos VARCHAR(200)
 AS
 BEGIN
-
 	DECLARE @sql NVARCHAR(max) = 'BULK INSERT #importacion_ventas
 
     FROM ''' + @pathArchivos + '''
@@ -94,6 +55,9 @@ BEGIN
 
 	-- Agrego una columna para cruzar los ID de sucursal
 	ALTER TABLE #importacion_ventas ADD id_sucursal SMALLINT;
+
+	-- Agrego una columna para cruzar los ID de punto de venta
+	ALTER TABLE #importacion_ventas ADD id_punto_venta_empleado SMALLINT;
 	
 	-- Agrego productos inexistentes, sin duplicados
 	DECLARE @id_categoria_default SMALLINT = 1;
@@ -136,6 +100,39 @@ BEGIN
 	FROM #importacion_ventas i
 		INNER JOIN sucursal.sucursal s ON s.ciudad = i.ciudad OR s.reemplazar_por = i.ciudad;
 
+	-- Genero puntos de venta sucursal default inexistentes
+	WITH CTE (numero_punto_venta, id_sucursal)
+	AS (
+		SELECT 1, i.id_sucursal
+		FROM #importacion_ventas i
+			LEFT JOIN sucursal.punto_venta p ON p.id_sucursal = i.id_sucursal AND numero_punto_venta = 1
+		WHERE p.numero_punto_venta IS NULL
+		GROUP BY 1, i.id_sucursal
+	)
+	INSERT INTO sucursal.punto_venta(numero_punto_venta, id_sucursal, activo)
+	SELECT numero_punto_venta, id_sucursal, 1
+	FROM CTE;
+
+	-- Genero puntos de venta empleados inexistentes
+	WITH CTE (empleado, id_sucursal)
+	AS (
+		SELECT i.empleado, i.id_sucursal
+		FROM #importacion_ventas i
+			LEFT JOIN sucursal.punto_venta_empleado p ON p.id_sucursal = i.id_sucursal AND p.legajo_empleado = i.empleado
+		WHERE p.id_punto_venta_empleado IS NULL
+		GROUP BY i.empleado, i.id_sucursal
+	)
+	INSERT INTO sucursal.punto_venta_empleado(numero_punto_venta, id_sucursal, legajo_empleado, activo)
+	SELECT 1,id_sucursal, empleado,1 
+	FROM CTE;
+
+	-- Actualizo puntos de venta en la tmp
+	UPDATE i
+		SET i.id_punto_venta_empleado = p.id_punto_venta_empleado
+	FROM #importacion_ventas i
+		INNER JOIN sucursal.punto_venta_empleado p ON p.id_sucursal = i.id_sucursal AND p.legajo_empleado = i.empleado
+
+
 	-- Elimino facturas ya importadas previamente para evitar duplicar detalles
 	DELETE i
 	FROM #importacion_ventas i
@@ -144,11 +141,12 @@ BEGIN
 	-- Genero facturas nuevas
 	DECLARE @id_default_cliente SMALLINT = 1;
 
-	WITH CTE(numero_factura, id_medio_pago, empleado, id_cliente, tipo_factura,tipo_cliente, fecha_hora, id_sucursal, seq)
+	WITH CTE(numero_factura, id_punto_venta_empleado,id_medio_pago, empleado, id_cliente, tipo_factura,tipo_cliente, fecha_hora, id_sucursal, seq)
 	AS
 	(
 		SELECT
 			i.id_factura_archivo,
+			i.id_punto_venta_empleado,
 			i.id_medio_pago,
 			i.empleado,
 			@id_default_cliente,
@@ -159,9 +157,10 @@ BEGIN
 			ROW_NUMBER() OVER(PARTITION BY i.id_factura_archivo ORDER BY i.id_factura_archivo)
 		FROM  #importacion_ventas i
 	)
-	INSERT INTO venta.factura(numero_factura, id_medio_pago, legajo_empleado, id_cliente, tipo_factura, tipo_cliente, fechaHora, id_sucursal,total)
+	INSERT INTO venta.factura(numero_factura, id_punto_venta_empleado, id_medio_pago, legajo_empleado, id_cliente, tipo_factura, tipo_cliente, fechaHora, id_sucursal,total, pagada)
 	SELECT 
 		numero_factura,
+		id_punto_venta_empleado,
 		id_medio_pago, 
 		empleado, 
 		id_cliente, 
@@ -169,7 +168,8 @@ BEGIN
 		tipo_cliente, 
 		fecha_hora, 
 		id_sucursal,
-		0
+		0,
+		1 -- se insertan pagadas
 	FROM CTE 
 	WHERE seq = 1 -- Me quedo solo con un registro por factura, ya que puede haber repetidos por el detalle
 
