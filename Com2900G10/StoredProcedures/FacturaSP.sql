@@ -26,6 +26,7 @@ USE Com2900G10;
 -- SP para la tabla factura
 GO
 CREATE OR ALTER PROCEDURE venta.CrearFactura
+	@numero_factura VARCHAR(11),
 	@id_medio_pago SMALLINT,
 	@legajo INT,
 	@id_cliente INT,
@@ -65,7 +66,7 @@ BEGIN
 
 
 	INSERT INTO venta.factura
-    VALUES (@id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal,0.0);
+    VALUES (@numero_factura, @id_medio_pago, @legajo, @id_cliente, @tipo_factura, @tipo_cliente, @fechaHora, @id_sucursal,0.0);
 
 	PRINT 'Factura agregada exitosamente.';
 END;
@@ -74,13 +75,15 @@ END;
 GO
 CREATE OR ALTER PROCEDURE venta.ModificarFactura
 	@id_factura INT, -- Solo para la busqueda
+	@numero_factura VARCHAR(11),
 	@id_medio_pago SMALLINT,
 	@legajo INT,
 	@id_cliente INT,
 	@tipo_factura CHAR(1),
 	@tipo_cliente VARCHAR(50),
 	@fechaHora DATETIME,
-	@id_sucursal SMALLINT
+	@id_sucursal SMALLINT,
+	@total DECIMAL(12,2)
 AS
 BEGIN
 	IF NOT EXISTS (SELECT 1 FROM venta.medio_pago WHERE id_medio_pago = @id_medio_pago)
@@ -121,13 +124,15 @@ BEGIN
 	END
 
 	UPDATE venta.factura 
-		SET id_medio_pago = @id_medio_pago,
+		SET numero_factura = @numero_factura,
+		id_medio_pago = @id_medio_pago,
 		legajo_empleado = @legajo,
 		id_cliente = @id_cliente,
 		tipo_factura = @tipo_factura,
 		tipo_cliente = @tipo_cliente,
 		fechaHora = @fechaHora,
-		id_sucursal = @id_sucursal
+		id_sucursal = @id_sucursal,
+		total = @total
 	WHERE id_factura = @id_factura;
 
 	PRINT 'Factura modificada exitosamente.';
