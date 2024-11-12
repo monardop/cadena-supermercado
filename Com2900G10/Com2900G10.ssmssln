@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B
 	ProjectSection(SolutionItems) = preProject
 		CreationFile.sql = CreationFile.sql
 		CreationFileTests.sql = CreationFileTests.sql
+		EncriptarEmpleado.sql = EncriptarEmpleado.sql
 		ScriptBackupDiario.sql = ScriptBackupDiario.sql
 		ScriptBackupSemanal.sql = ScriptBackupSemanal.sql
 		ScriptBackupTLOG.sql = ScriptBackupTLOG.sql
@@ -72,7 +73,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D436C189-05E0-4EBC-BF74-432468ECC4C5}.Default|Default.ActiveCfg = Default
+		{A1A8ADE0-7F42-4046-829F-8B326E7F1F2D}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
