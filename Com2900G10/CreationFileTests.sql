@@ -139,32 +139,31 @@ VALUES
 						Entidad: Tabla - venta.factura
 *******************************************************************************/
 
-SELECT * FROM [Com2900G10].[venta].[factura];
+-- SELECT * FROM [Com2900G10].[venta].[factura];
 
 /* Resultado esperado: Creación OK */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
+('000-0-000',1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1, 100);
 
 /* Resultado esperado: Fallo por constraint FK medio de pago */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(999,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
+('000-0-001',999,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1, 100);
 
 /* Resultado esperado: Fallo por constraint FK empleado */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,99999, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1);
-
+('000-0-001',1,99999, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 1, 100);
 /* Resultado esperado: Fallo por constraint FK sucursal */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 999);
+('000-0-001',1,1234, 1, 'A', 'Consumidor Final', '2024-08-11 09:00', 999, 100);
 
 /* Resultado esperado: Fallo por constraint FK cliente */
 INSERT INTO [Com2900G10].[venta].[factura]
 VALUES
-(1,1234, 99, 'A', 'Consumidor Final', '2024-08-11 09:00', 999);
+('000-0-001',1,1234, 9999, 'A', 'Consumidor Final', '2024-08-11 09:00', 1, 100);
 
 /*******************************************************************************
 						Entidad: Tabla - venta.detalle_factura
@@ -173,12 +172,12 @@ VALUES
 /* Resultado esperado: Creación OK */
 INSERT INTO [Com2900G10].[venta].detalle_factura
 VALUES
-(1,1, 10);
+(1,1, 10, 100);
 
 /* Resultado esperado: Fallo por constraint FK Producto */
 INSERT INTO [Com2900G10].[venta].detalle_factura
 VALUES
-(999,1, 10);
+(999,1, 10, 100);
 
 /* Resultado esperado: Fallo por constraint FK Factura */
 INSERT INTO [Com2900G10].[venta].detalle_factura
