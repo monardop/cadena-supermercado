@@ -66,3 +66,4 @@ EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImpo
 
 EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas;
 -- SELECT * FROM [Com2900G10].[venta].[factura]
+-- SELECT * FROM [Com2900G10].[venta].[detalle_factura]

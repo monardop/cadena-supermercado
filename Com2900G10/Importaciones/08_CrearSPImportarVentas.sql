@@ -158,7 +158,7 @@ BEGIN
 			ROW_NUMBER() OVER(PARTITION BY i.id_factura_archivo ORDER BY i.id_factura_archivo)
 		FROM  #importacion_ventas i
 	)
-	INSERT INTO venta.factura(numero_factura, id_medio_pago, legajo_empleado, id_cliente, tipo_factura, tipo_cliente, fechaHora, id_sucursal)
+	INSERT INTO venta.factura(numero_factura, id_medio_pago, legajo_empleado, id_cliente, tipo_factura, tipo_cliente, fechaHora, id_sucursal,total)
 	SELECT 
 		numero_factura,
 		id_medio_pago, 
@@ -167,7 +167,8 @@ BEGIN
 		tipo_factura,
 		tipo_cliente, 
 		fecha_hora, 
-		id_sucursal 
+		id_sucursal,
+		0
 	FROM CTE 
 	WHERE seq = 1 -- Me quedo solo con un registro por factura, ya que puede haber repetidos por el detalle
 
@@ -177,8 +178,22 @@ BEGIN
 	SELECT 
 		id_producto,
 		f.id_factura,
-		cantidad
+		cantidad,
+		i.precio_unitario * i.cantidad
 	FROM #importacion_ventas i
 		INNER JOIN venta.factura f ON f.numero_factura = i.id_factura_archivo
+
+	-- actualizo totales de factura
+	WITH CTE (id_factura, total) AS
+	(
+		SELECT f.id_factura, SUM(df.subtotal * df.cantidad)
+		FROM venta.factura f
+			INNER JOIN venta.detalle_factura df ON df.id_factura = f.id_factura
+		GROUP BY f.id_factura
+	)
+	UPDATE f
+		SET f.total = c.total
+	FROM venta.factura f
+		INNER JOIN CTE c ON c.id_factura = f.id_factura
 
 END;
