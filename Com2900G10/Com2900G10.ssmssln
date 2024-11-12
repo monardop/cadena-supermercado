@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\FacturaSP.sql = StoredProcedures\FacturaSP.sql
 		StoredProcedures\MedioPagoSP.sql = StoredProcedures\MedioPagoSP.sql
 		StoredProcedures\ProductoSP.sql = StoredProcedures\ProductoSP.sql
+		StoredProcedures\PuntoVentaEmpleadoSP.sql = StoredProcedures\PuntoVentaEmpleadoSP.sql
+		StoredProcedures\PuntoVentaSP.sql = StoredProcedures\PuntoVentaSP.sql
 		StoredProcedures\SucursalSP.sql = StoredProcedures\SucursalSP.sql
 	EndProjectSection
 EndProject
@@ -49,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C
 		StoredProcedures\Tests\6-FacturaSPTests.sql = StoredProcedures\Tests\6-FacturaSPTests.sql
 		StoredProcedures\Tests\7-FacturaSPTests.sql = StoredProcedures\Tests\7-FacturaSPTests.sql
 		StoredProcedures\Tests\8-DetalleFacturaSPTests.sql = StoredProcedures\Tests\8-DetalleFacturaSPTests.sql
+		StoredProcedures\Tests\9 - PuntoVentaSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaSPTests.sql
 	EndProjectSection
 EndProject
 Global
@@ -56,7 +59,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5CB0F842-FF47-4638-8E9C-52056FBEB1F9}.Default|Default.ActiveCfg = Default
+		{5B35FDFC-C15B-433A-847E-E4BEC23372E5}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
