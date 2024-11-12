@@ -143,6 +143,7 @@ BEGIN
 
 	-- Genero facturas nuevas
 	DECLARE @id_default_cliente SMALLINT = 1;
+
 	WITH CTE(numero_factura, id_medio_pago, empleado, id_cliente, tipo_factura,tipo_cliente, fecha_hora, id_sucursal, seq)
 	AS
 	(
@@ -181,7 +182,7 @@ BEGIN
 		cantidad,
 		i.precio_unitario * i.cantidad
 	FROM #importacion_ventas i
-		INNER JOIN venta.factura f ON f.numero_factura = i.id_factura_archivo
+		INNER JOIN venta.factura f ON f.numero_factura = i.id_factura_archivo;
 
 	-- actualizo totales de factura
 	WITH CTE (id_factura, total) AS
