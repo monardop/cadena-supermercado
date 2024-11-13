@@ -143,34 +143,18 @@ VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-0000
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
 	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
-	id_punto_venta_empleado INT NOT NULL,
     id_medio_pago       SMALLINT        NOT NULL,
-    legajo_empleado     INT             NOT NULL,
-	id_cliente			INT             NOT NULL,
     tipo_factura        CHAR(1)         NOT NULL,
-    tipo_cliente        VARCHAR(50)     NOT NULL,
     fechaHora           DATETIME        NOT NULL,
-    id_sucursal         SMALLINT        NOT NULL,
 	total				DECIMAL(12,2)   NOT NULL,
+	iva					DECIMAL(2,2)    NOT NULL,
 	pagada BIT NOT NULL DEFAULT 0
     CONSTRAINT FK_Medio_Pago
         FOREIGN KEY(id_medio_pago)
         REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
-    CONSTRAINT FK_Empleado_Factura
-        FOREIGN KEY (legajo_empleado)
-        REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
-    CONSTRAINT FK_Cliente_factura
-        FOREIGN KEY (id_cliente)
-        REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
-    CONSTRAINT FK_Sucursal_Factura
-        FOREIGN KEY(id_sucursal)
-        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
-	CONSTRAINT FK_Punto_Venta_Empleado
-        FOREIGN KEY(id_punto_venta_empleado)
-        REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),
 ); 
 
-CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
+CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
     id_detalle_factura INT          IDENTITY(1,1)   PRIMARY KEY,
     id_producto        SMALLINT     NOT NULL,
     id_factura         INT          NOT NULL,
@@ -193,4 +177,25 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
 	CONSTRAINT FK_Factura_NC
         FOREIGN KEY(id_factura)
         REFERENCES [Com2900G10].[venta].[factura](id_factura)
+);
+
+CREATE TABLE [Com2900G10].[venta].[venta] (
+	id_venta INT IDENTITY(1,1) PRIMARY KEY,
+	legajo_empleado     INT             NOT NULL,
+    id_sucursal         SMALLINT        NOT NULL,
+	tipo_cliente        VARCHAR(50)     NOT NULL,
+	id_cliente			INT             NOT NULL,
+	id_punto_venta_empleado INT NOT NULL,
+    CONSTRAINT FK_Empleado_venta
+        FOREIGN KEY (legajo_empleado)
+        REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
+	CONSTRAINT FK_Sucursal_venta
+        FOREIGN KEY(id_sucursal)
+        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
+	CONSTRAINT FK_Cliente_venta
+        FOREIGN KEY (id_cliente)
+        REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
+	CONSTRAINT FK_Punto_Venta_Empleado
+        FOREIGN KEY(id_punto_venta_empleado)
+        REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),
 );
