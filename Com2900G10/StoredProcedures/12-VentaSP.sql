@@ -21,5 +21,25 @@
 
 GO
 USE Com2900G10;
-
+GO
 -- SP para la tabla Venta
+CREATE OR ALTER PROCEDURE venta.GenerarVenta
+@id_factura INT,
+@legajo_empleado INT,
+@id_sucursal  SMALLINT,
+@tipo_cliente VARCHAR(50),
+@id_cliente	INT,
+@id_punto_venta_empleado INT
+AS
+BEGIN
+	IF NOT EXISTS (SELECT * FROM [Com2900G10].[venta].[venta] where id_factura = @id_factura)
+	BEGIN
+		
+	END
+	ELSE
+	BEGIN
+		RAISERROR ('No puede haber 2 ventas para una misma factura.',10,1)
+		RETURN
+	END
+END
+GO

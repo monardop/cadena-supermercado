@@ -181,6 +181,7 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
 
 CREATE TABLE [Com2900G10].[venta].[venta] (
 	id_venta INT IDENTITY(1,1) PRIMARY KEY,
+	id_factura INT NOT NULL,
 	legajo_empleado     INT             NOT NULL,
     id_sucursal         SMALLINT        NOT NULL,
 	tipo_cliente        VARCHAR(50)     NOT NULL,
@@ -198,4 +199,7 @@ CREATE TABLE [Com2900G10].[venta].[venta] (
 	CONSTRAINT FK_Punto_Venta_Empleado
         FOREIGN KEY(id_punto_venta_empleado)
         REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),
+	CONSTRAINT FK_Factura_venta
+		FOREIGN KEY(id_factura)
+		REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
