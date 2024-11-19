@@ -1,4 +1,4 @@
-# Proyecto: Gestión de Supermercados 
+# Proyecto: Gestión de Supermercados  
 ## Informe
 ### Introducción
 
