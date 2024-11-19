@@ -52,12 +52,12 @@ BEGIN
 		RETURN
 	END
 
-	DECLARE @pagada BIT;
+	DECLARE @id_pago VARCHAR(300);
 	DECLARE @total DECIMAL(12,2);
 
-	SELECT @pagada = pagada, @total = total FROM venta.factura WHERE id_factura = @id_factura
+	SELECT @id_pago = id_pago, @total = total FROM venta.factura WHERE id_factura = @id_factura
 
-	IF @pagada != 1
+	IF @id_pago IS NULL
 	BEGIN
 		RAISERROR('La factura a generar NC no se encuentra en estado pagada.',10,1);
 
@@ -112,12 +112,12 @@ BEGIN
 		RETURN
 	END
 
-	DECLARE @pagada BIT;
+	DECLARE @id_pago VARCHAR(300);
 	DECLARE @total DECIMAL(12,2);
 
-	SELECT @pagada = pagada, @total = total FROM venta.factura WHERE id_factura = @id_factura
+	SELECT @id_pago = id_pago, @total = total FROM venta.factura WHERE id_factura = @id_factura
 
-	IF @pagada != 1
+	IF @id_pago is null
 	BEGIN
 		RAISERROR('La factura a generar NC no se encuentra en estado pagada.',10,1);
 

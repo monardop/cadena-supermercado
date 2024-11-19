@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\10-DetalleFacturaSP.sql = StoredProcedures\10-DetalleFacturaSP.sql
 		StoredProcedures\11-EmpleadosSP.sql = StoredProcedures\11-EmpleadosSP.sql
 		StoredProcedures\2-ClienteSP.sql = StoredProcedures\2-ClienteSP.sql
-		StoredProcedures\3-FacturaSP.sql = StoredProcedures\3-FacturaSP.sql
+		StoredProcedures\3-FacturayVentaSP.sql = StoredProcedures\3-FacturayVentaSP.sql
 		StoredProcedures\4-MedioPagoSP.sql = StoredProcedures\4-MedioPagoSP.sql
 		StoredProcedures\5-NotaCreditoSP.sql = StoredProcedures\5-NotaCreditoSP.sql
 		StoredProcedures\6-ProductoSP.sql = StoredProcedures\6-ProductoSP.sql
@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B
 	ProjectSection(SolutionItems) = preProject
 		CreationFile.sql = CreationFile.sql
 		CreationFileTests.sql = CreationFileTests.sql
+		Demo.sql = Demo.sql
 		EncriptarEmpleado.sql = EncriptarEmpleado.sql
 		ScriptBackupDiario.sql = ScriptBackupDiario.sql
 		ScriptBackupSemanal.sql = ScriptBackupSemanal.sql
@@ -73,7 +74,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{33836617-652F-46B1-9021-840B4C0A128A}.Default|Default.ActiveCfg = Default
+		{01F2DC34-7BB9-4AA4-B253-C854CDF1A234}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -51,6 +51,7 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
                     CHECK (telefono NOT LIKE '%[A-Za-z]%' AND telefono NOT LIKE '% %'),
     activo          BIT
 );
+GO
 
 CREATE TABLE [Com2900G10].[sucursal].[empleado] ( 
     legajo          INT         PRIMARY KEY,
@@ -66,33 +67,17 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     turno           VARCHAR(20) 
 					CHECK([turno] IN ('TM', 'TT', 'TN', 'Jornada completa')),
     activo          BIT,
-	CONSTRAINT CK_Empleado_Cuil
-		CHECK ([cuil] like '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9]' OR cuil is null),
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
 );
 
-CREATE TABLE [Com2900G10].[sucursal].[punto_venta] (
-	numero_punto_venta  INT      NOT NULL,
-	id_sucursal         SMALLINT NOT NULL,
-	activo bit,
-	CONSTRAINT FK_sucursal 
-        FOREIGN KEY (id_sucursal)
-	    REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
-	CONSTRAINT PK_punto_venta 
-        PRIMARY KEY (numero_punto_venta, id_sucursal)
-);
-
 CREATE TABLE [Com2900G10].[sucursal].[punto_venta_empleado] (
 	id_punto_venta_empleado INT         IDENTITY(1,1) PRIMARY KEY,
-	numero_punto_venta      INT         NOT NULL,
+	numero_punto_venta      TINYINT         NOT NULL,
 	id_sucursal             SMALLINT    NOT NULL,
 	legajo_empleado         INT         NOT NULL,
 	activo bit,
-	CONSTRAINT FK_puesto_venta 
-        FOREIGN KEY (numero_punto_venta,id_sucursal)
-	    REFERENCES [Com2900G10].[sucursal].[punto_venta](numero_punto_venta,id_sucursal),
 	CONSTRAINT FK_empleado 
         FOREIGN KEY (legajo_empleado)
 	    REFERENCES [Com2900G10].[sucursal].[empleado](legajo)
@@ -124,6 +109,15 @@ CREATE TABLE [Com2900G10].[venta].[medio_pago] (
     nombre_esp    VARCHAR (200)  NOT NULL
 );
 
+CREATE TABLE [Com2900G10].[venta].[pago] (
+    id_pago INT       IDENTITY(1,1) PRIMARY KEY,
+	id_medio_pago    SMALLINT  NOT NULL,
+    identificador    VARCHAR(200)   NOT NULL,
+	CONSTRAINT FK_id_medio_pago_pago 
+		FOREIGN KEY(id_medio_pago) 
+		REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago)
+);
+
 
 CREATE TABLE [Com2900G10].[venta].[cliente] (
     id_cliente      INT         IDENTITY(1,1)   PRIMARY KEY,
@@ -140,50 +134,73 @@ CREATE TABLE [Com2900G10].[venta].[cliente] (
 INSERT INTO [Com2900G10].[venta].[cliente] 
 VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-00000000-0');
 
+
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
-	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
-	id_punto_venta_empleado INT NOT NULL,
-    id_medio_pago       SMALLINT        NOT NULL,
-    legajo_empleado     INT             NOT NULL,
+	id_pago				INT             ,
 	id_cliente			INT             NOT NULL,
+	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
     tipo_factura        CHAR(1)         NOT NULL,
-    tipo_cliente        VARCHAR(50)     NOT NULL,
-    fechaHora           DATETIME        NOT NULL,
-    id_sucursal         SMALLINT        NOT NULL,
-	total				DECIMAL(12,2)   NOT NULL,
-	pagada BIT NOT NULL DEFAULT 0
-    CONSTRAINT FK_Medio_Pago
-        FOREIGN KEY(id_medio_pago)
-        REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago),
-    CONSTRAINT FK_Empleado_Factura
-        FOREIGN KEY (legajo_empleado)
-        REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
+    fecha_hora           DATETIME        NOT NULL,
+	total_con_iva				DECIMAL(12,2)   NOT NULL,
+	CONSTRAINT FK_Pago_Factura 
+		FOREIGN KEY(id_pago)
+		REFERENCES [Com2900G10].[venta].[pago](id_pago),
     CONSTRAINT FK_Cliente_factura
         FOREIGN KEY (id_cliente)
         REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
-    CONSTRAINT FK_Sucursal_Factura
-        FOREIGN KEY(id_sucursal)
-        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
-	CONSTRAINT FK_Punto_Venta_Empleado
-        FOREIGN KEY(id_punto_venta_empleado)
-        REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),
 ); 
 
 CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
     id_detalle_factura INT          IDENTITY(1,1)   PRIMARY KEY,
+	id_factura         INT          NOT NULL,
     id_producto        SMALLINT     NOT NULL,
-    id_factura         INT          NOT NULL,
     cantidad           SMALLINT,
 	subtotal		   DECIMAL(12,2),
+	CONSTRAINT FK_Factura
+        FOREIGN KEY(id_factura)
+        REFERENCES [Com2900G10].[venta].[factura](id_factura),
     CONSTRAINT FK_Producto_Detalle
         FOREIGN KEY(id_producto)
-        REFERENCES [Com2900G10].[producto].[producto](id_producto),
-    CONSTRAINT FK_Factura
-        FOREIGN KEY(id_factura)
-        REFERENCES [Com2900G10].[venta].[factura](id_factura)
+        REFERENCES [Com2900G10].[producto].[producto](id_producto)
 );
 GO
+
+CREATE TABLE [Com2900G10].[venta].[venta] (
+    id_venta INT             IDENTITY(1,1)   PRIMARY KEY,
+	id_factura INT,
+	legajo_empleado     INT             NOT NULL,
+	id_sucursal         SMALLINT        NOT NULL,
+	id_punto_venta_empleado INT NOT NULL,
+	total				DECIMAL(12,2)   NOT NULL,
+	fecha_hora DATETIME NOT NULL DEFAULT GETDATE(),
+	CONSTRAINT FK_Factura_Venta
+        FOREIGN KEY(id_factura)
+        REFERENCES [Com2900G10].[venta].[factura](id_factura),
+	CONSTRAINT FK_Empleado_Venta
+        FOREIGN KEY (legajo_empleado)
+        REFERENCES [Com2900G10].[sucursal].[empleado](legajo),
+    CONSTRAINT FK_Sucursal_Venta
+        FOREIGN KEY(id_sucursal)
+        REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal),
+	CONSTRAINT FK_Punto_Venta_Empleado
+        FOREIGN KEY(id_punto_venta_empleado)
+        REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),	
+);
+
+CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
+    id_detalle_venta INT          IDENTITY(1,1)   PRIMARY KEY,
+	id_venta         INT          NOT NULL,
+    id_producto        SMALLINT     NOT NULL,
+    cantidad           SMALLINT,
+	subtotal		   DECIMAL(12,2),
+    CONSTRAINT FK_Producto_Detalle_Venta
+        FOREIGN KEY(id_producto)
+        REFERENCES [Com2900G10].[producto].[producto](id_producto),
+    CONSTRAINT FK_Venta
+        FOREIGN KEY(id_venta)
+        REFERENCES [Com2900G10].[venta].venta(id_venta)
+);
 
 CREATE TABLE [Com2900G10].[venta].[nota_credito] (
     id_nota_credito      INT         IDENTITY(1,1)   PRIMARY KEY,
