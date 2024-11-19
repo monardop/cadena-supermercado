@@ -54,4 +54,4 @@ Esto nos permite mantener una base de datos integra ante escenarios de error, ma
 ---
 
 ## Estructura de la base de datos.
-![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jpg)
+![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jp)
