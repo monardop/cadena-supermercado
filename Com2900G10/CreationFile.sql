@@ -18,6 +18,8 @@
 * admitirán borrado lógico) de cada tabla."                                   *
 *                                                                             *
 *******************************************************************************/
+USE master
+GO
 
 DROP DATABASE IF EXISTS Com2900G10;--Elimino la base de datos si existe.
 CREATE DATABASE Com2900G10; --Creo la base de datos
@@ -39,8 +41,14 @@ DROP SCHEMA IF EXISTS venta;
 GO
 CREATE SCHEMA venta;
 GO
+DROP SCHEMA IF EXISTS config;
+GO
+CREATE SCHEMA config
+GO
 
 ---CREACION DE TABLAS
+DROP TABLE IF EXISTS [Com2900G10].[sucursal].[sucursal]
+GO
 CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     id_sucursal     SMALLINT		IDENTITY(1,1) PRIMARY KEY,
     ciudad          VARCHAR(50)		NOT NULL,
@@ -52,7 +60,15 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     activo          BIT
 );
 GO
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[sucursal].[empleado]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[sucursal].[empleado] 
+	DROP CONSTRAINT FK_Empleado_Sucursal;
+
+	DROP TABLE [Com2900G10].[sucursal].[empleado]
+END
+GO
 CREATE TABLE [Com2900G10].[sucursal].[empleado] ( 
     legajo          INT         PRIMARY KEY,
     nombre          VARCHAR(60) NOT NULL,
@@ -71,7 +87,15 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
         FOREIGN KEY (id_sucursal) 
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
 );
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[sucursal].[punto_venta_empleado]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[sucursal].[punto_venta_empleado] 
+	DROP CONSTRAINT FK_empleado;
+
+	DROP TABLE [Com2900G10].[sucursal].[punto_venta_empleado]
+END
+GO
 CREATE TABLE [Com2900G10].[sucursal].[punto_venta_empleado] (
 	id_punto_venta_empleado INT         IDENTITY(1,1) PRIMARY KEY,
 	numero_punto_venta      TINYINT         NOT NULL,
@@ -82,7 +106,8 @@ CREATE TABLE [Com2900G10].[sucursal].[punto_venta_empleado] (
         FOREIGN KEY (legajo_empleado)
 	    REFERENCES [Com2900G10].[sucursal].[empleado](legajo)
 );
-
+DROP TABLE IF EXISTS [Com2900G10].[producto].[categoria_producto]
+GO
 CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
     id_categoria_producto SMALLINT      IDENTITY(1,1) PRIMARY KEY,
 	nombre_linea		  VARCHAR(100)	NOT NULL,
@@ -93,6 +118,15 @@ CREATE TABLE [Com2900G10].[producto].[categoria_producto] (
 INSERT INTO [Com2900G10].[producto].[categoria_producto] 
     VALUES ('Importaciones-Default', 'Importaciones-Default');
 
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[producto].[producto]')
+BEGIN
+
+	ALTER TABLE [Com2900G10].[producto].[producto]
+	DROP CONSTRAINT FK_Categoria_Producto;
+
+	DROP TABLE [Com2900G10].[producto].[producto]
+END
+GO
 CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     id_categoria_producto SMALLINT		NOT NULL,
@@ -103,12 +137,23 @@ CREATE TABLE [Com2900G10].[producto].[producto] (
         REFERENCES [Com2900G10].[producto].[categoria_producto](id_categoria_producto)
 );
 
+DROP TABLE IF EXISTS [Com2900G10].[venta].[medio_pago]
+GO
 CREATE TABLE [Com2900G10].[venta].[medio_pago] (
     id_medio_pago SMALLINT       IDENTITY(1,1) PRIMARY KEY,
     nombre_eng    VARCHAR(200)   NOT NULL,
     nombre_esp    VARCHAR (200)  NOT NULL
 );
 
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[pago]')
+BEGIN
+
+	ALTER TABLE [Com2900G10].[venta].[pago]
+	DROP CONSTRAINT FK_id_medio_pago_pago;
+
+	DROP TABLE [Com2900G10].[venta].[pago]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[pago] (
     id_pago INT       IDENTITY(1,1) PRIMARY KEY,
 	id_medio_pago    SMALLINT  NOT NULL,
@@ -118,7 +163,7 @@ CREATE TABLE [Com2900G10].[venta].[pago] (
 		REFERENCES [Com2900G10].[venta].[medio_pago](id_medio_pago)
 );
 
-
+DROP TABLE IF EXISTS [Com2900G10].[venta].[cliente]
 CREATE TABLE [Com2900G10].[venta].[cliente] (
     id_cliente      INT         IDENTITY(1,1)   PRIMARY KEY,
 	nombre          VARCHAR(60) NOT NULL,
@@ -134,7 +179,18 @@ CREATE TABLE [Com2900G10].[venta].[cliente] (
 INSERT INTO [Com2900G10].[venta].[cliente] 
 VALUES ('Importaciones-Default', 'Importaciones-Default', 00000000, '', '00-00000000-0');
 
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[factura]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[venta].[factura]
+	DROP CONSTRAINT FK_Pago_Factura;
+
+	ALTER TABLE [Com2900G10].[venta].[factura]
+	DROP CONSTRAINT FK_Cliente_factura;
+
+	DROP TABLE [Com2900G10].[venta].[factura]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
 	id_pago				INT             ,
@@ -150,7 +206,18 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
         FOREIGN KEY (id_cliente)
         REFERENCES [Com2900G10].[venta].[cliente](id_cliente),
 ); 
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[detalle_factura]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[venta].[detalle_factura]
+	DROP CONSTRAINT FK_Factura;
+
+	ALTER TABLE [Com2900G10].[venta].[detalle_factura]
+	DROP CONSTRAINT FK_Producto_Detalle;
+
+	DROP TABLE [Com2900G10].[venta].[detalle_factura]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
     id_detalle_factura INT          IDENTITY(1,1)   PRIMARY KEY,
 	id_factura         INT          NOT NULL,
@@ -165,7 +232,24 @@ CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
         REFERENCES [Com2900G10].[producto].[producto](id_producto)
 );
 GO
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[venta]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[venta].[venta]
+	DROP CONSTRAINT FK_Factura_Venta;
+
+	ALTER TABLE [Com2900G10].[venta].[venta]
+	DROP CONSTRAINT FK_Empleado_Venta;
+
+	ALTER TABLE [Com2900G10].[venta].[venta]
+	DROP CONSTRAINT FK_Sucursal_Venta;
+
+	ALTER TABLE [Com2900G10].[venta].[venta]
+	DROP CONSTRAINT FK_Punto_Venta_Empleado;
+
+	DROP TABLE [Com2900G10].[venta].[venta]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[venta] (
     id_venta INT             IDENTITY(1,1)   PRIMARY KEY,
 	id_factura INT,
@@ -188,6 +272,18 @@ CREATE TABLE [Com2900G10].[venta].[venta] (
         REFERENCES [Com2900G10].[sucursal].[punto_venta_empleado](id_punto_venta_empleado),	
 );
 
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[detalle_venta]')
+BEGIN
+
+	ALTER TABLE [Com2900G10].[venta].[detalle_venta]
+	DROP CONSTRAINT FK_Producto_Detalle_Venta;
+
+	ALTER TABLE [Com2900G10].[venta].[detalle_venta]
+	DROP CONSTRAINT FK_Venta;
+
+	DROP TABLE [Com2900G10].[venta].[detalle_venta]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
     id_detalle_venta INT          IDENTITY(1,1)   PRIMARY KEY,
 	id_venta         INT          NOT NULL,
@@ -201,7 +297,15 @@ CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
         FOREIGN KEY(id_venta)
         REFERENCES [Com2900G10].[venta].venta(id_venta)
 );
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[venta].[nota_credito]')
+BEGIN
 
+	ALTER TABLE [Com2900G10].[venta].[nota_credito]
+	DROP CONSTRAINT FK_Factura_NC;
+
+	DROP TABLE [Com2900G10].[venta].[nota_credito]
+END
+GO
 CREATE TABLE [Com2900G10].[venta].[nota_credito] (
     id_nota_credito      INT         IDENTITY(1,1)   PRIMARY KEY,
 	numero_nota_credito      VARCHAR(11)     NOT NULL        UNIQUE,
@@ -211,3 +315,11 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
         FOREIGN KEY(id_factura)
         REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
+
+DROP TABLE IF EXISTS [Com2900G10].[config].[configuracion_supermercado]
+GO
+CREATE TABLE [Com2900G10].[config].[configuracion_supermercado] (
+	id_configurcion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
+	nombre_configuracion varchar(70),
+	valor varchar(70)
+)
