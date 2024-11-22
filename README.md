@@ -1,4 +1,11 @@
-# Proyecto: Gestión de Supermercados  
+# Proyecto: Gestión de Supermercados 
+# Índice
+1. [Introducción](Informe.md#Introducción)
+2. [Configuraciones generales](Informe.md#Configuraciones%20generales)
+3. [Detalles de la Instalación](Informe.md#Detalles%20de%20la%20Instalación)
+4. [Especificaciones de Sistema Operativo](Informe.md#Especificaciones%20de%20Sistema%20Operativo)
+5. [Backups](Informe.md#Backups)
+6. [Estructura de la base de datos](Informe.md#Estructura%20de%20la%20base%20de%20datos.)
 ## Informe
 ### Introducción
 
@@ -6,6 +13,7 @@ Este documento tiene como objetivo proporcionar una guía técnica detallada par
 
 - **Objetivo**: Generar un sistema de bases de datos que registre las ventas realizadas en cada sucursal.
 - **Límite**: Desde que se realizas la inserción del catálogo de productos hasta que se registra la venta.
+
 #### Motor de base de datos
 En este sistema se utilizará **Microsoft SQL Server 2022**, en su versión **Express 20.2**, con número de compilación **20.2.30.0**
 ### Detalles de la Instalación 
@@ -44,14 +52,12 @@ Para poder importar archivos .xlsx se instaló **Microsoft OLE DB Driver for SQL
 Por último, se habilitó la opción `Ad Hoc Distributed Queries` ejecutando comandos que permite el acceso directo a archivos externos.
 
 ### Backups
-Para las copias de seguridad / backup se estableció una politica de ejecuciones periodicas segun el siguiente esquema:
+Para las copias de seguridad / backup se estableció una política de ejecuciones periódicas según el siguiente esquema:
 
 ![](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
 
-Que conciste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada hora, luego una ejecucion diaria (preferentemente en horarios nocturnos o de deshuso) de copias **DIFERENCIALES** y una ejecucion semanal de copias del tipo FULL.
+Que consiste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada hora, luego una ejecución diaria (preferentemente en horarios nocturnos o de desuso) de copias **DIFERENCIALES** y una ejecución semanal de copias del tipo FULL.
 Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias.
-
----
 
 ## Estructura de la base de datos.
 ![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jpg)
