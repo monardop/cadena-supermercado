@@ -1,10 +1,10 @@
 # Proyecto: Gestión de Supermercados 
 # Índice
-1. [Introducción]([Informe.md#Introducción](https://github.com/monardop/cadena-supermercado/#introducci%C3%B3n))
+1. [Introducción](https://github.com/monardop/cadena-supermercado/#introducci%C3%B3n)
 2. [Detalles de la instalación](https://github.com/monardop/cadena-supermercado/#detalles-de-la-instalaci%C3%B3n)
-3. [Especificaciones de Sistema Operativo]([Informe.md#Especificaciones%20de%20Sistema%20Operativo](https://github.com/monardop/cadena-supermercado/#especificaciones-de-sistema-operativo))
-4. [Backups]([Informe.md#Backups](https://github.com/monardop/cadena-supermercado/#backups))
-5. [Estructura de la base de datos]([Informe.md#Estructura%20de%20la%20base%20de%20datos.](https://github.com/monardop/cadena-supermercado/#estructura-de-la-base-de-datos))
+3. [Especificaciones de Sistema Operativo](https://github.com/monardop/cadena-supermercado/#especificaciones-de-sistema-operativo)
+4. [Backups](https://github.com/monardop/cadena-supermercado/#backups)
+5. [Estructura de la base de datos](https://github.com/monardop/cadena-supermercado/#estructura-de-la-base-de-datos)
 ## Informe
 ### Introducción
 
