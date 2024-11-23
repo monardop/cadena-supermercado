@@ -43,7 +43,7 @@ CREATE SCHEMA venta;
 GO
 DROP SCHEMA IF EXISTS config;
 GO
-CREATE SCHEMA config
+CREATE SCHEMA config;
 GO
 
 ---CREACION DE TABLAS
@@ -60,6 +60,7 @@ CREATE TABLE [Com2900G10].[sucursal].[sucursal] (
     activo          BIT
 );
 GO
+--Elimino contraints para despues poder eliminar las tablas.
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_NAME = '[Com2900G10].[sucursal].[empleado]')
 BEGIN
 
@@ -289,6 +290,7 @@ CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
 	id_venta         INT          NOT NULL,
     id_producto        SMALLINT     NOT NULL,
     cantidad           SMALLINT,
+	precio_unitario_fijo DECIMAL (12,2),
 	subtotal		   DECIMAL(12,2),
     CONSTRAINT FK_Producto_Detalle_Venta
         FOREIGN KEY(id_producto)
@@ -319,7 +321,7 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
 DROP TABLE IF EXISTS [Com2900G10].[config].[configuracion_supermercado]
 GO
 CREATE TABLE [Com2900G10].[config].[configuracion_supermercado] (
-	id_configurcion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
-	nombre_configuracion varchar(70),
+	id_configuracion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
+	descripcion varchar(70),
 	valor varchar(70)
 )

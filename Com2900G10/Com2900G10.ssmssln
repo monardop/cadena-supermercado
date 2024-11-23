@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\1-CategoriaProductoSP.sql = StoredProcedures\1-CategoriaProductoSP.sql
 		StoredProcedures\10-DetalleFacturaSP.sql = StoredProcedures\10-DetalleFacturaSP.sql
 		StoredProcedures\11-EmpleadosSP.sql = StoredProcedures\11-EmpleadosSP.sql
+		StoredProcedures\12-VentaSP.sql = StoredProcedures\12-VentaSP.sql
+		StoredProcedures\13- ConfiguracionSupermercadoSP.sql = StoredProcedures\13- ConfiguracionSupermercadoSP.sql
 		StoredProcedures\2-ClienteSP.sql = StoredProcedures\2-ClienteSP.sql
 		StoredProcedures\3-FacturayVentaSP.sql = StoredProcedures\3-FacturayVentaSP.sql
 		StoredProcedures\4-MedioPagoSP.sql = StoredProcedures\4-MedioPagoSP.sql
@@ -47,6 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C
 	ProjectSection(SolutionItems) = preProject
 		StoredProcedures\Tests\1-CategoriaProductoSPTests.sql = StoredProcedures\Tests\1-CategoriaProductoSPTests.sql
 		StoredProcedures\Tests\10-NotaCreditoSPTests.sql = StoredProcedures\Tests\10-NotaCreditoSPTests.sql
+		StoredProcedures\Tests\13-ConfiguracionSupermercadoSPTests.sql = StoredProcedures\Tests\13-ConfiguracionSupermercadoSPTests.sql
 		StoredProcedures\Tests\2-SucursalSPTests.sql = StoredProcedures\Tests\2-SucursalSPTests.sql
 		StoredProcedures\Tests\3-MedioPagoSPTests.sql = StoredProcedures\Tests\3-MedioPagoSPTests.sql
 		StoredProcedures\Tests\4-ProductoSPTests.sql = StoredProcedures\Tests\4-ProductoSPTests.sql
@@ -74,7 +77,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{01F2DC34-7BB9-4AA4-B253-C854CDF1A234}.Default|Default.ActiveCfg = Default
+		{77B7EFE2-E7B0-4528-845C-5480CAF032C4}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

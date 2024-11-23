@@ -202,17 +202,15 @@ BEGIN
 	WHERE seq = 1; -- un registro por factura
 
 	-- Genero detalle de venta por cada detalle de factura
-	WITH CTE(id_venta, id_producto, cantidad, subtotal)
+	WITH CTE(id_venta, id_producto, cantidad, precio_unitario, subtotal)
 	AS
 	(
-		SELECT v.id_venta, df.id_producto, df.cantidad, df.subtotal
+		SELECT v.id_venta, df.id_producto, df.cantidad, i.precio_unitario, df.subtotal
 		FROM  #importacion_ventas i
 			INNER JOIN venta.factura f ON f.numero_factura = i.numero_factura
 			INNER JOIN venta.venta v ON v.id_factura = f.id_factura
 			INNER JOIN venta.detalle_factura df ON df.id_factura = f.id_factura
 	)
-	INSERT INTO venta.detalle_venta(id_venta, id_producto, cantidad, subtotal)
+	INSERT INTO venta.detalle_venta(id_venta, id_producto, cantidad,precio_unitario,subtotal)
 	SELECT * FROM CTE
-
-
 END;
