@@ -7,7 +7,6 @@
 5. [Estructura de la base de datos](https://github.com/monardop/cadena-supermercado/#estructura-de-la-base-de-datos)
 ## Informe
 ### Introducción
-
 Este documento tiene como objetivo proporcionar una guía técnica detallada para la instalación y configuración de la base de datos **Com2900G10**, utilizada en el sistema de gestión de supermercados. Esta base de datos almacenará y administrará información crítica sobre ventas, productos, clientes, y otras entidades relacionadas con las operaciones del supermercado.
 
 - **Objetivo**: Generar un sistema de bases de datos que registre las ventas realizadas en cada sucursal.
