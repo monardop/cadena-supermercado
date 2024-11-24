@@ -6,32 +6,32 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importaciones", "Importaciones", "{15FBDD63-0AEC-4E84-B67B-BA7EE8DB813F}"
 	ProjectSection(SolutionItems) = preProject
 		Importaciones\0-ConfiguracionesOLE.sql = Importaciones\0-ConfiguracionesOLE.sql
-		Importaciones\01_CrearSPImportarEmpleados.sql = Importaciones\01_CrearSPImportarEmpleados.sql
-		Importaciones\02_CrearSPImportarSucursal.sql = Importaciones\02_CrearSPImportarSucursal.sql
-		Importaciones\03_CrearSPImportarMediosPago.sql = Importaciones\03_CrearSPImportarMediosPago.sql
-		Importaciones\04_CrearSPImportarCategoriasProductos.sql = Importaciones\04_CrearSPImportarCategoriasProductos.sql
-		Importaciones\05_CrearSPImportarCatalogo.sql = Importaciones\05_CrearSPImportarCatalogo.sql
-		Importaciones\06_CrearSPImportarElectronicos.sql = Importaciones\06_CrearSPImportarElectronicos.sql
-		Importaciones\07_CrearSPImportarProductosImportados.sql = Importaciones\07_CrearSPImportarProductosImportados.sql
-		Importaciones\08_CrearSPImportarVentas.sql = Importaciones\08_CrearSPImportarVentas.sql
-		Importaciones\EjecutarImportaciones.sql = Importaciones\EjecutarImportaciones.sql
+		Importaciones\01-CrearSPImportarEmpleados.sql = Importaciones\01-CrearSPImportarEmpleados.sql
+		Importaciones\02-CrearSPImportarSucursal.sql = Importaciones\02-CrearSPImportarSucursal.sql
+		Importaciones\03-CrearSPImportarMediosPago.sql = Importaciones\03-CrearSPImportarMediosPago.sql
+		Importaciones\04-CrearSPImportarCategoriasProductos.sql = Importaciones\04-CrearSPImportarCategoriasProductos.sql
+		Importaciones\05-CrearSPImportarCatalogo.sql = Importaciones\05-CrearSPImportarCatalogo.sql
+		Importaciones\06-CrearSPImportarElectronicos.sql = Importaciones\06-CrearSPImportarElectronicos.sql
+		Importaciones\07-CrearSPImportarProductosImportados.sql = Importaciones\07-CrearSPImportarProductosImportados.sql
+		Importaciones\08-CrearSPImportarVentas.sql = Importaciones\08-CrearSPImportarVentas.sql
+		Importaciones\09-EjecutarImportaciones.sql = Importaciones\09-EjecutarImportaciones.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredProcedures", "{976697C6-1CE5-4509-B961-8CD297303AB4}"
 	ProjectSection(SolutionItems) = preProject
-		StoredProcedures\1-CategoriaProductoSP.sql = StoredProcedures\1-CategoriaProductoSP.sql
+		StoredProcedures\01-CategoriaProductoSP.sql = StoredProcedures\01-CategoriaProductoSP.sql
+		StoredProcedures\02-ClienteSP.sql = StoredProcedures\02-ClienteSP.sql
+		StoredProcedures\03-FacturayVentaSP.sql = StoredProcedures\03-FacturayVentaSP.sql
+		StoredProcedures\04-MedioPagoSP.sql = StoredProcedures\04-MedioPagoSP.sql
+		StoredProcedures\05-NotaCreditoSP.sql = StoredProcedures\05-NotaCreditoSP.sql
+		StoredProcedures\06-ProductoSP.sql = StoredProcedures\06-ProductoSP.sql
+		StoredProcedures\07-PuntoVentaEmpleadoSP.sql = StoredProcedures\07-PuntoVentaEmpleadoSP.sql
+		StoredProcedures\08-PuntoVentaSP.sql = StoredProcedures\08-PuntoVentaSP.sql
+		StoredProcedures\09-SucursalSP.sql = StoredProcedures\09-SucursalSP.sql
 		StoredProcedures\10-DetalleFacturaSP.sql = StoredProcedures\10-DetalleFacturaSP.sql
 		StoredProcedures\11-EmpleadosSP.sql = StoredProcedures\11-EmpleadosSP.sql
 		StoredProcedures\12-VentaSP.sql = StoredProcedures\12-VentaSP.sql
 		StoredProcedures\13- ConfiguracionSupermercadoSP.sql = StoredProcedures\13- ConfiguracionSupermercadoSP.sql
-		StoredProcedures\2-ClienteSP.sql = StoredProcedures\2-ClienteSP.sql
-		StoredProcedures\3-FacturayVentaSP.sql = StoredProcedures\3-FacturayVentaSP.sql
-		StoredProcedures\4-MedioPagoSP.sql = StoredProcedures\4-MedioPagoSP.sql
-		StoredProcedures\5-NotaCreditoSP.sql = StoredProcedures\5-NotaCreditoSP.sql
-		StoredProcedures\6-ProductoSP.sql = StoredProcedures\6-ProductoSP.sql
-		StoredProcedures\7-PuntoVentaEmpleadoSP.sql = StoredProcedures\7-PuntoVentaEmpleadoSP.sql
-		StoredProcedures\8-PuntoVentaSP.sql = StoredProcedures\8-PuntoVentaSP.sql
-		StoredProcedures\9-SucursalSP.sql = StoredProcedures\9-SucursalSP.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B209-4C02-B3CD-BE067C1C337D}"
@@ -77,7 +77,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77B7EFE2-E7B0-4528-845C-5480CAF032C4}.Default|Default.ActiveCfg = Default
+		{B4C15583-5147-4C5D-B06F-41B1D663752B}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
