@@ -36,7 +36,9 @@ GO
 
 
 CREATE OR ALTER PROCEDURE importacion.ImportarVentas
-	@pathArchivos VARCHAR(200)
+	@pathArchivos VARCHAR(200),
+	@id_default_cliente SMALLINT,
+	@porcentaje_iva DECIMAL(4,2)
 AS
 BEGIN
 	DECLARE @sql NVARCHAR(max) = 'BULK INSERT #importacion_ventas
@@ -53,9 +55,8 @@ BEGIN
 		TABLOCK
     )'
 
-	-- TODO: Pasar a tabla parametrizada
-	DECLARE @id_default_cliente SMALLINT = 1;
-	DECLARE @factor_iva DECIMAL(4,2) = 1.21;
+	DECLARE @factor_iva DECIMAL(4,2)
+	SET @factor_iva = (@porcentaje_iva/100) + 1;
 
 	CREATE TABLE #importacion_ventas(
 		numero_factura VARCHAR(100),

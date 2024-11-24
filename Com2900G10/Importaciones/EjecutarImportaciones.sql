@@ -49,6 +49,8 @@ DECLARE @hojaProductosImportados VARCHAR(100);
 
 DECLARE @pathVentas VARCHAR(300);
 DECLARE @valorDolar DECIMAL(12,2);
+DECLARE @idClienteDefaultImportacion SMALLINT;
+DECLARE @porcentajeIva DECIMAL(4,2);
 
 /*******************************************************************************
 *						Obtiene valores de los parametros					   *
@@ -67,10 +69,11 @@ SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_g
 
 SELECT @pathProductosImportados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_importados';
 SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_electronicos';
+SELECT @valorDolar = CAST(valor AS decimal(12,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'valor_dolar';
 
 SELECT @pathVentas = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_ventas';
-
-SELECT @valorDolar = CAST(valor AS decimal(12,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'valor_dolar';
+SELECT @idClienteDefaultImportacion = CAST(valor AS SMALLINT) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'id_cliente_default_importacion';
+SELECT @porcentajeIva = CAST(valor AS decimal(4,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'porcentaje_iva';
 
 /*******************************************************************************
 *						Ejecuta importacion									   *
@@ -98,6 +101,7 @@ EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronico
 EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
-EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas;
+EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas, @idClienteDefaultImportacion, @porcentajeIva;
 -- SELECT COUNT(*) FROM [Com2900G10].[venta].[factura] 
+-- SELECT * FROM [Com2900G10].[venta].[factura] 
 -- SELECT * FROM [Com2900G10].[venta].[detalle_factura]
