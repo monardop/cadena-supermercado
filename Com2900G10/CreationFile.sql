@@ -41,9 +41,9 @@ DROP SCHEMA IF EXISTS venta;
 GO
 CREATE SCHEMA venta;
 GO
-DROP SCHEMA IF EXISTS config;
+DROP SCHEMA IF EXISTS configuracion;
 GO
-CREATE SCHEMA config;
+CREATE SCHEMA configuracion;
 GO
 
 ---CREACION DE TABLAS
@@ -317,10 +317,10 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
         REFERENCES [Com2900G10].[venta].[factura](id_factura)
 );
 
-DROP TABLE IF EXISTS [Com2900G10].[config].[configuracion_supermercado]
+DROP TABLE IF EXISTS [Com2900G10].[configuracion].[parametros_generales]
 GO
-CREATE TABLE [Com2900G10].[config].[configuracion_supermercado] (
+CREATE TABLE [Com2900G10].[configuracion].[parametros_generales] (
 	id_configuracion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
 	descripcion varchar(70),
-	valor varchar(70)
+	valor varchar(300)
 )

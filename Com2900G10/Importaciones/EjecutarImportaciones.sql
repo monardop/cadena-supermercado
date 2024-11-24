@@ -29,27 +29,62 @@
 *                                                                             *
 *******************************************************************************/
 
-DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
-DECLARE @pathInfoComplementaria VARCHAR(500) = @pathDataFiles + 'Informacion_complementaria.xlsx';
-DECLARE @pathProductosCatalogo VARCHAR(400) = @pathDataFiles + 'Productos\catalogo.csv'
-DECLARE @pathProductosElectronicos VARCHAR(400) = @pathDataFiles + 'Productos\Electronic accessories.xlsx'
-DECLARE @pathProductosImportados VARCHAR(400) = @pathDataFiles + 'Productos\Productos_importados.xlsx'
-DECLARE @pathVentas VARCHAR(400) = @pathDataFiles + 'Ventas_registradas.csv'
-DECLARE @valorDolar DECIMAL(12,2) = 100
+/*******************************************************************************
+*						Declara parametros               					   *
+****************************************** *************************************/
 
-DECLARE @hojaSucursales VARCHAR(100) = 'sucursal';
+DECLARE @pathInfoComplementaria VARCHAR(300);
+DECLARE @hojaSucursales VARCHAR(100);
+DECLARE @hojaEmpleados VARCHAR(100);
+DECLARE @hojaMediosDePago VARCHAR(100);
+DECLARE @hojaCategoriasProductos VARCHAR(100);
+
+DECLARE @pathProductosCatalogo VARCHAR(300);
+
+DECLARE @pathProductosElectronicos VARCHAR(300);
+DECLARE @hojaElectronicos VARCHAR(100);
+
+DECLARE @pathProductosImportados VARCHAR(300);
+DECLARE @hojaProductosImportados VARCHAR(100);
+
+DECLARE @pathVentas VARCHAR(300);
+DECLARE @valorDolar DECIMAL(12,2);
+
+/*******************************************************************************
+*						Obtiene valores de los parametros					   *
+****************************************** *************************************/
+
+SELECT @pathInfoComplementaria = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_info_complementaria';
+SELECT @hojaSucursales = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_sucursales';
+SELECT @hojaEmpleados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_empleados';
+SELECT @hojaMediosDePago = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_medios_de_pago';
+SELECT @hojaCategoriasProductos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_categorias_productos';
+
+SELECT @pathProductosCatalogo = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_catalogo';
+
+SELECT @pathProductosElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_electonicos';
+SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_electronicos';
+
+SELECT @pathProductosImportados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_importados';
+SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_electronicos';
+
+SELECT @pathVentas = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_ventas';
+
+SELECT @valorDolar = CAST(valor AS decimal(12,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'valor_dolar';
+
+/*******************************************************************************
+*						Ejecuta importacion									   *
+****************************************** *************************************/
+
 EXEC [Com2900G10].[importacion].[ImportarSucursales] @pathInfoComplementaria, @hojaSucursales;
 -- SELECT * FROM [Com2900G10].[sucursal].[sucursal]
 
-DECLARE @hojaEmpleados VARCHAR(100) = 'Empleados';
 EXEC [Com2900G10].[importacion].[ImportarEmpleados] @pathInfoComplementaria, @hojaEmpleados;
 -- SELECT * FROM [Com2900G10].[sucursal].[empleado]
 
-DECLARE @hojaMediosDePago VARCHAR(100) = 'medios de pago';
 EXEC [Com2900G10].[importacion].[ImportarMediosPago] @pathInfoComplementaria, @hojaMediosDePago;
 -- SELECT * FROM [Com2900G10].[venta].[medio_pago]
 
-DECLARE @hojaCategoriasProductos VARCHAR(100) = 'Clasificacion productos';
 EXEC [Com2900G10].[importacion].[ImportarCategoriasProductos] @pathInfoComplementaria, @hojaCategoriasProductos;
 -- SELECT * FROM [Com2900G10].[producto].[categoria_producto]
 
@@ -57,11 +92,9 @@ EXEC [Com2900G10].[importacion].[ImportarCategoriasProductos] @pathInfoComplemen
 EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
-DECLARE @hojaElectronicos VARCHAR(100) = 'Sheet1';
 EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronicos, @hojaElectronicos, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
-DECLARE @hojaProductosImportados VARCHAR(100) = 'Listado de Productos';
 EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
