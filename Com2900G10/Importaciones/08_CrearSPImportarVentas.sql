@@ -1,3 +1,40 @@
+/*******************************************************************************
+*                                                                             *
+*                           Entrega 3 - Grupo 10                              *
+*                                                                             *
+*                           Integrantes:                                      *
+*                           43.988.577 Juan Piñan                             *
+*                           43.049.457 Matias Matter                          *
+*                           42.394.230 Lucas Natario                          *
+*                           40.429.974 Pablo Monardo                          *
+*                                                                             *
+*                                                                             *
+* "Se requiere que importe toda la información antes mencionada a la base de  *
+* datos:                                                                      *
+* • Genere los objetos necesarios (store procedures, funciones, etc.) para    *
+*   importar los archivos antes mencionados. Tenga en cuenta que cada mes se  *
+*   recibirán archivos de novedades con la misma estructura, pero datos nuevos*
+*   para agregar a cada maestro.                                              *
+* • Considere este comportamiento al generar el código. Debe admitir la       *
+*   importación de novedades periódicamente.                                  *
+* • Cada maestro debe importarse con un SP distinto. No se aceptarán scripts  *
+*   que realicen tareas por fuera de un SP.                                   *
+* • La estructura/esquema de las tablas a generar será decisión suya. Puede   *
+*   que deba realizar procesos de transformación sobre los maestros recibidos *
+*   para adaptarlos a la estructura requerida.                                *
+* • Los archivos CSV/JSON no deben modificarse. En caso de que haya datos mal *
+*   cargados, incompletos, erróneos, etc., deberá contemplarlo y realizar las *
+*   correcciones en el fuente SQL. (Sería una excepción si el archivo está    *
+*   malformado y no es posible interpretarlo como JSON o CSV)."               *
+*                                                                             *
+*******************************************************************************/
+
+
+GO
+USE Com2900G10;
+GO
+
+
 CREATE OR ALTER PROCEDURE importacion.ImportarVentas
 	@pathArchivos VARCHAR(200)
 AS
@@ -139,13 +176,13 @@ BEGIN
 	FROM CTE WHERE seq = 1; -- un registro por nro de factura
 
 	-- Inserto los detalles de cada factura de la importacion
-	WITH CTE(id_factura, id_producto, cantidad, subtotal) AS
+	WITH CTE(id_factura, id_producto, cantidad, precio_unitario) AS
 	(
-		SELECT f.id_factura, i.id_producto, i.cantidad, i.cantidad * i.precio_unitario
+		SELECT f.id_factura, i.id_producto, i.cantidad, i.precio_unitario
 		FROM #importacion_ventas i
 			INNER JOIN venta.factura f ON f.numero_factura = i.numero_factura
 	)
-	INSERT INTO venta.detalle_factura(id_factura, id_producto, cantidad, subtotal)
+	INSERT INTO venta.detalle_factura(id_factura, id_producto, cantidad, precio_unitario)
 	SELECT * FROM CTE;
 
 	-- Genero los pagos de las facturas
@@ -158,7 +195,7 @@ BEGIN
 	INSERT INTO venta.pago(id_medio_pago, identificador)
 	SELECT id_medio_pago, identificador FROM CTE WHERE seq = 1; -- un pago por factura
 
-	-- Updateo las facturas con los pagos creados y elimino la columna temporal
+	-- Updateo las facturas con los pagos creados
 	UPDATE f
 		SET f.id_pago = p.id_pago
 		FROM #importacion_ventas i
@@ -176,7 +213,7 @@ BEGIN
 	WITH CTE(id_factura, total_con_iva)
 	AS
 	(
-		SELECT f.id_factura, SUM(subtotal) * @factor_iva
+		SELECT f.id_factura, SUM(df.cantidad * df.precio_unitario) * @factor_iva
 		FROM #importacion_ventas i
 			INNER JOIN venta.factura f ON f.numero_factura = i.numero_factura
 			INNER JOIN venta.detalle_factura df ON df.id_factura = f.id_factura
@@ -202,15 +239,15 @@ BEGIN
 	WHERE seq = 1; -- un registro por factura
 
 	-- Genero detalle de venta por cada detalle de factura
-	WITH CTE(id_venta, id_producto, cantidad, precio_unitario, subtotal)
+	WITH CTE(id_venta, id_producto, cantidad, precio_unitario)
 	AS
 	(
-		SELECT v.id_venta, df.id_producto, df.cantidad, i.precio_unitario, df.subtotal
+		SELECT v.id_venta, df.id_producto, df.cantidad, i.precio_unitario
 		FROM  #importacion_ventas i
 			INNER JOIN venta.factura f ON f.numero_factura = i.numero_factura
 			INNER JOIN venta.venta v ON v.id_factura = f.id_factura
 			INNER JOIN venta.detalle_factura df ON df.id_factura = f.id_factura
 	)
-	INSERT INTO venta.detalle_venta(id_venta, id_producto, cantidad,precio_unitario,subtotal)
+	INSERT INTO venta.detalle_venta(id_venta, id_producto, cantidad,precio_unitario)
 	SELECT * FROM CTE
 END;

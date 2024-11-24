@@ -224,7 +224,7 @@ CREATE TABLE [Com2900G10].[venta].[detalle_factura] (
 	id_factura         INT          NOT NULL,
     id_producto        SMALLINT     NOT NULL,
     cantidad           SMALLINT,
-	subtotal		   DECIMAL(12,2),
+	precio_unitario		   DECIMAL(12,2),
 	CONSTRAINT FK_Factura
         FOREIGN KEY(id_factura)
         REFERENCES [Com2900G10].[venta].[factura](id_factura),
@@ -290,8 +290,7 @@ CREATE TABLE [Com2900G10].[venta].[detalle_venta] (
 	id_venta         INT          NOT NULL,
     id_producto        SMALLINT     NOT NULL,
     cantidad           SMALLINT,
-	precio_unitario_fijo DECIMAL (12,2),
-	subtotal		   DECIMAL(12,2),
+	precio_unitario DECIMAL (12,2),
     CONSTRAINT FK_Producto_Detalle_Venta
         FOREIGN KEY(id_producto)
         REFERENCES [Com2900G10].[producto].[producto](id_producto),
