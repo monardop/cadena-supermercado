@@ -38,7 +38,8 @@ GO
 CREATE OR ALTER PROCEDURE importacion.ImportarVentas
 	@pathArchivos VARCHAR(200),
 	@id_default_cliente SMALLINT,
-	@porcentaje_iva DECIMAL(4,2)
+	@porcentaje_iva DECIMAL(4,2),
+	@cuit_emisor CHAR(13)
 AS
 BEGIN
 	DECLARE @sql NVARCHAR(max) = 'BULK INSERT #importacion_ventas
@@ -164,16 +165,16 @@ BEGIN
 		INNER JOIN venta.factura f ON f.numero_factura = i.numero_factura;
 
 	-- Inserto las nuevas facturas - Sin pago y sin total todavia
-	WITH CTE(id_pago, id_cliente, numero_factura, tipo_factura, fecha_hora, total_con_iva, seq)
+	WITH CTE(id_pago, id_cliente, cuit_emisor, numero_factura, tipo_factura, fecha_hora, total_con_iva, seq)
 	AS
 	(
-		SELECT null, @id_default_cliente, numero_factura, tipo_factura, 
+		SELECT null, @id_default_cliente, @cuit_emisor, numero_factura, tipo_factura, 
 				CAST(CONCAT(fecha, ' ', hora) AS DATETIME), 0, ROW_NUMBER() OVER(PARTITION BY numero_factura ORDER BY numero_factura)
 		FROM #importacion_ventas
 	)
-	INSERT INTO venta.factura(id_pago,id_cliente,numero_factura,tipo_factura,fecha_hora, total_con_iva)
+	INSERT INTO venta.factura(id_pago,id_cliente,cuit_emisor,numero_factura,tipo_factura,fecha_hora, total_con_iva)
 	SELECT 
-		id_pago, id_cliente, numero_factura, tipo_factura, fecha_hora, total_con_iva
+		id_pago, id_cliente, cuit_emisor, numero_factura, tipo_factura, fecha_hora, total_con_iva
 	FROM CTE WHERE seq = 1; -- un registro por nro de factura
 
 	-- Inserto los detalles de cada factura de la importacion

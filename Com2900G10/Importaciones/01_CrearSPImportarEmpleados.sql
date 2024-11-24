@@ -55,9 +55,7 @@ VALUES
 ('hoja_importar_categorias_productos', 'Clasificacion productos'),
 ('hoja_importar_electonicos', 'Sheet1'),
 ('hoja_importar_productos_importados', 'Listado de Productos'),
-('valor_dolar', '1080'),
-('id_cliente_default_importacion', '1'),
-('porcentaje_iva', '21');
+('id_cliente_default_importacion', '1');
 GO
 
 CREATE OR ALTER FUNCTION importacion.sanitizar_y_reemplazar(@sanitizar VARCHAR(300), @reemplazar VARCHAR(5))

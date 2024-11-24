@@ -196,6 +196,7 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
     id_factura          INT             IDENTITY(1,1)   PRIMARY KEY,
 	id_pago				INT             ,
 	id_cliente			INT             NOT NULL,
+	cuit_emisor			CHAR(13) NOT NULL,
 	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
     tipo_factura        CHAR(1)         NOT NULL,
     fecha_hora           DATETIME        NOT NULL,
@@ -323,4 +324,11 @@ CREATE TABLE [Com2900G10].[configuracion].[parametros_generales] (
 	id_configuracion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
 	descripcion varchar(70),
 	valor varchar(300)
-)
+);
+GO
+
+INSERT INTO [Com2900G10].[configuracion].[parametros_generales](descripcion,valor)
+VALUES
+('porcentaje_iva', '21'),
+('valor_dolar', '1080'),
+('cuit_emisor', '20-42938121-7');

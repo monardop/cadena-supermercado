@@ -51,6 +51,7 @@ DECLARE @pathVentas VARCHAR(300);
 DECLARE @valorDolar DECIMAL(12,2);
 DECLARE @idClienteDefaultImportacion SMALLINT;
 DECLARE @porcentajeIva DECIMAL(4,2);
+DECLARE @cuitEmisor CHAR(13);
 
 /*******************************************************************************
 *						Obtiene valores de los parametros					   *
@@ -74,6 +75,7 @@ SELECT @valorDolar = CAST(valor AS decimal(12,2)) FROM [Com2900G10].[configuraci
 SELECT @pathVentas = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_ventas';
 SELECT @idClienteDefaultImportacion = CAST(valor AS SMALLINT) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'id_cliente_default_importacion';
 SELECT @porcentajeIva = CAST(valor AS decimal(4,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'porcentaje_iva';
+SELECT @cuitEmisor = CAST(valor AS CHAR(13)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'cuit_emisor';
 
 /*******************************************************************************
 *						Ejecuta importacion									   *
@@ -101,7 +103,7 @@ EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronico
 EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
-EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas, @idClienteDefaultImportacion, @porcentajeIva;
+EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas, @idClienteDefaultImportacion, @porcentajeIva, @cuitEmisor;
 -- SELECT COUNT(*) FROM [Com2900G10].[venta].[factura] 
 -- SELECT * FROM [Com2900G10].[venta].[factura] 
 -- SELECT * FROM [Com2900G10].[venta].[detalle_factura]
