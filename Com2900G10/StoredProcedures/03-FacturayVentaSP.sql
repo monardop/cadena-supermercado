@@ -42,18 +42,14 @@ BEGIN
 		DECLARE @legajo_punto_venta INT; -- Auxiliar para validacion
 
 		IF @productos is null OR @productos = ''
-		BEGIN
-			RAISERROR('Debe ingresar los productos.',10,1);
+			THROW 51000, 'Debe ingresar los productos.', 1;
 
-			RETURN
-		END;
+
+		IF EXISTS (SELECT 1 FROM venta.factura WHERE numero_factura = @numero_factura)
+			THROW 51000, 'El numero de factura ingresado ya existe.', 1;
 
 		IF NOT EXISTS (SELECT 1 FROM venta.cliente WHERE id_cliente = @id_cliente)
-		BEGIN
-			RAISERROR('El cliente ingresado no existe.',10,1);
-
-			RETURN
-		END
+			THROW 51000, 'El cliente ingresado no existe.', 1;
 
 		SELECT 
 			@id_sucursal = id_sucursal,
@@ -62,47 +58,20 @@ BEGIN
 		WHERE id_punto_venta_empleado = @id_punto_venta_empleado;
 
 		IF @legajo_punto_venta IS NULL
-		BEGIN
-			RAISERROR('El punto de venta de empleado no existe.',10,1);
-
-			RETURN
-		END
+			THROW 51000, 'El punto de venta de empleado no existe.', 1;
 
 		IF @legajo_punto_venta != @legajo
-		BEGIN
-			RAISERROR('El punto de venta de empleado no corresponde al legajo ingresado.',10,1);
-
-			RETURN
-		END
+			THROW 51000, 'El punto de venta de empleado no corresponde al legajo ingresado.', 1;
 
 		IF NOT EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)
-		BEGIN
-			RAISERROR('El empleado generador de la factura no existe o esta inactivo.',10,1);
-
-			RETURN
-		END
+			THROW 51000, 'El empleado generador de la factura no existe o esta inactivo.', 1;
 
 		IF NOT EXISTS (SELECT 1 FROM venta.medio_pago WHERE id_medio_pago = @id_medio_pago)
-		BEGIN
-			RAISERROR('El medio de pago ingresado no existe.',10,1);
-
-			RETURN
-		END
+			THROW 51000, 'El medio de pago ingresado no existe.', 1;
 
 		IF @identificador_pago = NULL
-		BEGIN
-			RAISERROR('Debe indicar el identificador de pago.',10,1);
+			THROW 51000, 'Debe indicar el identificador de pago.', 1;
 
-			RETURN
-		END
-
-
-		/* DEBUG
-			DECLARE @productos VARCHAR(400);
-			SET @productos = '10,1;20,3;60,20;3,5'
-
-			SELECT * FROM #producto_cantidad
-		*/
 
 		CREATE TABLE #producto_cantidad(
 			par_producto_cantidad VARCHAR(100),
@@ -134,11 +103,7 @@ BEGIN
 			INNER JOIN CTE c ON c.par_producto_cantidad = p.par_producto_cantidad;
 
 		IF EXISTS (SELECT 1 FROM #producto_cantidad p GROUP BY p.producto HAVING COUNT(p.producto) > 1)
-		BEGIN
-			RAISERROR('Se ingreso dos veces el mismo producto para la venta, ingreselo una vez con la suma de las cantidades', 10, 1);
-
-			RETURN
-		END
+			THROW 51000, 'Se ingreso dos veces el mismo producto para la venta, ingreselo una vez con la suma de las cantidades.', 1;
 
 		IF EXISTS (
 			SELECT 1 
@@ -146,11 +111,7 @@ BEGIN
 				LEFT JOIN producto.producto pp ON pp.id_producto = p.producto
 			WHERE pp.id_producto IS NULL
 		)
-		BEGIN
-			RAISERROR('Se ingresaron codigos de productos inexistentes o la lista de productos es invalida', 10, 1);
-
-			RETURN
-		END
+			THROW 51000, 'Se ingresaron codigos de productos inexistentes o la lista de productos es invalida.', 1;
 
 		/*******************************************************************************
 		*                         Generacion de la venta (sin factura)                 *
@@ -236,9 +197,9 @@ BEGIN
 		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
-		ROLLBACK TRANSACTION
-		DECLARE @error VARCHAR(MAX) = CONCAT('Error inesperado: ',ERROR_MESSAGE())
+		DECLARE @error VARCHAR(MAX) = CONCAT('Error: ',ERROR_MESSAGE())
 		RAISERROR(@error,10,1)
+		ROLLBACK TRANSACTION
 	END CATCH
 END;
 GO
