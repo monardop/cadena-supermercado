@@ -36,6 +36,8 @@ CREATE OR ALTER PROCEDURE venta.CrearVentaConFactura(
 
 BEGIN
 	BEGIN TRY 
+		BEGIN TRANSACTION;
+
 		DECLARE @id_sucursal SMALLINT;
 		DECLARE @legajo_punto_venta INT; -- Auxiliar para validacion
 
@@ -230,8 +232,11 @@ BEGIN
 		UPDATE venta.factura
 			SET id_pago = @id_pago
 		WHERE id_factura =  @id_factura
+		
+		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
+		ROLLBACK TRANSACTION
 		DECLARE @error VARCHAR(MAX) = CONCAT('Error inesperado: ',ERROR_MESSAGE())
 		RAISERROR(@error,10,1)
 	END CATCH
