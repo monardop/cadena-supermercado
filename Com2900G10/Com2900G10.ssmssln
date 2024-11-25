@@ -26,12 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\05-NotaCreditoSP.sql = StoredProcedures\05-NotaCreditoSP.sql
 		StoredProcedures\06-ProductoSP.sql = StoredProcedures\06-ProductoSP.sql
 		StoredProcedures\07-PuntoVentaEmpleadoSP.sql = StoredProcedures\07-PuntoVentaEmpleadoSP.sql
-		StoredProcedures\08-PuntoVentaSP.sql = StoredProcedures\08-PuntoVentaSP.sql
-		StoredProcedures\09-SucursalSP.sql = StoredProcedures\09-SucursalSP.sql
-		StoredProcedures\10-DetalleFacturaSP.sql = StoredProcedures\10-DetalleFacturaSP.sql
-		StoredProcedures\11-EmpleadosSP.sql = StoredProcedures\11-EmpleadosSP.sql
-		StoredProcedures\12-VentaSP.sql = StoredProcedures\12-VentaSP.sql
-		StoredProcedures\13- ConfiguracionSupermercadoSP.sql = StoredProcedures\13- ConfiguracionSupermercadoSP.sql
+		StoredProcedures\08-SucursalSP.sql = StoredProcedures\08-SucursalSP.sql
+		StoredProcedures\09-EmpleadosSP.sql = StoredProcedures\09-EmpleadosSP.sql
+		StoredProcedures\10-ConfiguracionSupermercadoSP.sql = StoredProcedures\10-ConfiguracionSupermercadoSP.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B209-4C02-B3CD-BE067C1C337D}"
@@ -47,18 +44,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
 	ProjectSection(SolutionItems) = preProject
-		StoredProcedures\Tests\1-CategoriaProductoSPTests.sql = StoredProcedures\Tests\1-CategoriaProductoSPTests.sql
-		StoredProcedures\Tests\10-NotaCreditoSPTests.sql = StoredProcedures\Tests\10-NotaCreditoSPTests.sql
-		StoredProcedures\Tests\13-ConfiguracionSupermercadoSPTests.sql = StoredProcedures\Tests\13-ConfiguracionSupermercadoSPTests.sql
-		StoredProcedures\Tests\2-SucursalSPTests.sql = StoredProcedures\Tests\2-SucursalSPTests.sql
-		StoredProcedures\Tests\3-MedioPagoSPTests.sql = StoredProcedures\Tests\3-MedioPagoSPTests.sql
-		StoredProcedures\Tests\4-ProductoSPTests.sql = StoredProcedures\Tests\4-ProductoSPTests.sql
-		StoredProcedures\Tests\5-EmpleadoSPTests.sql = StoredProcedures\Tests\5-EmpleadoSPTests.sql
-		StoredProcedures\Tests\6-ClienteSPTests.sql = StoredProcedures\Tests\6-ClienteSPTests.sql
-		StoredProcedures\Tests\6-FacturayVentaSP.sql = StoredProcedures\Tests\6-FacturayVentaSP.sql
-		StoredProcedures\Tests\7-DetalleFacturaSPTests.sql = StoredProcedures\Tests\7-DetalleFacturaSPTests.sql
-		StoredProcedures\Tests\8 - PuntoVentaSPTests.sql = StoredProcedures\Tests\8 - PuntoVentaSPTests.sql
-		StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\9 - PuntoVentaEmpleadoSPTests.sql
+		StoredProcedures\Tests\01-CategoriaProductoSPTests.sql = StoredProcedures\Tests\01-CategoriaProductoSPTests.sql
+		StoredProcedures\Tests\02-ClienteSPTests.sql = StoredProcedures\Tests\02-ClienteSPTests.sql
+		StoredProcedures\Tests\03-FacturayVentaSP.sql = StoredProcedures\Tests\03-FacturayVentaSP.sql
+		StoredProcedures\Tests\04-MedioPagoSPTests.sql = StoredProcedures\Tests\04-MedioPagoSPTests.sql
+		StoredProcedures\Tests\05-NotaCreditoSPTests.sql = StoredProcedures\Tests\05-NotaCreditoSPTests.sql
+		StoredProcedures\Tests\06-ProductoSPTests.sql = StoredProcedures\Tests\06-ProductoSPTests.sql
+		StoredProcedures\Tests\07-PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\07-PuntoVentaEmpleadoSPTests.sql
+		StoredProcedures\Tests\08-SucursalSPTests.sql = StoredProcedures\Tests\08-SucursalSPTests.sql
+		StoredProcedures\Tests\09-EmpleadoSPTests.sql = StoredProcedures\Tests\09-EmpleadoSPTests.sql
+		StoredProcedures\Tests\10-ConfiguracionSupermercadoSPTests.sql = StoredProcedures\Tests\10-ConfiguracionSupermercadoSPTests.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reportes", "Reportes", "{297ABF45-A251-4D9F-B18B-315E8F7A57BB}"
