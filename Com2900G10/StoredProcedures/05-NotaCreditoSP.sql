@@ -55,7 +55,7 @@ BEGIN
 	DECLARE @id_pago VARCHAR(300);
 	DECLARE @total DECIMAL(12,2);
 
-	SELECT @id_pago = id_pago, @total = total FROM venta.factura WHERE id_factura = @id_factura
+	SELECT @id_pago = id_pago, @total = total_con_iva FROM venta.factura WHERE id_factura = @id_factura
 
 	IF @id_pago IS NULL
 	BEGIN
@@ -69,7 +69,14 @@ BEGIN
 
 	IF @sumaTotalesNCs >= @total -- Para permitir NCs parciales
 	BEGIN
-		RAISERROR('Esta factura ya tiene NCs que cubren el total del importe original.',10,1);
+		RAISERROR('Esta factura ya tiene NCs que cubren el total del importe de la factura.',10,1);
+
+		RETURN
+	END
+
+	IF @sumaTotalesNCs IS NOT NULL AND @sumaTotalesNCs > 0
+	BEGIN
+		RAISERROR('Esta factura ya tiene NCs parciales generadas, por lo que no se puede generar una NC por el total.',10,1);
 
 		RETURN
 	END
@@ -115,7 +122,7 @@ BEGIN
 	DECLARE @id_pago VARCHAR(300);
 	DECLARE @total DECIMAL(12,2);
 
-	SELECT @id_pago = id_pago, @total = total FROM venta.factura WHERE id_factura = @id_factura
+	SELECT @id_pago = id_pago, @total = total_con_iva FROM venta.factura WHERE id_factura = @id_factura
 
 	IF @id_pago is null
 	BEGIN
@@ -123,13 +130,27 @@ BEGIN
 
 		RETURN
 	END
+
+	IF @importe <= 0
+	BEGIN
+		RAISERROR('Importe invalido, debe ser un monto positivo.',10,1);
+
+		RETURN
+	END
+
+	IF @importe > @total
+	BEGIN
+		RAISERROR('Importe invalido, supera el total de la factura.',10,1);
+
+		RETURN
+	END
 	
 	DECLARE @sumaTotalesNCs DECIMAL(12,2) = 0
 	SELECT @sumaTotalesNCs = SUM(importe) FROM venta.nota_credito WHERE id_factura = @id_factura
 
-	IF @sumaTotalesNCs + @importe >= @total -- Para permitir NCs parciales
+	IF @sumaTotalesNCs + @importe > @total
 	BEGIN
-		RAISERROR('Esta factura ya tiene NCs que cubren el total del importe original.',10,1);
+		RAISERROR('Importe invalido, la suma de las NCs superaria el total de la factura.',10,1);
 
 		RETURN
 	END
@@ -137,7 +158,7 @@ BEGIN
 
 
 	INSERT INTO venta.nota_credito
-    VALUES (@numero_nota_credito, @id_factura, @total);
+    VALUES (@numero_nota_credito, @id_factura, @importe);
 
 	PRINT 'NC agregada exitosamente.';
 END;
