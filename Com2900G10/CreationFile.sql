@@ -198,7 +198,7 @@ CREATE TABLE [Com2900G10].[venta].[factura] (
 	id_cliente			INT             NOT NULL,
 	cuit_emisor			CHAR(13) NOT NULL,
 	numero_factura      VARCHAR(11)     NOT NULL        UNIQUE,
-    tipo_factura        CHAR(1)         NOT NULL,
+    tipo_factura        CHAR(1)         NOT NULL CHECK(tipo_factura IN('A','B','C')),
     fecha_hora           DATETIME        NOT NULL,
 	total_con_iva				DECIMAL(12,2)   NOT NULL,
 	CONSTRAINT FK_Pago_Factura 
@@ -327,8 +327,34 @@ CREATE TABLE [Com2900G10].[configuracion].[parametros_generales] (
 );
 GO
 
+CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_porcentaje_iva]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'porcentaje_iva'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_cuit_emisor]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'cuit_emisor'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_valor_dolar]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'valor_dolar'
+END;
+GO
+
 INSERT INTO [Com2900G10].[configuracion].[parametros_generales](descripcion,valor)
 VALUES
-('porcentaje_iva', '21'),
-('valor_dolar', '1080'),
-('cuit_emisor', '20-42938121-7');
+(configuracion.obtener_clave_porcentaje_iva(), '21'),
+(configuracion.obtener_clave_valor_dolar(), '1080'),
+(configuracion.obtener_clave_cuit_emisor(), '20-42938121-7');
+GO
+
