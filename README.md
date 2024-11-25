@@ -50,8 +50,14 @@ Para las copias de seguridad / backup se estableció una política de ejecucione
 
 ![](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
 
-Que consiste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada hora, luego una ejecución diaria (preferentemente en horarios nocturnos o de desuso) de copias **DIFERENCIALES** y una ejecución semanal de copias del tipo FULL.
+Que consiste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada una hora entre las 07hs y 22hs, luego una ejecución diaria ejecutada entre las 22hs y las 07hs del dia siguiente de copias **DIFERENCIALES** y una ejecución semanal de copias del tipo FULL entre las 22hs de los dias domingo y las 07 de los dias lunes, al finalizarse la copia de seguridad **DIFERENCIAL** previa.
 Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias.
+
+| Tipo de Backup  | Ejecucion |
+| ------------- | ------------- |
+| Incremental  | Cada una hora |
+| Diferencial  | Diaria |
+| Full  | Semanal |
 
 ## Estructura de la base de datos.
 ![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jpg)
