@@ -48,6 +48,7 @@ GO
 		@numero_factura,
 		@id_medio_pago,
 		@identificador_pago;
+
 	SELECT * FROM venta.venta ORDER BY id_venta DESC;
 	SELECT * FROM venta.detalle_venta WHERE id_venta = 1001;
 	SELECT * FROM venta.factura ORDER BY id_factura DESC
@@ -60,7 +61,7 @@ GO
 	DECLARE @productos VARCHAR(400) = '9999,10';
 	DECLARE @id_cliente INT = 2;
 	DECLARE @tipo_factura CHAR(1) = 'A';
-	DECLARE @numero_factura VARCHAR(11) = '000-01-001';
+	DECLARE @numero_factura VARCHAR(11) = '000-01-0999';
 	DECLARE @id_medio_pago SMALLINT = 3;
 	DECLARE @identificador_pago VARCHAR(200) = 'A3C-S1A-X90';
 	EXEC [Com2900G10].[venta].[CrearVentaConFactura] 
@@ -72,6 +73,7 @@ GO
 		@numero_factura,
 		@id_medio_pago,
 		@identificador_pago;
+
 	SELECT * FROM venta.venta ORDER BY id_venta DESC;
 	SELECT * FROM venta.detalle_venta WHERE id_venta = 1001;
 	SELECT * FROM venta.factura ORDER BY id_factura DESC;
