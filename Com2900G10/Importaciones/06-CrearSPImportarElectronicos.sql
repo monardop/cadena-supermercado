@@ -42,7 +42,10 @@ CREATE OR ALTER PROCEDURE importacion.ImportarElectronicos
 	@valorDolar Decimal(12,2)
 AS
 BEGIN
-	DECLARE @id_default_categoria SMALLINT = 1;
+	DECLARE @id_default_categoria SMALLINT;
+
+	SELECT @id_default_categoria = valor FROM configuracion.parametros_generales WHERE descripcion = configuracion.obtener_id_categoria_default_importacion()
+
 	declare @sql NVARCHAR(MAX) = '
 		SELECT 
 			*
