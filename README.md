@@ -24,9 +24,12 @@ En este sistema se utilizará **Microsoft SQL Server 2022**, en su versión **Ex
 - **Numero máximo de conexiones concurrentes:** Ilimitado *(Valor explicito: 0)*
 
 #### Ubicación de los archivos
-- **Datos:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10.mdf*
-- **Logs:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10_log.ldf*
-- **Backup:** *C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup*
+- **Datos:** C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10.mdf
+- **Logs:** C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS01\MSSQL\DATA\Com2900G10_log.ldf
+- **Backup:** C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup
+	- C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\DIFF
+	- C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\FULL
+	- C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\LOG
 #### Asignación de memoria.
 - **Memoria mínima del servidor:** 100 MB 
 - **Memoria máxima del servidor:** 3GB
