@@ -63,7 +63,7 @@ BEGIN
 		SELECT 
 			@id_default_categoria,
 			i.producto, 
-			i.precio_unitario_dolares * @valorDolar
+			CAST(i.precio_unitario_dolares * @valorDolar AS decimal(10,2))
 		FROM #importacion_electronicos i
 			LEFT JOIN producto.producto p ON p.nombre_producto = i.producto
 		WHERE p.nombre_producto IS NULL;

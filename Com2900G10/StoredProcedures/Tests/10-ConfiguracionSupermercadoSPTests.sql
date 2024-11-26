@@ -26,10 +26,10 @@ GO
 *******************************************************************************/
 
 /*Resultado esperado: OK Agregado*/
-EXEC config.AgregarConfiguracion 'Valor Dolar', '1125'
+EXEC configuracion.AgregarConfiguracion 'Valor Dolar', '1125'
 
 /*Resultado esperado: 'La configuracion que se esta queriendo insertar ya existe.'*/
-EXEC config.AgregarConfiguracion 'Valor Dolar', '1125'
+EXEC configuracion.AgregarConfiguracion 'Valor Dolar', '1125'
 
 
 /*******************************************************************************
@@ -37,29 +37,29 @@ EXEC config.AgregarConfiguracion 'Valor Dolar', '1125'
 *******************************************************************************/
 
 /*Resultado esperado: 'La configuracion que se esta queriendo modificar no existe.'*/
-EXEC config.ModificarConfiguracion 'Hola', 'Pepe'
+EXEC configuracion.ModificarConfiguracion 'Hola', 'Pepe'
 
 /*Resultado esperado: OK Modificado.*/
-EXEC config.ModificarConfiguracion 'Valor Dolar', '1200'
+EXEC configuracion.ModificarConfiguracion 'Valor Dolar', '1200'
 
 /*******************************************************************************
 						SP: EliminarConfiguracionPorID
 *******************************************************************************/
 
 /*Resultado esperado: 'La configuracion que se esta queriendo eliminar no existe.'*/
-EXEC config.EliminarConfiguracionPorID 2
+EXEC configuracion.EliminarConfiguracionPorID 9999
 
 /*Resultado esperado: OK Eliminado'*/
-EXEC config.EliminarConfiguracionPorID 1
+EXEC configuracion.EliminarConfiguracionPorID 1
 
 /*******************************************************************************
 						SP: EliminarConfiguracionPorDescripcion
 *******************************************************************************/
 
 /*Resultado esperado: No se puede eliminar la configuracion debido a que no existe.*/
-EXEC config.EliminarConfiguracionPorDescripcion 'Valor Dolar'
+EXEC configuracion.EliminarConfiguracionPorDescripcion 'AAAAA'
 
 /*Resultado esperado: Eliminado OK*/
-EXEC config.AgregarConfiguracion 'Valor Dolar', '1125'
-EXEC config.EliminarConfiguracionPorDescripcion 'Valor Dolar'
+EXEC configuracion.AgregarConfiguracion 'Valor Dolar', '1125'
+EXEC configuracion.EliminarConfiguracionPorDescripcion 'Valor Dolar'
 

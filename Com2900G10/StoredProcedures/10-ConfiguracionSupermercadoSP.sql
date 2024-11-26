@@ -20,17 +20,17 @@
 *******************************************************************************/
 USE Com2900G10;
 GO
---SP para configuracion_supermercado
+--SP para parametros_generales
 
 CREATE OR ALTER PROCEDURE configuracion.AgregarConfiguracion
 @descripcion varchar(70),
 @valor varchar(70)
 AS
 BEGIN
-	IF NOT EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
+	IF NOT EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[parametros_generales] 
 	WHERE descripcion = @descripcion)
 	BEGIN
-		INSERT INTO [Com2900G10].[configuracion].[configuracion_supermercado]
+		INSERT INTO [Com2900G10].[configuracion].[parametros_generales]
 		VALUES (@descripcion, @valor)
 		PRINT('Configuracion insertada con exito.');
 	END
@@ -47,10 +47,10 @@ CREATE OR ALTER PROCEDURE configuracion.ModificarConfiguracion
 @valor varchar(70)
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado]
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[parametros_generales]
 	WHERE descripcion = @descripcion)
 	BEGIN
-		UPDATE [Com2900G10].[configuracion].[configuracion_supermercado]
+		UPDATE [Com2900G10].[configuracion].[parametros_generales]
 		SET valor = @valor
 		WHERE descripcion = @descripcion
 
@@ -69,11 +69,11 @@ CREATE OR ALTER PROCEDURE configuracion.EliminarConfiguracionPorID
 @id_config INT
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
-	WHERE id_configuracion_supermercado = @id_config)
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[parametros_generales] 
+	WHERE id_parametros_generales = @id_config)
 	BEGIN
-		DELETE FROM [Com2900G10].[configuracion].[configuracion_supermercado]
-		WHERE id_configuracion_supermercado = @id_config
+		DELETE FROM [Com2900G10].[configuracion].[parametros_generales]
+		WHERE id_parametros_generales = @id_config
 		PRINT ('Configuracion eliminada exitosamente.')
 	END
 	ELSE
@@ -89,10 +89,10 @@ CREATE OR ALTER PROCEDURE configuracion.EliminarConfiguracionPorDescripcion
 @descripcion varchar(70)
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[parametros_generales] 
 	WHERE descripcion = @descripcion)
 	BEGIN
-		DELETE FROM [Com2900G10].[configuracion].[configuracion_supermercado]
+		DELETE FROM [Com2900G10].[configuracion].[parametros_generales]
 		WHERE descripcion = @descripcion
 		PRINT ('Configuracion eliminada exitosamente.')
 	END

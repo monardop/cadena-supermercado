@@ -133,7 +133,7 @@ CREATE TABLE [Com2900G10].[producto].[producto] (
     id_producto           SMALLINT      IDENTITY(1,1) PRIMARY KEY,
     id_categoria_producto SMALLINT		NOT NULL,
     nombre_producto       VARCHAR(100)  NOT NULL,
-    precio_unitario       DECIMAL(10,4) NOT NULL
+    precio_unitario       DECIMAL(10,2) NOT NULL
     CONSTRAINT FK_Categoria_Producto 
         FOREIGN KEY (id_categoria_producto)
         REFERENCES [Com2900G10].[producto].[categoria_producto](id_categoria_producto)
@@ -323,13 +323,13 @@ DROP TABLE IF EXISTS [Com2900G10].[configuracion].[parametros_generales]
 GO
 CREATE TABLE [Com2900G10].[configuracion].[parametros_generales] (
 	id_parametros_generales INT IDENTITY(1,1) PRIMARY KEY,
-	descripcion varchar(70),
+	descripcion varchar(100) UNIQUE,
 	valor varchar(300)
 );
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_porcentaje_iva]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'porcentaje_iva'
@@ -337,7 +337,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_cuit_emisor]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'cuit_emisor'
@@ -345,7 +345,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_valor_dolar]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'valor_dolar'
@@ -353,7 +353,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_password_encriptacion]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'clave123'
@@ -368,7 +368,7 @@ VALUES
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_path_info_complementaria]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'path_info_complementaria'
@@ -376,7 +376,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_catalogo]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'path_productos_catalogo'
@@ -384,7 +384,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_electronicos]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'path_productos_electronicos'
@@ -392,7 +392,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_importados]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'path_productos_importados'
@@ -400,7 +400,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_path_ventas]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'path_ventas'
@@ -408,7 +408,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_sucursales]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_sucursales'
@@ -416,7 +416,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_empleados]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_empleados'
@@ -424,7 +424,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_importar_medios_de_pago]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_medios_de_pago'
@@ -432,7 +432,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_categorias_productos]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_categorias_productos'
@@ -440,7 +440,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_electonicos]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_electonicos'
@@ -448,7 +448,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_productos_importados]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'hoja_importar_productos_importados'
@@ -456,7 +456,7 @@ END;
 GO
 
 CREATE OR ALTER FUNCTION [configuracion].[obtener_id_cliente_default_importacion]()
-RETURNS VARCHAR(30)
+RETURNS VARCHAR(100)
 AS 
 BEGIN
 	RETURN 'id_cliente_default_importacion'
