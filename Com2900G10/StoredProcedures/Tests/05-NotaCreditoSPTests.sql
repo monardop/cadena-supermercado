@@ -33,3 +33,7 @@ EXEC [Com2900G10].[venta].[CrearNotaCreditoTotal] 1, '000-00-2'
 
 /* Resultado esperado: Error - Numero de nota credito invalido, ya existe. */
 EXEC [Com2900G10].[venta].[CrearNotaCreditoTotal] 1, '000-00-1'
+
+
+/* Resultado esperado: Error - La suma de las NCs superaria el total */
+EXEC [Com2900G10].[venta].[CrearNotaCreditoParcial] 1,  '000-00-3', 1
