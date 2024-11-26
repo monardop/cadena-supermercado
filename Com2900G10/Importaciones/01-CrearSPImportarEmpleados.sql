@@ -109,8 +109,11 @@ BEGIN
 	INSERT INTO #importacion_empleado(legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, sucursal, turno)
 		EXEC sp_executesql @sql;
 
+	DECLARE @cuilDefault VARCHAR(13);
+	SELECT @cuilDefault = valor FROM configuracion.parametros_generales WHERE descripcion = configuracion.obtener_clave_cuil_default()
+
 	-- Pongo cuil default para los que no tengan cuil
-	UPDATE #importacion_empleado SET cuil = '00-00000000-0' WHERE cuil IS NULL;
+	UPDATE #importacion_empleado SET cuil = @cuilDefault WHERE cuil IS NULL;
 
 	-- Elimino registros invalidos
 	DELETE FROM #importacion_empleado WHERE legajo IS NULL;

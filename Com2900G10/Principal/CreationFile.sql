@@ -21,7 +21,11 @@
 USE master
 GO
 
-ALTER DATABASE [Com2900G10] set single_user with rollback immediate -- Para cerrar conexiones y poder dropear la bdd
+IF EXISTS (SELECT name FROM master.sys.databases WHERE name = N'Com2900G10')
+
+BEGIN
+	ALTER DATABASE [Com2900G10] set single_user with rollback immediate -- Para cerrar conexiones y poder dropear la bdd
+END
 GO
 
 DROP DATABASE IF EXISTS Com2900G10;--Elimino la base de datos si existe.
@@ -474,6 +478,14 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_cuil_default]()
+RETURNS VARCHAR(100)
+AS 
+BEGIN
+	RETURN 'cuil_default'
+END;
+GO
+
 -- Configuracion de parametros generales de paths
 DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
 INSERT INTO configuracion.parametros_generales(descripcion,valor)
@@ -490,5 +502,6 @@ VALUES
 ('hoja_importar_electonicos', 'Sheet1'),
 ('hoja_importar_productos_importados', 'Listado de Productos'),
 ('id_cliente_default_importacion', '1'),
-('id_categoria_default_importacion', '1');
+('id_categoria_default_importacion', '1'),
+('cuil_default', '00-00000000-0');
 GO
