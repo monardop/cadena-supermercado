@@ -65,9 +65,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Principal", "Principal", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backups", "Backups", "{9B4FCF47-94FC-4C29-8090-454B81E532ED}"
 	ProjectSection(SolutionItems) = preProject
-		Backups\ScriptBackupDiario.sql = Backups\ScriptBackupDiario.sql
-		Backups\ScriptBackupSemanal.sql = Backups\ScriptBackupSemanal.sql
-		Backups\ScriptBackupTLOG.sql = Backups\ScriptBackupTLOG.sql
+		Backups\0-ConfiguracionesIniciales.sql = Backups\0-ConfiguracionesIniciales.sql
+		Backups\1-ScriptBackupSemanal.sql = Backups\1-ScriptBackupSemanal.sql
+		Backups\2-ScriptBackupDiario.sql = Backups\2-ScriptBackupDiario.sql
+		Backups\3-ScriptBackupTLOG.sql = Backups\3-ScriptBackupTLOG.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Encriptacion", "Encriptacion", "{EE05D56E-D6F4-4AF8-9606-94F29C670A71}"
@@ -80,7 +81,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DDBD872-9CDE-4CC6-8AAA-B430E64BA8A1}.Default|Default.ActiveCfg = Default
+		{C7947BB3-4A53-439A-91AA-3BF3CC1B52E9}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
