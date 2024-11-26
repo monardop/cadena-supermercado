@@ -32,7 +32,7 @@ GO
 		SELECT * FROM venta.cliente
 		SELECT * FROM venta.medio_pago
 
-		SELECT * FROM venta.venta
+		SELECT * FROM sucursal.empleado
 
 	*/
 
