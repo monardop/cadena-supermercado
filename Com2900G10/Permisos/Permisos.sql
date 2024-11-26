@@ -21,28 +21,44 @@
 USE [Com2900G10]
 GO
 
+IF EXISTS (select 1 from master.dbo.syslogins  where name = 'PepeGerente')
+	DROP LOGIN [PepeGerente]
+
 CREATE LOGIN [PepeGerente]
 WITH PASSWORD = 'Com2900G10', DEFAULT_DATABASE = Com2900G10,
 CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF ;
 GO
 
+IF EXISTS (SELECT 1 FROM sys.database_principals  WHERE name = 'PepeGerente')
+	DROP USER [PepeGerente]
+
 CREATE USER [PepeGerente] FOR LOGIN [PepeGerente]
 GO
 
+IF EXISTS (select 1 from master.dbo.syslogins  where name = 'JoseCajero')
+	DROP LOGIN [JoseCajero]
 
 CREATE LOGIN [JoseCajero]
 WITH PASSWORD = 'Com2900G10', DEFAULT_DATABASE = Com2900G10,
 CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF ;
 GO
 
+IF EXISTS (SELECT 1 FROM sys.database_principals  WHERE name = 'JoseCajero')
+	DROP USER [JoseCajero]
+
 CREATE USER [JoseCajero] FOR LOGIN [JoseCajero]
 GO
 
+IF EXISTS (select 1 from master.dbo.syslogins  where name = 'FitoRepositor')
+	DROP LOGIN [FitoRepositor]
 
 CREATE LOGIN [FitoRepositor]
 WITH PASSWORD = 'Com2900G10', DEFAULT_DATABASE = Com2900G10,
 CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF ;
 GO
+
+IF EXISTS (SELECT 1 FROM sys.database_principals  WHERE name = 'FitoRepositor')
+	DROP USER [FitoRepositor]
 
 CREATE USER [FitoRepositor] FOR LOGIN [FitoRepositor]
 GO
@@ -69,6 +85,28 @@ JOIN sys.objects AS obj
 						Rol: Supervisor
 *******************************************************************************/
 
+IF EXISTS (select 1 from sys.database_principals where name='supervisor' and Type = 'R')
+BEGIN 
+	-- Vacio los miembros
+	DECLARE @rolename sysname = 'supervisor';
+	DECLARE @cmd AS NVARCHAR(MAX) = N'';
+
+	SELECT @cmd = @cmd + '
+		ALTER ROLE ' + QUOTENAME(@rolename) + ' DROP MEMBER ' + QUOTENAME(members.[name]) + ';'
+	FROM sys.database_role_members AS rolemembers
+		JOIN sys.database_principals AS roles 
+			ON roles.[principal_id] = rolemembers.[role_principal_id]
+		JOIN sys.database_principals AS members 
+			ON members.[principal_id] = rolemembers.[member_principal_id]
+	WHERE roles.[name]=@rolename
+
+	EXEC sp_executesql @cmd;
+
+	DROP ROLE supervisor
+
+END
+GO
+
 CREATE ROLE supervisor AUTHORIZATION dbo;
 ALTER ROLE supervisor ADD MEMBER PepeGerente;
 
@@ -85,11 +123,7 @@ GRANT SELECT ON SCHEMA::venta to supervisor
 GRANT EXECUTE ON SCHEMA::reportes to supervisor
 
 -- Para la venta somos mas estrictos y damos permisos por SP unicamente
-GRANT EXECUTE ON OBJECT::venta.CrearFactura to supervisor
-GRANT EXECUTE ON OBJECT::venta.ModificarFactura to supervisor
-GRANT EXECUTE ON OBJECT::venta.SetFacturaPagada to supervisor
-GRANT EXECUTE ON OBJECT::venta.CrearDetalleFactura to supervisor
-GRANT EXECUTE ON OBJECT::venta.ModificarDetalleFactura to supervisor
+GRANT EXECUTE ON OBJECT::venta.CrearVentaConFactura to supervisor
 GRANT EXECUTE ON OBJECT::venta.CrearMedioPago to supervisor
 GRANT EXECUTE ON OBJECT::venta.ModificarMedioPago to supervisor
 GRANT EXECUTE ON OBJECT::venta.CrearNotaCreditoParcial to supervisor
@@ -98,6 +132,29 @@ GRANT EXECUTE ON OBJECT::venta.CrearNotaCreditoTotal to supervisor
 /*******************************************************************************
 						Rol: Cajero
 *******************************************************************************/
+
+IF EXISTS (select 1 from sys.database_principals where name='cajero' and Type = 'R')
+BEGIN 
+	-- Vacio los miembros
+	DECLARE @rolename sysname = 'cajero';
+	DECLARE @cmd AS NVARCHAR(MAX) = N'';
+
+	SELECT @cmd = @cmd + '
+		ALTER ROLE ' + QUOTENAME(@rolename) + ' DROP MEMBER ' + QUOTENAME(members.[name]) + ';'
+	FROM sys.database_role_members AS rolemembers
+		JOIN sys.database_principals AS roles 
+			ON roles.[principal_id] = rolemembers.[role_principal_id]
+		JOIN sys.database_principals AS members 
+			ON members.[principal_id] = rolemembers.[member_principal_id]
+	WHERE roles.[name]=@rolename
+
+	EXEC sp_executesql @cmd;
+
+	DROP ROLE cajero
+
+END
+GO
+
 CREATE ROLE cajero AUTHORIZATION dbo;
 ALTER ROLE cajero ADD MEMBER JoseCajero;
 
@@ -107,15 +164,35 @@ GRANT SELECT ON SCHEMA::sucursal to cajero
 
 GRANT SELECT ON SCHEMA::venta to cajero
 -- Para la venta somos mas estrictos y damos permisos por SP unicamente
-GRANT EXECUTE ON OBJECT::venta.CrearFactura to cajero
-GRANT EXECUTE ON OBJECT::venta.ModificarFactura to cajero
-GRANT EXECUTE ON OBJECT::venta.SetFacturaPagada to cajero
-GRANT EXECUTE ON OBJECT::venta.CrearDetalleFactura to cajero
-GRANT EXECUTE ON OBJECT::venta.ModificarDetalleFactura to cajero
-
+GRANT EXECUTE ON OBJECT::venta.CrearVentaConFactura to cajero
 /*******************************************************************************
 						Rol: repositor
 *******************************************************************************/
+
+
+IF EXISTS (select 1 from sys.database_principals where name='repositor' and Type = 'R')
+BEGIN 
+	-- Vacio los miembros
+	DECLARE @rolename sysname = 'repositor';
+	DECLARE @cmd AS NVARCHAR(MAX) = N'';
+
+	SELECT @cmd = @cmd + '
+		ALTER ROLE ' + QUOTENAME(@rolename) + ' DROP MEMBER ' + QUOTENAME(members.[name]) + ';'
+	FROM sys.database_role_members AS rolemembers
+		JOIN sys.database_principals AS roles 
+			ON roles.[principal_id] = rolemembers.[role_principal_id]
+		JOIN sys.database_principals AS members 
+			ON members.[principal_id] = rolemembers.[member_principal_id]
+	WHERE roles.[name]=@rolename
+
+	EXEC sp_executesql @cmd;
+
+	DROP ROLE repositor
+
+END
+GO
+
+
 CREATE ROLE repositor AUTHORIZATION dbo;
 ALTER ROLE repositor ADD MEMBER FitoRepositor;
 
