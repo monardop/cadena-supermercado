@@ -50,51 +50,77 @@ END
 -- SELECT * FROM venta.factura
 -- EXEC reportes.reporte_mensual 2019, 03
 
+
+GO
+CREATE OR ALTER PROCEDURE reportes.reporte_trimestral_con_ingreso
+	@anio SMALLINT,
+	@trimestre TINYINT
+AS
+BEGIN
+        IF @trimestre < 1 OR @trimestre > 4
+	BEGIN
+		RAISERROR('El trimestre ingresado es invalido',10,1);
+
+		RETURN
+	END
+
+	IF @anio < 1900 OR @anio > YEAR(GETDATE())
+	BEGIN
+		RAISERROR('El año ingresado es invalido',10,1);
+
+		RETURN
+	END
+
+        DECLARE @TrimestreInicio INT = (@trimestre - 1) * 3 + 1;
+        DECLARE @TrimestreFin INT = @trimestre * 3;
+
+    -- Empieza la consulta
+    SELECT
+		CASE MONTH(f.fecha_hora)
+			WHEN 1 THEN 'Enero'
+			WHEN 2 THEN 'Febrero'
+			WHEN 3 THEN 'Marzo'
+			WHEN 4 THEN 'Abril'
+			WHEN 5 THEN 'Mayo'
+			WHEN 6 THEN 'Junio'
+			WHEN 7 THEN 'Julio'
+			WHEN 8 THEN 'Agosto'
+			WHEN 9 THEN 'Septiembre'
+			WHEN 10 THEN 'Octubre'
+			WHEN 11 THEN 'Noviembre'
+			WHEN 12 THEN 'Diciembre'
+		END as mes,
+		e.turno,
+        SUM(f.total_con_iva) AS Ventas
+	FROM venta.factura f
+		INNER JOIN venta.venta v ON v.id_factura = f.id_factura
+		INNER JOIN sucursal.empleado e ON e.legajo = v.legajo_empleado
+    WHERE YEAR(f.fecha_hora) = @anio
+        AND MONTH(f.fecha_hora) BETWEEN @TrimestreInicio AND @TrimestreFin
+    GROUP BY MONTH(f.fecha_hora), e.turno
+	ORDER BY MONTH(f.fecha_hora), e.turno
+    FOR XML RAW, ELEMENTS, ROOT('XML')
+END
+
+-- SELECT * FROM venta.factura
+-- EXEC reportes.reporte_trimestral_con_ingreso 2019, 1
+
 GO
 CREATE OR ALTER PROCEDURE reportes.reporte_trimestral
 AS
     -- Busco el trimestre actual
     BEGIN
-        DECLARE @currYear INT = YEAR(GETDATE());
+        DECLARE @anioActual INT = YEAR(GETDATE());
         DECLARE @MesActual INT = MONTH(GETDATE());
         DECLARE @TrimestreActual INT = CEILING(CAST(@MesActual AS FLOAT) / 3);
         DECLARE @TrimestreInicio INT = (@TrimestreActual - 1) * 3 + 1;
         DECLARE @TrimestreFin INT = @TrimestreActual * 3;
 
-    -- Si el mes actual fuese enero o febrero, cambio 
-    IF @TrimestreActual = 1
-    BEGIN
-        SET @currYear = @currYear - 1;
-        SET @TrimestreInicio = 10;
-        SET @TrimestreFin = 12;
-    END
-    ELSE IF @TrimestreActual = 2
-    BEGIN
-        SET @currYear = @currYear - 1;
-        SET @TrimestreInicio = 7;
-        SET @TrimestreFin = 9;
-    END
-
-    -- Empieza la consulta
-    SELECT
-        CASE 
-            WHEN DATEPART(HOUR, fecha_hora) < 12 THEN 'Mañana'
-            WHEN DATEPART(HOUR, fecha_hora) >= 12 AND DATEPART(HOUR, fecha_hora) < 19 THEN 'Tarde'
-            ELSE 'Noche'
-        END AS Turno,
-        SUM(total) AS Ventas
-	FROM venta.factura
-    WHERE YEAR(fecha_hora) = @currYear
-        AND MONTH(fecha_hora) BETWEEN @TrimestreInicio AND @TrimestreFin
-    GROUP BY
-             CASE
-                 WHEN DATEPART(HOUR, fecha_hora) < 12 THEN 'Mañana'
-                 WHEN DATEPART(HOUR, fecha_hora) >= 12 AND DATEPART(HOUR, fecha_hora) < 19 THEN 'Tarde'
-                 ELSE 'Noche'
-             END
-    FOR XML RAW, ELEMENTS, ROOT('XML')
+    EXEC reportes.reporte_trimestral_con_ingreso @anioActual, @TrimestreActual
 END
 
+-- SELECT * FROM venta.factura
+-- EXEC reportes.reporte_trimestral
 
 GO
 CREATE OR ALTER PROCEDURE reportes.productos_vendidas_por_rango
