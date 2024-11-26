@@ -75,7 +75,7 @@ Esto nos permite mantener una base de datos integra ante escenarios de error, ma
 | Entrega 5 | Documentación de backups                                      | `./Informe.pdf`                                  |
 |          | Scripts de backups                                             | `./Com2900G10/Backups/*`                         |
 |          | Encriptación                                                   | `./Com2900G10/Encriptacion/EncriptarEmpleado.sql`|
-|          | Roles/Permisos                                                 | `./Com2900G10/Permisos.sql`                      |
+|          | Roles/Permisos                                                 | `./Com2900G10/Permisos/Permisos.sql`             |
 |          | Reportes                                                       | `./Com2900G10/Reportes/SPReportes.sql`           |
 
 
