@@ -17,11 +17,12 @@
 * La politica se encuentra formalizada dentro del documebto README.md del     *
 * repositorio,a continuacion se adjunta la ejecucion de la misma              *
 *******************************************************************************/
+USE [Com2900G10]
+GO
 
-DECLARE @PathLocal varchar(MAX) = 'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\DIFF' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' --105 fuerza el formato italiano dd-mm-yyyy
+DECLARE @PathLocal varchar(500) = [configuracion].[obtener_path_backup_diferencial]()
+
 --Genero el path y nombre de archivo para el backup, el resultado final es por ejemplo D:\Backup\Local\Diario\DIFF09-11-2024.bak
-
-
 DECLARE @Retencion int = 731 --Declaro un entero (debe ser explicito para RETAINDAYS) para definir dos años de retencion (incluso ante biciestos) de los documentos
 
 BACKUP DATABASE [Com2900G10] 

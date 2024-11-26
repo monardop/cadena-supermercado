@@ -18,19 +18,17 @@
 * repositorio,a continuacion se adjunta la ejecucion de la misma              *
 *******************************************************************************/
 
-DECLARE @PathLocal varchar(MAX) = 'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\FULL' + CONVERT(nvarchar(30), GETDATE(), 105) +'.bak' --105 fuerza el formato italiano dd-mm-yyyy
---Genero el path y nombre de archivo para el backup, el resultado final es por ejemplo D:\Backup\Local\Mensual\FULL09-11-2024.bak
+DECLARE @PathLocal varchar(500) = [configuracion].[obtener_path_backup_incremental]()
 
+DECLARE @Retencion date= DATEADD(dd,2,GETDATE())
+--Declaro una fecha de eliminacion igual a DOS dias despues de la ejecucion de este log.
 
-DECLARE @Retencion int = 731
---Declaro un entero (debe ser explicito para RETAINDAYS) para definir dos años de retencion (incluso ante biciestos) de los documentos
-
-BACKUP DATABASE [Com2900G10] 
+BACKUP LOG [Com2900G10]
 To DISK=@PathLocal
-WITH FORMAT, CHECKSUM,STOP_ON_ERROR,
+WITH FORMAT,CHECKSUM,STOP_ON_ERROR,
 MEDIANAME = 'Com2900G10-CadenaSupermercado',
-NAME = 'FULL-TransaccionesMensuales',
-RETAINDAYS = @Retencion;
+NAME = 'Log-TransaccionesPorHora',
+EXPIREDATE=@Retencion;
 GO
 
--- Se genera un backup FULL de las transacciones realizadas, planeado para ejecutarse cada Semana.
+-- Se genera un backup incremental de las transacciones realizadas, planeado para ejecutarse cada una hora.
