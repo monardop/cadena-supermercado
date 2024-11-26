@@ -32,6 +32,8 @@
 /*******************************************************************************
 *						Declara parametros               					   *
 ****************************************** *************************************/
+USE [Com2900G10];
+GO
 
 DECLARE @pathInfoComplementaria VARCHAR(300);
 DECLARE @hojaSucursales VARCHAR(100);

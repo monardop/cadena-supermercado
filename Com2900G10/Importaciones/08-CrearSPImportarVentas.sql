@@ -131,8 +131,6 @@ BEGIN
 	FROM #importacion_ventas i
 		INNER JOIN venta.medio_pago m ON m.nombre_eng = i.medio_pago OR m.nombre_esp = i.medio_pago;
 
-		SELECT * FROM #importacion_ventas where id_sucursal is null
-
 	-- actualizo id_sucursal en tmp
 	UPDATE i
 		SET i.id_sucursal = s.id_sucursal

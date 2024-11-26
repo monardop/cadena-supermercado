@@ -152,7 +152,8 @@ BEGIN
 		i.cargo, 
 		i.id_sucursal, 
 		i.turno, 
-		1
+		1,
+		0
 	FROM #importacion_empleado i
 		LEFT JOIN sucursal.empleado s ON s.legajo = i.legajo
 	WHERE s.legajo IS NULL;

@@ -84,6 +84,7 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     turno           VARCHAR(20) 
 					CHECK([turno] IN ('TM', 'TT', 'TN', 'Jornada completa')),
     activo          BIT,
+	encriptado bit default 0 not null,
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
@@ -348,6 +349,14 @@ RETURNS VARCHAR(30)
 AS 
 BEGIN
 	RETURN 'valor_dolar'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_encriptacion]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'clave123'
 END;
 GO
 
