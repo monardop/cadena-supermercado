@@ -40,23 +40,6 @@ GO
 CREATE SCHEMA importacion;
 GO
 
--- Configuracion de parametros generales
-DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
-INSERT INTO configuracion.parametros_generales(descripcion,valor)
-VALUES
-('path_info_complementaria', @pathDataFiles + 'Informacion_complementaria.xlsx'),
-('path_productos_catalogo', @pathDataFiles + 'Productos\catalogo.csv'),
-('path_productos_electonicos', @pathDataFiles + 'Productos\Electronic accessories.xlsx'),
-('path_productos_importados', @pathDataFiles + 'Productos\Productos_importados.xlsx'),
-('path_ventas', @pathDataFiles + 'Ventas_registradas.csv'),
-('hoja_importar_sucursales', 'sucursal'),
-('hoja_importar_empleados', 'Empleados'),
-('hoja_importar_medios_de_pago', 'medios de pago'),
-('hoja_importar_categorias_productos', 'Clasificacion productos'),
-('hoja_importar_electonicos', 'Sheet1'),
-('hoja_importar_productos_importados', 'Listado de Productos'),
-('id_cliente_default_importacion', '1');
-GO
 
 CREATE OR ALTER FUNCTION importacion.sanitizar_y_reemplazar(@sanitizar VARCHAR(300), @reemplazar VARCHAR(5))
 RETURNS VARCHAR(300)
