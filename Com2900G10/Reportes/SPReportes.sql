@@ -1,8 +1,15 @@
 USE Com2900G10;
+GO
 
 DROP PROCEDURE IF EXISTS reportes.reporte_mensual
-DROP PROCEDURE IF EXISTS reportes.reporte_trimestral
-
+DROP PROCEDURE IF EXISTS reportes.reporte_trimestral_con_ingreso
+DROP PROCEDURE IF EXISTS reportes.reporte_trimestral_actual
+DROP PROCEDURE IF EXISTS reportes.productos_vendidos_por_rango
+DROP PROCEDURE IF EXISTS reportes.productos_vendidos_por_rango_por_sucursal
+DROP PROCEDURE IF EXISTS reportes.top5_productos_vendidos_mes_por_semana
+DROP PROCEDURE IF EXISTS reportes.top5_menos_productos_vendidos_mes
+DROP PROCEDURE IF EXISTS reportes.acumulado_ventas_por_fecha_por_sucursal
+GO
 
 DROP SCHEMA IF EXISTS reportes
 GO
@@ -106,7 +113,7 @@ END
 -- EXEC reportes.reporte_trimestral_con_ingreso 2019, 1
 
 GO
-CREATE OR ALTER PROCEDURE reportes.reporte_trimestral
+CREATE OR ALTER PROCEDURE reportes.reporte_trimestral_actual
 AS
     -- Busco el trimestre actual
     BEGIN
@@ -120,16 +127,25 @@ AS
 END
 
 -- SELECT * FROM venta.factura
--- EXEC reportes.reporte_trimestral
+-- EXEC reportes.reporte_trimestral_actual
 
 GO
-CREATE OR ALTER PROCEDURE reportes.productos_vendidas_por_rango
+CREATE OR ALTER PROCEDURE reportes.productos_vendidos_por_rango
 	@desde datetime, @hasta datetime
 AS
 BEGIN
 	IF @desde is null OR @hasta is null
 	BEGIN
 		RAISERROR('Debe ingresar los limites de fechas', 10, 1);
+
+		RETURN 
+	END
+
+	if @hasta < @desde
+	BEGIN
+		RAISERROR('La fecha hasta debe ser mayor o igual a la fecha desde',10,1)
+
+		RETURN
 	END
 
     -- Empieza la consulta
@@ -139,18 +155,17 @@ BEGIN
 			p.nombre_producto as producto,
 			SUM( df.cantidad) as cantidad
 		FROM venta.detalle_factura df
-			INNER JOIN venta.factura f ON f.id_factura = df.id_factura AND f.pagada = 1
+			INNER JOIN venta.factura f ON f.id_factura = df.id_factura AND f.id_pago IS NOT NULL
 			INNER JOIN producto.producto p ON p.id_producto = df.id_producto
 		GROUP BY p.nombre_producto
 	) t1
 	ORDER BY t1.cantidad DESC
     FOR XML RAW, ELEMENTS, ROOT('XML')
 END;
--- EXEC reportes.productos_vendidas_por_rango '2019-01-01', '2019-12-31'
+-- EXEC reportes.productos_vendidos_por_rango '2019-01-01', '2019-12-31'
+
 GO
-
-
-CREATE OR ALTER PROCEDURE reportes.productos_vendidas_por_rango_por_sucursal
+CREATE OR ALTER PROCEDURE reportes.productos_vendidos_por_rango_por_sucursal
 	@desde datetime, @hasta datetime
 AS
 BEGIN
@@ -168,25 +183,39 @@ BEGIN
 			p.nombre_producto as producto,
 			SUM( df.cantidad) as cantidad
 		FROM venta.detalle_factura df
-			INNER JOIN venta.factura f ON f.id_factura = df.id_factura AND f.pagada = 1
-			INNER JOIN sucursal.sucursal s ON s.id_sucursal = f.id_sucursal
+			INNER JOIN venta.factura f ON f.id_factura = df.id_factura AND f.id_pago IS NOT NULL
+			INNER JOIN venta.venta v ON v.id_factura = f.id_factura
+			INNER JOIN sucursal.sucursal s ON s.id_sucursal = v.id_sucursal
 			INNER JOIN producto.producto p ON p.id_producto = df.id_producto
 		GROUP BY s.id_sucursal, s.reemplazar_por, nombre_producto
 	) t1
 	ORDER BY t1.cantidad DESC
     FOR XML RAW, ELEMENTS, ROOT('XML')
 END;
--- EXEC reportes.productos_vendidas_por_rango_por_sucursal '2019-01-01', '2019-12-31'
+-- EXEC reportes.productos_vendidos_por_rango_por_sucursal '2019-01-01', '2019-12-31'
+
 GO
-
-
 CREATE OR ALTER PROCEDURE reportes.top5_productos_vendidos_mes_por_semana
-	@mes tinyint, @anio smallint
+	@anio smallint, @mes tinyint
 AS
 BEGIN
 	IF @mes is null OR @anio is null
 	BEGIN
 		RAISERROR('Debe ingresar el mes a consultar', 10, 1);
+	END;
+
+	IF @mes < 1 OR @mes > 12
+	BEGIN
+		RAISERROR('El mes ingresado es invalido',10,1);
+
+		RETURN
+	END
+
+	IF @anio < 1900 OR @anio > YEAR(GETDATE())
+	BEGIN
+		RAISERROR('El año ingresado es invalido',10,1);
+
+		RETURN
 	END;
 
     -- Empieza la consulta
@@ -207,7 +236,7 @@ BEGIN
 			FROM venta.detalle_factura df
 				INNER JOIN venta.factura f ON 
 					f.id_factura = df.id_factura AND 
-					f.pagada = 1 AND
+					f.id_pago IS NOT NULL AND
 					MONTH(f.fecha_hora) = @mes AND
 					YEAR(f.fecha_hora) = @anio
 				INNER JOIN producto.producto p ON p.id_producto = df.id_producto
@@ -223,16 +252,30 @@ BEGIN
 	WHERE posicion <= 5
     FOR XML RAW, ELEMENTS, ROOT('XML')
 END;
--- EXEC reportes.top5_productos_vendidos_mes_por_semana 2, 2019
+-- EXEC reportes.top5_productos_vendidos_mes_por_semana 2019, 2
 GO
 
 CREATE OR ALTER PROCEDURE reportes.top5_menos_productos_vendidos_mes
-	@mes tinyint, @anio smallint
+	@anio smallint, @mes tinyint
 AS
 BEGIN
 	IF @mes is null OR @anio is null
 	BEGIN
 		RAISERROR('Debe ingresar el mes a consultar', 10, 1);
+	END;
+
+	IF @mes < 1 OR @mes > 12
+	BEGIN
+		RAISERROR('El mes ingresado es invalido',10,1);
+
+		RETURN
+	END
+
+	IF @anio < 1900 OR @anio > YEAR(GETDATE())
+	BEGIN
+		RAISERROR('El año ingresado es invalido',10,1);
+
+		RETURN
 	END;
 
     -- Empieza la consulta
@@ -246,7 +289,7 @@ BEGIN
 			FROM venta.detalle_factura df
 				INNER JOIN venta.factura f ON 
 					f.id_factura = df.id_factura AND 
-					f.pagada = 1 AND
+					f.id_pago IS NOT NULL AND
 					MONTH(f.fecha_hora) = @mes AND
 					YEAR(f.fecha_hora) = @anio
 				INNER JOIN producto.producto p ON p.id_producto = df.id_producto
@@ -260,9 +303,8 @@ BEGIN
 	WHERE posicion <= 5
     FOR XML RAW, ELEMENTS, ROOT('XML')
 END;
--- EXEC reportes.top5_menos_productos_vendidos_mes 3, 2019
+-- EXEC reportes.top5_menos_productos_vendidos_mes 2019, 3
 GO
-
 
 CREATE OR ALTER PROCEDURE reportes.acumulado_ventas_por_fecha_por_sucursal
 	@fecha date, @id_sucursal smallint
@@ -271,6 +313,15 @@ BEGIN
 	IF @fecha is null OR @id_sucursal is null
 	BEGIN
 		RAISERROR('Debe ingresar la fecha y sucursal a consultar', 10, 1);
+
+		RETURN
+	END;
+
+	if @fecha > GETDATE()
+	BEGIN
+		RAISERROR('La fecha no puede ser futura',10,1)
+
+		RETURN
 	END;
 
     -- Empieza la consulta
@@ -278,14 +329,15 @@ BEGIN
 	(
 			SELECT
 				f.id_factura,
-				f.total,
+				f.total_con_iva,
 				f.fecha_hora,
-				SUM(f.total) OVER(ORDER BY f.id_factura)
+				SUM(f.total_con_iva) OVER(ORDER BY f.id_factura)
 			FROM  venta.factura f
+				INNER JOIN venta.venta v ON v.id_factura = f.id_factura
 			WHERE
-				f.pagada = 1 AND
+				f.id_pago IS NOT NULL AND
 				CAST(f.fecha_hora AS date) = @fecha AND
-				f.id_sucursal = @id_sucursal
+				v.id_sucursal = @id_sucursal
 	)
 	SELECT 
 		*
