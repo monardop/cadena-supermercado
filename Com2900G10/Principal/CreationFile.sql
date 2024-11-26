@@ -352,7 +352,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER FUNCTION [configuracion].[obtener_clave_encriptacion]()
+CREATE OR ALTER FUNCTION [configuracion].[obtener_password_encriptacion]()
 RETURNS VARCHAR(30)
 AS 
 BEGIN

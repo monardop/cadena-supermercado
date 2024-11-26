@@ -140,6 +140,8 @@ BEGIN
 END;
 GO
 
+-- EXEC configuracion.DesencriptarEmpleados
+
 -- Lectura desencriptada de empleados
 CREATE OR ALTER PROCEDURE sucursal.LeerEmpleadoEncriptado
 AS
@@ -163,3 +165,31 @@ BEGIN
 		CLOSE SYMMETRIC KEY clave_simetrica_empleado;
 END;
 GO
+
+CREATE OR ALTER PROCEDURE sucursal.LeerEmpleadoEncriptadoPorLegajo
+@legajo INT
+AS
+BEGIN
+		DECLARE @sql NVARCHAR(500);
+		SET @sql = N'
+		OPEN SYMMETRIC KEY clave_simetrica_empleado 
+		DECRYPTION BY PASSWORD = ''' + configuracion.obtener_password_encriptacion() + N'''
+		';
+
+		EXEC sp_executesql @SQL;
+			SELECT
+			legajo,nombre,apellido,
+			ISNULL(CONVERT(nvarchar(256),DECRYPTBYKEY(dni)),dni) as dni,
+			ISNULL(CONVERT(nvarchar(256),DECRYPTBYKEY(direccion)),direccion) as direccion,
+			ISNULL(CONVERT(nvarchar(256),DECRYPTBYKEY(email_personal)),email_personal) as email_personal,
+			email_empresa,
+			ISNULL(CONVERT(nvarchar(256),DECRYPTBYKEY(cuil)),cuil) as cuil,
+			cargo,id_sucursal,turno,activo
+			FROM sucursal.empleado WHERE legajo = @legajo
+		CLOSE SYMMETRIC KEY clave_simetrica_empleado;
+END;
+GO
+
+ -- SELECT * FROM sucursal.empleado
+ -- EXEC sucursal.LeerEmpleadoEncriptado
+ -- sucursal.LeerEmpleadoEncriptadoPorLegajo 257025
