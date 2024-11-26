@@ -39,7 +39,8 @@ CREATE OR ALTER PROCEDURE importacion.ImportarVentas
 	@pathArchivos VARCHAR(200),
 	@id_default_cliente SMALLINT,
 	@porcentaje_iva DECIMAL(4,2),
-	@cuit_emisor CHAR(13)
+	@cuit_emisor CHAR(13),
+	@valorDolar Decimal(12,2)
 AS
 BEGIN
 	DECLARE @sql NVARCHAR(max) = 'BULK INSERT #importacion_ventas
@@ -66,7 +67,7 @@ BEGIN
 		tipo_cliente VARCHAR(100),
 		genero VARCHAR(100),
 		producto VARCHAR(300),
-		precio_unitario DECIMAL(6,2),
+		precio_unitario DECIMAL(12,2),
 		cantidad SMALLINT,
 		fecha VARCHAR(20),
 		hora VARCHAR(20),
@@ -74,9 +75,12 @@ BEGIN
 		empleado varchar(100),
 		identificador_pago varchar(500)
 	);
-
 	-- inserto
 	EXEC sp_executesql @sql
+
+	-- Asumo valores en dolares por la caracteristica del importe
+	UPDATE #importacion_ventas SET precio_unitario = precio_unitario * @valorDolar
+
 	-- DROP TABLE #importacion_ventas
 	-- Sanitizo
 	UPDATE #importacion_ventas SET numero_factura = TRIM(importacion.sanitizar_y_reemplazar(numero_factura,' '));

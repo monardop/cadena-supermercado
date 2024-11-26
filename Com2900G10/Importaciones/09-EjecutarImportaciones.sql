@@ -91,7 +91,7 @@ EXEC [Com2900G10].[importacion].[ImportarCategoriasProductos] @pathInfoComplemen
 -- SELECT * FROM [Com2900G10].[producto].[categoria_producto]
 
 -- Sin hoja por ser CSV
-EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo;
+EXEC [Com2900G10].[importacion].[ImportarCatalogo] @pathProductosCatalogo, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
 EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronicos, @hojaElectronicos, @valorDolar;
@@ -100,7 +100,7 @@ EXEC [Com2900G10].[importacion].[ImportarElectronicos] @pathProductosElectronico
 EXEC [Com2900G10].[importacion].[ImportarProductosImportados] @pathProductosImportados, @hojaProductosImportados, @valorDolar;
 -- SELECT * FROM [Com2900G10].[producto].[producto]
 
-EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas, @idClienteDefaultImportacion, @porcentajeIva, @cuitEmisor;
+EXEC [Com2900G10].[importacion].[ImportarVentas] @pathVentas, @idClienteDefaultImportacion, @porcentajeIva, @cuitEmisor, @valorDolar;
 -- SELECT COUNT(*) FROM [Com2900G10].[venta].[factura] 
 -- SELECT * FROM [Com2900G10].[venta].[factura] 
 -- SELECT * FROM [Com2900G10].[venta].[detalle_factura]

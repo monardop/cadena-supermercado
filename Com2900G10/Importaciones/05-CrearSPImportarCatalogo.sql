@@ -37,7 +37,7 @@ GO
 -- SP para la importar datos de clasificacion de productos
 GO
 CREATE OR ALTER PROCEDURE importacion.ImportarCatalogo
-	@pathArchivos VARCHAR(200)
+	@pathArchivos VARCHAR(200), @valorDolar Decimal(12,2)
 AS
 BEGIN
 
@@ -81,7 +81,7 @@ BEGIN
 
 	-- Inserto los productos validando de no repetir nombre
 	INSERT INTO producto.producto(id_categoria_producto, nombre_producto, precio_unitario)
-	SELECT i.id_categoria, i.nombre, i.precio
+	SELECT i.id_categoria, i.nombre, i.precio_referencia * @valorDolar
 	FROM #importacion_catalogo i
 		LEFT JOIN producto.producto p ON i.nombre = p.nombre_producto
 	WHERE p.id_producto IS NULL

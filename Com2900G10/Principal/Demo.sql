@@ -50,10 +50,10 @@ GO
 	*/
 		DECLARE @legajo INT = 257020;
 		DECLARE @id_punto_venta_empleado INT = 2;
-		DECLARE @productos VARCHAR(400) = '1,10;2,20;3,30;5,23';
+		DECLARE @productos VARCHAR(400) = '1,3;3,2;2,1'; -- {producto},{cantidad};{producto},{cantidad};...
 		DECLARE @id_cliente INT = 2;
 		DECLARE @tipo_factura CHAR(1) = 'A';
-		DECLARE @numero_factura VARCHAR(11) = '000-01-005';
+		DECLARE @numero_factura VARCHAR(11) = '000-01-012';
 		DECLARE @id_medio_pago SMALLINT = 3;
 		DECLARE @identificador_pago VARCHAR(200) = 'A3C-S1A-X90';
 		EXEC [Com2900G10].[venta].[CrearVentaConFactura] 
@@ -69,7 +69,10 @@ GO
 		SELECT * FROM venta.detalle_venta WHERE id_venta = 1001;
 		SELECT * FROM venta.factura ORDER BY id_factura DESC
 		SELECT * FROM venta.detalle_factura WHERE id_factura = 1001;
+		SELECT * FROM producto.producto WHERE id_producto IN (1,2,3,5)
 	GO
+
+	select * FROM producto.producto order by precio_unitario asc
 
 	/*
 		Caso NC Total
