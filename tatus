@@ -1,0 +1,552 @@
+[1mdiff --git a/Com2900G10/.vs/Com2900G10/v15/.ssms_suo b/Com2900G10/.vs/Com2900G10/v15/.ssms_suo[m
+[1mindex 257eb87..1ecbb82 100644[m
+Binary files a/Com2900G10/.vs/Com2900G10/v15/.ssms_suo and b/Com2900G10/.vs/Com2900G10/v15/.ssms_suo differ
+[1mdiff --git a/Com2900G10/Com2900G10.ssmssln b/Com2900G10/Com2900G10.ssmssln[m
+[1mindex 243d785..19ab1df 100644[m
+[1m--- a/Com2900G10/Com2900G10.ssmssln[m
+[1m+++ b/Com2900G10/Com2900G10.ssmssln[m
+[36m@@ -25,9 +25,9 @@[m [mProject("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP[m
+ 		StoredProcedures\04-MedioPagoSP.sql = StoredProcedures\04-MedioPagoSP.sql[m
+ 		StoredProcedures\05-NotaCreditoSP.sql = StoredProcedures\05-NotaCreditoSP.sql[m
+ 		StoredProcedures\06-ProductoSP.sql = StoredProcedures\06-ProductoSP.sql[m
+[31m-		StoredProcedures\07-PuntoVentaEmpleadoSP.sql = StoredProcedures\07-PuntoVentaEmpleadoSP.sql[m
+[32m+[m		[32mStoredProcedures\07-EmpleadosSP.sql = StoredProcedures\07-EmpleadosSP.sql[m
+ 		StoredProcedures\08-SucursalSP.sql = StoredProcedures\08-SucursalSP.sql[m
+[31m-		StoredProcedures\09-EmpleadosSP.sql = StoredProcedures\09-EmpleadosSP.sql[m
+[32m+[m		[32mStoredProcedures\09-PuntoVentaEmpleadoSP.sql = StoredProcedures\09-PuntoVentaEmpleadoSP.sql[m
+ 		StoredProcedures\10-ConfiguracionSupermercadoSP.sql = StoredProcedures\10-ConfiguracionSupermercadoSP.sql[m
+ 	EndProjectSection[m
+ EndProject[m
+[36m@@ -39,9 +39,9 @@[m [mProject("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C[m
+ 		StoredProcedures\Tests\04-MedioPagoSPTests.sql = StoredProcedures\Tests\04-MedioPagoSPTests.sql[m
+ 		StoredProcedures\Tests\05-NotaCreditoSPTests.sql = StoredProcedures\Tests\05-NotaCreditoSPTests.sql[m
+ 		StoredProcedures\Tests\06-ProductoSPTests.sql = StoredProcedures\Tests\06-ProductoSPTests.sql[m
+[31m-		StoredProcedures\Tests\07-PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\07-PuntoVentaEmpleadoSPTests.sql[m
+[32m+[m		[32mStoredProcedures\Tests\07-EmpleadoSPTests.sql = StoredProcedures\Tests\07-EmpleadoSPTests.sql[m
+ 		StoredProcedures\Tests\08-SucursalSPTests.sql = StoredProcedures\Tests\08-SucursalSPTests.sql[m
+[31m-		StoredProcedures\Tests\09-EmpleadoSPTests.sql = StoredProcedures\Tests\09-EmpleadoSPTests.sql[m
+[32m+[m		[32mStoredProcedures\Tests\09-PuntoVentaEmpleadoSPTests.sql = StoredProcedures\Tests\09-PuntoVentaEmpleadoSPTests.sql[m
+ 		StoredProcedures\Tests\10-ConfiguracionSupermercadoSPTests.sql = StoredProcedures\Tests\10-ConfiguracionSupermercadoSPTests.sql[m
+ 	EndProjectSection[m
+ EndProject[m
+[1mdiff --git a/Com2900G10/StoredProcedures/07-PuntoVentaEmpleadoSP.sql b/Com2900G10/StoredProcedures/07-PuntoVentaEmpleadoSP.sql[m
+[1mdeleted file mode 100644[m
+[1mindex fcb09c3..0000000[m
+[1m--- a/Com2900G10/StoredProcedures/07-PuntoVentaEmpleadoSP.sql[m
+[1m+++ /dev/null[m
+[36m@@ -1,173 +0,0 @@[m
+[31m-/*******************************************************************************[m
+[31m-*                                                                             *[m
+[31m-*                           Entrega 3 - Grupo 10                              *[m
+[31m-*																			  *[m
+[31m-*                           Integrantes:                                      *[m
+[31m-*                           43.988.577 Juan PiÒan                             *[m
+[31m-*                           43.049.457 Matias Matter                          *[m
+[31m-*                           42.394.230 Lucas Natario                          *[m
+[31m-*                           40.429.974 Pablo Monardo                          *[m
+[31m-*                                                                             *[m
+[31m-*                                                                             *[m
+[31m-* "Cree la base de datos, entidades y relaciones. Incluya restricciones y     *[m
+[31m-* claves. Deber· entregar un archivo .sql con el script completo de creaciÛn  *[m
+[31m-* (debe funcionar si se lo ejecuta ìtal cualî es entregado). Incluya          *[m
+[31m-* comentarios para indicar quÈ hace cada mÛdulo de cÛdigo.                    *[m
+[31m-* Genere store procedures para manejar la inserciÛn, modificaciÛn, borrado    *[m
+[31m-* (si corresponde, tambiÈn debe decidir si determinadas entidades solo        *[m
+[31m-* admitir·n borrado lÛgico) de cada tabla."                                   *[m
+[31m-*                                                                             *[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-[m
+[31m-GO[m
+[31m-USE Com2900G10;[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE CrearPuntoVentaEmpleado[m
+[31m-@nro_punto_venta INT,[m
+[31m-@id_sucursal SMALLINT,[m
+[31m-@legajo_empleado INT[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-IF NOT EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta_empleado][m
+[31m-				WHERE numero_punto_venta = @nro_punto_venta  AND id_sucursal = @id_sucursal[m
+[31m-				AND activo = 1)[m
+[31m-BEGIN[m
+[31m-		IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[empleado][m
+[31m-		WHERE legajo = @legajo_empleado AND id_sucursal = @id_sucursal) --Si el empleado existe y trabaja en la sucursal que se quiere asociar el punto de venta[m
+[31m-		BEGIN[m
+[31m-			IF EXISTS (SELECT * FROM [Com2900G10].[sucursal].[punto_venta][m
+[31m-			WHERE numero_punto_venta = @nro_punto_venta and id_sucursal = @id_sucursal)[m
+[31m-			BEGIN[m
+[31m-				INSERT INTO [Com2900G10].[sucursal].[punto_venta_empleado] VALUES (@nro_punto_venta,@id_sucursal,@legajo_empleado,1)[m
+[31m-				PRINT ('Asociacion entre punto de venta y empleado generada exitosamente.')[m
+[31m-			END[m
+[31m-			ELSE[m
+[31m-			BEGIN[m
+[31m-				RAISERROR('El numero de punto de venta que quiere asociar no existe o no pertenece a la sucursal.',10,1)[m
+[31m-				RETURN[m
+[31m-			END[m
+[31m-		END[m
+[31m-		ELSE[m
+[31m-		BEGIN[m
+[31m-			RAISERROR('El empleado que esta queriendo asociar al punto de venta no existe o no trabaja en la sucursal.',10,1)[m
+[31m-			RETURN[m
+[31m-		END[m
+[31m-END[m
+[31m-ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR('La asociacion entre punto de venta y empleado que se esta queriendo crear ya existe y se encuentra activa.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleado[m
+[31m-@id_punto_venta_empleado int[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado][m
+[31m-	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 1)[m
+[31m-	BEGIN[m
+[31m-		UPDATE [sucursal].[punto_venta_empleado][m
+[31m-		SET activo = 0[m
+[31m-		WHERE id_punto_venta_empleado = @id_punto_venta_empleado[m
+[31m-[m
+[31m-		PRINT('Asociacion entre puntos de venta y empleado dada de baja exitosamente. Filtrada por: ID Punto venta empleado')[m
+[31m-	END[m
+[31m-	ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR('La asociacion de punto de venta con empleado que esta queriendo dar de baja no existe o ya fue dado de baja.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE AltaPuntoVentaEmpleado[m
+[31m-@id_punto_venta_empleado int[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado][m
+[31m-	WHERE id_punto_venta_empleado = @id_punto_venta_empleado and activo = 0)[m
+[31m-	BEGIN[m
+[31m-		UPDATE [sucursal].[punto_venta_empleado][m
+[31m-		SET activo = 1[m
+[31m-		WHERE id_punto_venta_empleado = @id_punto_venta_empleado[m
+[31m-[m
+[31m-		PRINT ('Asociacion entre puntos de venta y empleado dada de alta exitosamente.')[m
+[31m-	END[m
+[31m-	ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR('La asociacion de punto de venta con empleado que esta queriendo dar de alta no existe o ya fue dada de alta.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorEmpleado [m
+[31m-@legajo_empleado_baja int[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado][m
+[31m-	WHERE legajo_empleado = @legajo_empleado_baja and activo = 1)[m
+[31m-	BEGIN[m
+[31m-		UPDATE [sucursal].[punto_venta_empleado][m
+[31m-		SET activo = 0[m
+[31m-		WHERE legajo_empleado = @legajo_empleado_baja [m
+[31m-		and activo = 1[m
+[31m-		print('Asociacion entre puntos de venta y empleado dada de baja exitosamente. Filtrada por: Empleado')[m
+[31m-	END[m
+[31m-	ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR ('Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorSucursal[m
+[31m-@id_sucursal_baja smallint[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado] [m
+[31m-	WHERE id_sucursal = @id_sucursal_baja and activo = 1)[m
+[31m-	BEGIN[m
+[31m-		UPDATE [sucursal].[punto_venta_empleado][m
+[31m-		SET activo = 0[m
+[31m-		WHERE id_sucursal = @id_sucursal_baja[m
+[31m-[m
+[31m-		PRINT('Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Sucursal')[m
+[31m-	END[m
+[31m-	ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR ('Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE BajaPuntoVentaEmpleadoPorPuntoVentaSucursal[m
+[31m-@id_sucursal_baja smallint,[m
+[31m-@nro_punto_venta_baja int[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF EXISTS (SELECT * FROM [sucursal].[punto_venta_empleado] [m
+[31m-	WHERE id_sucursal = @id_sucursal_baja AND numero_punto_venta = @nro_punto_venta_baja[m
+[31m-	AND activo = 1)[m
+[31m-	BEGIN[m
+[31m-		UPDATE [sucursal].[punto_venta_empleado][m
+[31m-		SET activo = 0[m
+[31m-		WHERE id_sucursal = @id_sucursal_baja [m
+[31m-		and numero_punto_venta = @nro_punto_venta_baja [m
+[31m-		and activo = 1[m
+[31m-[m
+[31m-		PRINT('Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Numero punto venta y Sucursal')[m
+[31m-[m
+[31m-	END[m
+[31m-	ELSE[m
+[31m-	BEGIN[m
+[31m-		RAISERROR ('Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.',10,1)[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-END[m
+\ No newline at end of file[m
+[1mdiff --git a/Com2900G10/StoredProcedures/09-EmpleadosSP.sql b/Com2900G10/StoredProcedures/09-EmpleadosSP.sql[m
+[1mdeleted file mode 100644[m
+[1mindex 85f1ea7..0000000[m
+[1m--- a/Com2900G10/StoredProcedures/09-EmpleadosSP.sql[m
+[1m+++ /dev/null[m
+[36m@@ -1,154 +0,0 @@[m
+[31m-/*******************************************************************************[m
+[31m-*                                                                             *[m
+[31m-*                           Entrega 3 - Grupo 10                              *[m
+[31m-*																			  *[m
+[31m-*                           Integrantes:                                      *[m
+[31m-*                           43.988.577 Juan Pi√±an                             *[m
+[31m-*                           43.049.457 Matias Matter                          *[m
+[31m-*                           42.394.230 Lucas Natario                          *[m
+[31m-*                           40.429.974 Pablo Monardo                          *[m
+[31m-*                                                                             *[m
+[31m-*                                                                             *[m
+[31m-* "Cree la base de datos, entidades y relaciones. Incluya restricciones y     *[m
+[31m-* claves. Deber√° entregar un archivo .sql con el script completo de creaci√≥n  *[m
+[31m-* (debe funcionar si se lo ejecuta ‚Äútal cual‚Äù es entregado). Incluya          *[m
+[31m-* comentarios para indicar qu√© hace cada m√≥dulo de c√≥digo.                    *[m
+[31m-* Genere store procedures para manejar la inserci√≥n, modificaci√≥n, borrado    *[m
+[31m-* (si corresponde, tambi√©n debe decidir si determinadas entidades solo        *[m
+[31m-* admitir√°n borrado l√≥gico) de cada tabla."                                   *[m
+[31m-*                                                                             *[m
+[31m-*******************************************************************************/[m
+[31m-GO[m
+[31m-USE Com2900G10;[m
+[31m-[m
+[31m-[m
+[31m--- SP para empleados[m
+[31m-GO[m
+[31m-CREATE OR ALTER PROCEDURE sucursal.ModificarEmpleado[m
+[31m-	@legajo INT,[m
+[31m-    @nombre VARCHAR(50),[m
+[31m-    @apellido VARCHAR(50),[m
+[31m-    @dni VARCHAR(20),[m
+[31m-    @direccion VARCHAR(100),[m
+[31m-    @email_personal VARCHAR(100),[m
+[31m-    @email_empresa VARCHAR(100),[m
+[31m-    @cuil VARCHAR(20),[m
+[31m-    @cargo VARCHAR(50),[m
+[31m-    @turno VARCHAR(50),[m
+[31m-    @id_sucursal INT[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF @legajo IS NULL[m
+[31m-	BEGIN[m
+[31m-		RAISERROR('Debe ingresar el legajo del empleado a actualizar',10,1);[m
+[31m-[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-[m
+[31m-	IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal = @id_sucursal and activo = 1)[m
+[31m-	BEGIN[m
+[31m-		RAISERROR('La sucursal del empleado no existe o esta inactiva',10,1);[m
+[31m-[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-[m
+[31m-    -- Verifica si el empleado existe y est√° activo[m
+[31m-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)[m
+[31m-    BEGIN[m
+[31m-        UPDATE sucursal.empleado[m
+[31m-        SET[m
+[31m-			nombre = @nombre,[m
+[31m-			apellido = @apellido,[m
+[31m-			dni = @dni,[m
+[31m-			direccion = @direccion,[m
+[31m-			email_personal = @email_personal,[m
+[31m-			email_empresa = @email_empresa,[m
+[31m-			cuil = @cuil,[m
+[31m-			cargo = @cargo,[m
+[31m-			turno = @turno,[m
+[31m-			id_sucursal = @id_sucursal[m
+[31m-        WHERE legajo = @legajo;[m
+[31m-        [m
+[31m-        PRINT 'Empleado actualizado correctamente.';[m
+[31m-    END[m
+[31m-    ELSE[m
+[31m-    BEGIN[m
+[31m-		RAISERROR('El empleado no existe o est√° inactivo',10,1);[m
+[31m-    END[m
+[31m-END;[m
+[31m-[m
+[31m-GO[m
+[31m-CREATE OR ALTER PROCEDURE sucursal.CrearEmpleado[m
+[31m-	@legajo INT,[m
+[31m-    @nombre VARCHAR(50),[m
+[31m-    @apellido VARCHAR(50),[m
+[31m-    @dni VARCHAR(20),[m
+[31m-    @direccion VARCHAR(100),[m
+[31m-    @email_personal VARCHAR(100),[m
+[31m-    @email_empresa VARCHAR(100),[m
+[31m-    @cuil VARCHAR(20),[m
+[31m-    @cargo VARCHAR(50),[m
+[31m-    @turno VARCHAR(50),[m
+[31m-    @id_sucursal INT[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-	IF @legajo IS NULL [m
+[31m-	BEGIN[m
+[31m-		RAISERROR('Debe ingresar un legajo para el empleado',10,1);[m
+[31m-[m
+[31m-		RETURN[m
+[31m-	END[m
+[31m-[m
+[31m-    IF NOT EXISTS (SELECT 1 FROM sucursal.sucursal WHERE id_sucursal =  @id_sucursal AND activo = 1)[m
+[31m-    BEGIN[m
+[31m-		RAISERROR('La sucursal del empleado no existe o esta inactiva',10,1);[m
+[31m-[m
+[31m-		RETURN[m
+[31m-    END[m
+[31m-[m
+[31m-	INSERT INTO sucursal.empleado (legajo, nombre, apellido, dni, direccion, email_personal, email_empresa, cuil, cargo, turno, id_sucursal, activo)[m
+[31m-    VALUES (@legajo, @nombre, @apellido, @dni, @direccion, @email_personal, @email_empresa, @cuil, @cargo, @turno, @id_sucursal, 1);[m
+[31m-     [m
+[31m-END;[m
+[31m-[m
+[31m-GO[m
+[31m-CREATE OR ALTER PROCEDURE sucursal.BajaEmpleado[m
+[31m-    @legajo INT[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-    -- Verifica si el empleado existe y est√° activo[m
+[31m-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 1)[m
+[31m-    BEGIN[m
+[31m-        UPDATE sucursal.empleado[m
+[31m-        SET activo = 0[m
+[31m-        WHERE legajo = @legajo;[m
+[31m-[m
+[31m-        PRINT 'Empleado dado de baja.';[m
+[31m-[m
+[31m-		EXEC BajaPuntoVentaEmpleadoPorEmpleado @legajo[m
+[31m-    END[m
+[31m-    ELSE[m
+[31m-    BEGIN[m
+[31m-		RAISERROR('El empleado no existe o ya esta dado de baja',10,1);[m
+[31m-    END[m
+[31m-END;[m
+[31m-GO[m
+[31m-[m
+[31m-CREATE OR ALTER PROCEDURE sucursal.AltaEmpleado[m
+[31m-    @legajo INT[m
+[31m-AS[m
+[31m-BEGIN[m
+[31m-    -- Verifica si el empleado existe y est√° activo[m
+[31m-    IF EXISTS (SELECT 1 FROM sucursal.empleado WHERE legajo = @legajo AND activo = 0)[m
+[31m-    BEGIN[m
+[31m-        UPDATE sucursal.empleado[m
+[31m-        SET activo = 1[m
+[31m-        WHERE legajo = @legajo;[m
+[31m-        [m
+[31m-        PRINT 'Empleado dado de alta.';[m
+[31m-    END[m
+[31m-    ELSE[m
+[31m-    BEGIN[m
+[31m-		RAISERROR('El empleado no existe o ya esta dado de alta',10,1);[m
+[31m-    END[m
+[31m-END;[m
+[1mdiff --git a/Com2900G10/StoredProcedures/Tests/07-PuntoVentaEmpleadoSPTests.sql b/Com2900G10/StoredProcedures/Tests/07-PuntoVentaEmpleadoSPTests.sql[m
+[1mdeleted file mode 100644[m
+[1mindex a3ba841..0000000[m
+[1m--- a/Com2900G10/StoredProcedures/Tests/07-PuntoVentaEmpleadoSPTests.sql[m
+[1m+++ /dev/null[m
+[36m@@ -1,100 +0,0 @@[m
+[31m-/*******************************************************************************[m
+[31m-*                                                                             *[m
+[31m-*                           Entrega 3 - Grupo 10                              *[m
+[31m-*																			  *[m
+[31m-*                           Integrantes:                                      *[m
+[31m-*                           43.988.577 Juan PiÒan                             *[m
+[31m-*                           43.049.457 Matias Matter                          *[m
+[31m-*                           42.394.230 Lucas Natario                          *[m
+[31m-*                           40.429.974 Pablo Monardo                          *[m
+[31m-*                                                                             *[m
+[31m-*                                                                             *[m
+[31m-* "Cree la base de datos, entidades y relaciones. Incluya restricciones y     *[m
+[31m-* claves. Deber· entregar un archivo .sql con el script completo de creaciÛn  *[m
+[31m-* (debe funcionar si se lo ejecuta ìtal cualî es entregado). Incluya          *[m
+[31m-* comentarios para indicar quÈ hace cada mÛdulo de cÛdigo.                    *[m
+[31m-* Genere store procedures para manejar la inserciÛn, modificaciÛn, borrado    *[m
+[31m-* (si corresponde, tambiÈn debe decidir si determinadas entidades solo        *[m
+[31m-* admitir·n borrado lÛgico) de cada tabla."                                   *[m
+[31m-*                                                                             *[m
+[31m-*******************************************************************************/[m
+[31m-USE [Com2900G10][m
+[31m-GO[m
+[31m-/*******************************************************************************[m
+[31m-						SP: CrearPuntoVentaEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'El numero de punto de venta que quiere asociar no existe o no pertenece a la sucursal.' */[m
+[31m-EXEC CrearPuntoVentaEmpleado 1,1,1234[m
+[31m-[m
+[31m-/* Resultado Esperado: 'El empleado que esta queriendo asociar al punto de venta no existe o no trabaja en la sucursal.' */[m
+[31m---El empleado existe, pero no trabaja en esa sucursal.--[m
+[31m-EXEC CrearPuntoVentaEmpleado 3,2,1234[m
+[31m-[m
+[31m-/* Resultado Esperado: 'El empleado que esta queriendo asociar al punto de venta no existe o no trabaja en la sucursal.' */[m
+[31m---El empleado no existe--[m
+[31m-EXEC CrearPuntoVentaEmpleado 3,1,5678[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Puesto de venta asociado exitosamente con empleado.' */[m
+[31m-EXEC CrearPuntoVentaEmpleado 3,1,1234[m
+[31m-[m
+[31m-/* Resultado Esperado: 'La asociacion entre punto de venta y empleado que se esta queriendo crear ya existe y se encuentra activa.' */[m
+[31m-EXEC CrearPuntoVentaEmpleado 3,1,1234[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: BajaPuntoVentaEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'La asociacion de punto de venta con empleado que esta queriendo dar de baja no existe o ya fue dado de baja.' */[m
+[31m-EXEC BajaPuntoVentaEmpleado 2[m
+[31m-[m
+[31m-/* Resultado Esperado: Baja exitosa. */[m
+[31m-EXEC BajaPuntoVentaEmpleado 1[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: AltaPuntoVentaEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'La asociacion de punto de venta con empleado que esta queriendo dar de alta no existe o ya fue dada de alta.' */[m
+[31m-EXEC AltaPuntoVentaEmpleado 2[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Asociacion entre puntos de venta y empleado dada de alta exitosamente.' */[m
+[31m-EXEC AltaPuntoVentaEmpleado 1[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: BajaPuntoVentaEmpleadoPorEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorEmpleado 5678[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Asociacion entre puntos de venta y empleado dada de baja exitosamente. Filtrada por: Empleado' */[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorEmpleado 1234[m
+[31m-[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: BajaPuntoVentaEmpleadoPorSucursal[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'El punto de venta empleado no se encuentra registrado en la tabla punto_venta_empleado o ya fue dado de baja' */[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorSucursal 2[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Sucursal' */[m
+[31m-EXEC AltaPuntoVentaEmpleado 1[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorSucursal 1[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: BajaPuntoVentaEmpleadoPorPuntoVentaSucursal[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */[m
+[31m---Sucursal inexistente--[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 2,3[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */[m
+[31m---Punto venta inexistente--[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 1,4[m
+[31m-[m
+[31m-/* Resultado Esperado: 'Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Numero punto venta y Sucursal' */[m
+[31m-EXEC AltaPuntoVentaEmpleado 1[m
+[31m-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 1,3[m
+[1mdiff --git a/Com2900G10/StoredProcedures/Tests/09-EmpleadoSPTests.sql b/Com2900G10/StoredProcedures/Tests/09-EmpleadoSPTests.sql[m
+[1mdeleted file mode 100644[m
+[1mindex 305cb9a..0000000[m
+[1m--- a/Com2900G10/StoredProcedures/Tests/09-EmpleadoSPTests.sql[m
+[1m+++ /dev/null[m
+[36m@@ -1,68 +0,0 @@[m
+[31m-/*******************************************************************************[m
+[31m-*                                                                             *[m
+[31m-*                           Entrega 3 - Grupo 10                              *[m
+[31m-*																			  *[m
+[31m-*                           Integrantes:                                      *[m
+[31m-*                           43.988.577 Juan PiÒan                             *[m
+[31m-*                           43.049.457 Matias Matter                          *[m
+[31m-*                           42.394.230 Lucas Natario                          *[m
+[31m-*                           40.429.974 Pablo Monardo                          *[m
+[31m-*                                                                             *[m
+[31m-*                                                                             *[m
+[31m-* "Cree la base de datos, entidades y relaciones. Incluya restricciones y     *[m
+[31m-* claves. Deber· entregar un archivo .sql con el script completo de creaciÛn  *[m
+[31m-* (debe funcionar si se lo ejecuta ìtal cualî es entregado). Incluya          *[m
+[31m-* comentarios para indicar quÈ hace cada mÛdulo de cÛdigo.                    *[m
+[31m-* Genere store procedures para manejar la inserciÛn, modificaciÛn, borrado    *[m
+[31m-* (si corresponde, tambiÈn debe decidir si determinadas entidades solo        *[m
+[31m-* admitir·n borrado lÛgico) de cada tabla."                                   *[m
+[31m-*                                                                             *[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-USE [Com2900G10][m
+[31m-GO[m
+[31m-/*******************************************************************************[m
+[31m-						SP: CrearEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado esperado: Insercion OK*/[m
+[31m-EXEC [Com2900G10].[sucursal].[CrearEmpleado] 123456, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "Debe ingresar un legajo para el empleado" */[m
+[31m-EXEC [Com2900G10].[sucursal].[CrearEmpleado] NULL, 'John', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: BajaEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado esperado: Baja OK */[m
+[31m-EXEC [Com2900G10].[sucursal].[BajaEmpleado] 123456;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "El empleado no existe o ya est· dado de baja." */[m
+[31m-EXEC [Com2900G10].[sucursal].[BajaEmpleado] 999;[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: AltaEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado esperado: Alta OK */[m
+[31m-EXEC [Com2900G10].[sucursal].[AltaEmpleado] 123456;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "El empleado no existe o ya est· dado de alta." */[m
+[31m-EXEC [Com2900G10].[sucursal].[AltaEmpleado] 999;[m
+[31m-[m
+[31m-/*******************************************************************************[m
+[31m-						SP: ModificarEmpleado[m
+[31m-*******************************************************************************/[m
+[31m-[m
+[31m-/* Resultado esperado: Modificacion OK*/[m
+[31m-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1234, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "Debe ingresar el legajo del empleado a actualizar" */[m
+[31m-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] NULL, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "La sucursal del empleado no existe o esta inactiva" */[m
+[31m-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 1234, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 999;[m
+[31m-[m
+[31m-/* Resultado esperado: Error - "El empleado no existe o est· inactivo" */[m
+[31m-EXEC [Com2900G10].[sucursal].[ModificarEmpleado] 999, 'Alberto', 'Doe', '40397273', '', '', '', '20-40397273-5', 'Jefe', 'TM', 1;[m
+\ No newline at end of file[m

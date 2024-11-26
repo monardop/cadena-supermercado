@@ -20,81 +20,65 @@
 *******************************************************************************/
 USE [Com2900G10]
 GO
-/*******************************************************************************
-						SP: CrearPuntoVentaEmpleado
-*******************************************************************************/
-
-/* Resultado Esperado: 'El numero de punto de venta que quiere asociar no existe o no pertenece a la sucursal.' */
-EXEC CrearPuntoVentaEmpleado 1,1,1234
+/*****************************************************************************************************
+	SP: CrearPuntoVentaEmpleado @nro_punto_venta INT, @id_sucursal SMALLINT, @legajo_empleado INT
+******************************************************************************************************/
+select * FROM sucursal.empleado
+/* Resultado Esperado: Generado exitosamente */
+EXEC sucursal.CrearPuntoVentaEmpleado 1,1,1234
 
 /* Resultado Esperado: 'El empleado que esta queriendo asociar al punto de venta no existe o no trabaja en la sucursal.' */
 --El empleado existe, pero no trabaja en esa sucursal.--
-EXEC CrearPuntoVentaEmpleado 3,2,1234
+EXEC sucursal.CrearPuntoVentaEmpleado 3,2,1234
 
 /* Resultado Esperado: 'El empleado que esta queriendo asociar al punto de venta no existe o no trabaja en la sucursal.' */
 --El empleado no existe--
-EXEC CrearPuntoVentaEmpleado 3,1,5678
+EXEC sucursal.CrearPuntoVentaEmpleado 3,1,9999
 
 /* Resultado Esperado: 'Puesto de venta asociado exitosamente con empleado.' */
-EXEC CrearPuntoVentaEmpleado 3,1,1234
+EXEC sucursal.CrearPuntoVentaEmpleado 3,1,1234
 
 /* Resultado Esperado: 'La asociacion entre punto de venta y empleado que se esta queriendo crear ya existe y se encuentra activa.' */
-EXEC CrearPuntoVentaEmpleado 3,1,1234
+EXEC sucursal.CrearPuntoVentaEmpleado 3,1,1234
 
 /*******************************************************************************
-						SP: BajaPuntoVentaEmpleado
+			SP: BajaPuntoVentaEmpleado @id_punto_venta_empleado INT
 *******************************************************************************/
 
 /* Resultado Esperado: 'La asociacion de punto de venta con empleado que esta queriendo dar de baja no existe o ya fue dado de baja.' */
-EXEC BajaPuntoVentaEmpleado 2
+EXEC sucursal.BajaPuntoVentaEmpleado 999
 
 /* Resultado Esperado: Baja exitosa. */
-EXEC BajaPuntoVentaEmpleado 1
+EXEC sucursal.BajaPuntoVentaEmpleado 1
 
 /*******************************************************************************
-						SP: AltaPuntoVentaEmpleado
+			SP: AltaPuntoVentaEmpleado @id_punto_venta_empleado INT
 *******************************************************************************/
 
 /* Resultado Esperado: 'La asociacion de punto de venta con empleado que esta queriendo dar de alta no existe o ya fue dada de alta.' */
-EXEC AltaPuntoVentaEmpleado 2
+EXEC sucursal.AltaPuntoVentaEmpleado 999
 
 /* Resultado Esperado: 'Asociacion entre puntos de venta y empleado dada de alta exitosamente.' */
-EXEC AltaPuntoVentaEmpleado 1
+EXEC sucursal. AltaPuntoVentaEmpleado 1
 
 /*******************************************************************************
 						SP: BajaPuntoVentaEmpleadoPorEmpleado
 *******************************************************************************/
 
 /* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */
-EXEC BajaPuntoVentaEmpleadoPorEmpleado 5678
+EXEC sucursal.BajaPuntoVentaEmpleadoPorEmpleado 99999
 
 /* Resultado Esperado: 'Asociacion entre puntos de venta y empleado dada de baja exitosamente. Filtrada por: Empleado' */
-EXEC BajaPuntoVentaEmpleadoPorEmpleado 1234
+EXEC sucursal.BajaPuntoVentaEmpleadoPorEmpleado 1234
 
 
 /*******************************************************************************
 						SP: BajaPuntoVentaEmpleadoPorSucursal
 *******************************************************************************/
 
-/* Resultado Esperado: 'El punto de venta empleado no se encuentra registrado en la tabla punto_venta_empleado o ya fue dado de baja' */
-EXEC BajaPuntoVentaEmpleadoPorSucursal 2
+/* Resultado Esperado: 'No hay puntos de ventas asociados en esa sucursal' */
+EXEC sucursal.BajaPuntoVentaEmpleadoPorSucursal 999
 
 /* Resultado Esperado: 'Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Sucursal' */
-EXEC AltaPuntoVentaEmpleado 1
-EXEC BajaPuntoVentaEmpleadoPorSucursal 1
-
-/*******************************************************************************
-						SP: BajaPuntoVentaEmpleadoPorPuntoVentaSucursal
-*******************************************************************************/
-
-/* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */
---Sucursal inexistente--
-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 2,3
-
-/* Resultado Esperado: 'Las asociaciones entre punto de venta y empleados que esta tratando dar de baja no existen o ya fueron dadas de baja.' */
---Punto venta inexistente--
-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 1,4
-
-/* Resultado Esperado: 'Asociacion entre puntos de venta y empleados dadas de baja exitosamente. Filtrada por: Numero punto venta y Sucursal' */
-EXEC AltaPuntoVentaEmpleado 1
-EXEC BajaPuntoVentaEmpleadoPorPuntoVentaSucursal 1,3
+EXEC sucursal.AltaPuntoVentaEmpleado 1
+EXEC sucursal.BajaPuntoVentaEmpleadoPorSucursal 1
