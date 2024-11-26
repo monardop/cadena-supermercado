@@ -21,6 +21,9 @@
 USE master
 GO
 
+ALTER DATABASE [Com2900G10] set single_user with rollback immediate -- Para cerrar conexiones y poder dropear la bdd
+GO
+
 DROP DATABASE IF EXISTS Com2900G10;--Elimino la base de datos si existe.
 CREATE DATABASE Com2900G10; --Creo la base de datos
 GO
