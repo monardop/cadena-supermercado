@@ -53,14 +53,31 @@ Para las copias de seguridad / backup se estableció una política de ejecucione
 
 ![](https://github.com/user-attachments/assets/b3cc13a3-7f92-4db4-a68d-f3a7a0a7ee06)
 
-Que consiste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada una hora entre las 07hs y 22hs, luego una ejecución diaria ejecutada entre las 22hs y las 07hs del dia siguiente de copias **DIFERENCIALES** y una ejecución semanal de copias del tipo FULL entre las 22hs de los dias domingo y las 07 de los dias lunes, al finalizarse la copia de seguridad **DIFERENCIAL** previa.
+Que consiste en copias **INCREMENTALES** de los logs Transaccionales que se ejecutan cada una hora entre las 07hs y 22hs, luego una ejecución diaria ejecutada entre a las 00hs del dia siguiente de copias **DIFERENCIALES** y una ejecución semanal de copias del tipo FULL a las 22hs de los dias Domingo, al finalizarse la copia de seguridad **DIFERENCIAL** previa.
 Esto nos permite mantener una base de datos integra ante escenarios de error, maximizando la performance del sistema a la hora de ejecutar las copias.
 
 | Tipo de Backup  | Ejecucion |
 | ------------- | ------------- |
-| Incremental  | Cada una hora |
-| Diferencial  | Diaria |
-| Full  | Semanal |
+| Incremental  | Cada una hora - De 07hs a 22hs |
+| Diferencial  | Diaria - A las 00hs |
+| Full  | Semanal - Domingos a las 22hs|
+
+# Estructura de archivos por entregas
+
+- Solución: `./Com2900G10/Com2900G10.ssmssln`
+
+| Entrega  | Descripción                                                   | Ruta                                              |
+|----------|---------------------------------------------------------------|---------------------------------------------------|
+| Entrega 3 | Documentación de instalación                                  | `./Informe.pdf`                                  |
+|          | Creación de la BDD con tablas y sus restricciones             | `./Com2900G10/Principal/CreationFile.sql`        |
+|          | Creación de Stored Procedures para inserción/actualización/borrador de registros en tablas | `./Com2900G10/StoredProcedures/*`                |
+| Entrega 4 | Importaciones                                                 | `./Com2900G10/Importaciones/*`                   |
+| Entrega 5 | Documentación de backups                                      | `./Informe.pdf`                                  |
+|          | Scripts de backups                                             | `./Com2900G10/Backups/*`                         |
+|          | Encriptación                                                   | `./Com2900G10/Encriptacion/EncriptarEmpleado.sql`|
+|          | Roles/Permisos                                                 | `./Com2900G10/Permisos/Permisos.sql`             |
+|          | Reportes                                                       | `./Com2900G10/Reportes/SPReportes.sql`           |
+
 
 ## Estructura de la base de datos.
 ![](https://github.com/monardop/cadena-supermercado/blob/main/DER.jpg)
