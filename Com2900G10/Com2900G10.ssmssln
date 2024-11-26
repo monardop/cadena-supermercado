@@ -31,17 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcedures", "StoredP
 		StoredProcedures\10-ConfiguracionSupermercadoSP.sql = StoredProcedures\10-ConfiguracionSupermercadoSP.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{0AA172C4-B209-4C02-B3CD-BE067C1C337D}"
-	ProjectSection(SolutionItems) = preProject
-		CreationFile.sql = CreationFile.sql
-		CreationFileTests.sql = CreationFileTests.sql
-		Demo.sql = Demo.sql
-		EncriptarEmpleado.sql = EncriptarEmpleado.sql
-		ScriptBackupDiario.sql = ScriptBackupDiario.sql
-		ScriptBackupSemanal.sql = ScriptBackupSemanal.sql
-		ScriptBackupTLOG.sql = ScriptBackupTLOG.sql
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C969901C-5534-42DC-B683-179B06E7CF3E}"
 	ProjectSection(SolutionItems) = preProject
 		StoredProcedures\Tests\01-CategoriaProductoSPTests.sql = StoredProcedures\Tests\01-CategoriaProductoSPTests.sql
@@ -67,12 +56,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Permisos", "Permisos", "{6E
 		Permisos\PermisosTests.sql = Permisos\PermisosTests.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Principal", "Principal", "{1BFC5B9C-82EF-47D5-80C5-890EBAB9A45F}"
+	ProjectSection(SolutionItems) = preProject
+		Principal\CreationFile.sql = Principal\CreationFile.sql
+		Principal\CreationFileTests.sql = Principal\CreationFileTests.sql
+		Principal\Demo.sql = Principal\Demo.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backups", "Backups", "{9B4FCF47-94FC-4C29-8090-454B81E532ED}"
+	ProjectSection(SolutionItems) = preProject
+		Backups\ScriptBackupDiario.sql = Backups\ScriptBackupDiario.sql
+		Backups\ScriptBackupSemanal.sql = Backups\ScriptBackupSemanal.sql
+		Backups\ScriptBackupTLOG.sql = Backups\ScriptBackupTLOG.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Encriptacion", "Encriptacion", "{EE05D56E-D6F4-4AF8-9606-94F29C670A71}"
+	ProjectSection(SolutionItems) = preProject
+		Encriptacion\EncriptarEmpleado.sql = Encriptacion\EncriptarEmpleado.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4C15583-5147-4C5D-B06F-41B1D663752B}.Default|Default.ActiveCfg = Default
+		{1DDBD872-9CDE-4CC6-8AAA-B430E64BA8A1}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -32,6 +32,8 @@
 /*******************************************************************************
 *						Declara parametros               					   *
 ****************************************** *************************************/
+USE [Com2900G10];
+GO
 
 DECLARE @pathInfoComplementaria VARCHAR(300);
 DECLARE @hojaSucursales VARCHAR(100);
@@ -57,23 +59,18 @@ DECLARE @cuitEmisor CHAR(13);
 *						Obtiene valores de los parametros					   *
 ****************************************** *************************************/
 
-SELECT @pathInfoComplementaria = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_info_complementaria';
-SELECT @hojaSucursales = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_sucursales';
-SELECT @hojaEmpleados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_empleados';
-SELECT @hojaMediosDePago = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_medios_de_pago';
-SELECT @hojaCategoriasProductos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_categorias_productos';
-
-SELECT @pathProductosCatalogo = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_catalogo';
-
-SELECT @pathProductosElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_electonicos';
-SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_electronicos';
-
-SELECT @pathProductosImportados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_productos_importados';
-SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'hoja_importar_electronicos';
+SELECT @pathInfoComplementaria = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_path_info_complementaria();
+SELECT @hojaSucursales = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_hoja_importar_sucursales();
+SELECT @hojaEmpleados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_hoja_importar_empleados();
+SELECT @hojaMediosDePago = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_importar_medios_de_pago();
+SELECT @hojaCategoriasProductos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_hoja_importar_categorias_productos();
+SELECT @pathProductosCatalogo = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_path_productos_catalogo();
+SELECT @pathProductosElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_path_productos_electronicos();
+SELECT @hojaElectronicos = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_hoja_importar_electonicos();
+SELECT @pathProductosImportados = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_path_productos_importados();
 SELECT @valorDolar = CAST(valor AS decimal(12,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_clave_valor_dolar();
-
-SELECT @pathVentas = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'path_ventas';
-SELECT @idClienteDefaultImportacion = CAST(valor AS SMALLINT) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = 'id_cliente_default_importacion';
+SELECT @pathVentas = valor FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_path_ventas();
+SELECT @idClienteDefaultImportacion = CAST(valor AS SMALLINT) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_id_cliente_default_importacion();
 SELECT @porcentajeIva = CAST(valor AS decimal(4,2)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_clave_porcentaje_iva();
 SELECT @cuitEmisor = CAST(valor AS CHAR(13)) FROM [Com2900G10].[configuracion].[parametros_generales] where descripcion = configuracion.obtener_clave_cuit_emisor();
 

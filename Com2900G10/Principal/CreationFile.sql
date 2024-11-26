@@ -84,6 +84,7 @@ CREATE TABLE [Com2900G10].[sucursal].[empleado] (
     turno           VARCHAR(20) 
 					CHECK([turno] IN ('TM', 'TT', 'TN', 'Jornada completa')),
     activo          BIT,
+	encriptado bit default 0 not null,
     CONSTRAINT FK_Empleado_Sucursal 
         FOREIGN KEY (id_sucursal) 
         REFERENCES [Com2900G10].[sucursal].[sucursal](id_sucursal)
@@ -321,7 +322,7 @@ CREATE TABLE [Com2900G10].[venta].[nota_credito] (
 DROP TABLE IF EXISTS [Com2900G10].[configuracion].[parametros_generales]
 GO
 CREATE TABLE [Com2900G10].[configuracion].[parametros_generales] (
-	id_configuracion_supermercado INT IDENTITY(1,1) PRIMARY KEY,
+	id_parametros_generales INT IDENTITY(1,1) PRIMARY KEY,
 	descripcion varchar(70),
 	valor varchar(300)
 );
@@ -351,6 +352,14 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER FUNCTION [configuracion].[obtener_password_encriptacion]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'clave123'
+END;
+GO
+
 INSERT INTO [Com2900G10].[configuracion].[parametros_generales](descripcion,valor)
 VALUES
 (configuracion.obtener_clave_porcentaje_iva(), '21'),
@@ -358,3 +367,116 @@ VALUES
 (configuracion.obtener_clave_cuit_emisor(), '20-42938121-7');
 GO
 
+CREATE OR ALTER FUNCTION [configuracion].[obtener_path_info_complementaria]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'path_info_complementaria'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_catalogo]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'path_productos_catalogo'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_electronicos]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'path_productos_electronicos'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_path_productos_importados]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'path_productos_importados'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_path_ventas]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'path_ventas'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_sucursales]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_sucursales'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_empleados]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_empleados'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_importar_medios_de_pago]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_medios_de_pago'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_categorias_productos]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_categorias_productos'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_electonicos]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_electonicos'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_hoja_importar_productos_importados]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'hoja_importar_productos_importados'
+END;
+GO
+
+CREATE OR ALTER FUNCTION [configuracion].[obtener_id_cliente_default_importacion]()
+RETURNS VARCHAR(30)
+AS 
+BEGIN
+	RETURN 'id_cliente_default_importacion'
+END;
+GO
+
+-- Configuracion de parametros generales de paths
+DECLARE @pathDataFiles VARCHAR(300) = 'C:\Users\lucas\OneDrive\Escritorio\repositories\monardop\cadena-supermercado\DataFiles\';
+INSERT INTO configuracion.parametros_generales(descripcion,valor)
+VALUES
+('path_info_complementaria', @pathDataFiles + 'Informacion_complementaria.xlsx'),
+('path_productos_catalogo', @pathDataFiles + 'Productos\catalogo.csv'),
+('path_productos_electronicos', @pathDataFiles + 'Productos\Electronic accessories.xlsx'),
+('path_productos_importados', @pathDataFiles + 'Productos\Productos_importados.xlsx'),
+('path_ventas', @pathDataFiles + 'Ventas_registradas.csv'),
+('hoja_importar_sucursales', 'sucursal'),
+('hoja_importar_empleados', 'Empleados'),
+('hoja_importar_medios_de_pago', 'medios de pago'),
+('hoja_importar_categorias_productos', 'Clasificacion productos'),
+('hoja_importar_electonicos', 'Sheet1'),
+('hoja_importar_productos_importados', 'Listado de Productos'),
+('id_cliente_default_importacion', '1');
+GO

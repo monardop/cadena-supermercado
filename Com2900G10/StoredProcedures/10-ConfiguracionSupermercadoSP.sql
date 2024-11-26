@@ -22,15 +22,15 @@ USE Com2900G10;
 GO
 --SP para configuracion_supermercado
 
-CREATE OR ALTER PROCEDURE config.AgregarConfiguracion
+CREATE OR ALTER PROCEDURE configuracion.AgregarConfiguracion
 @descripcion varchar(70),
 @valor varchar(70)
 AS
 BEGIN
-	IF NOT EXISTS (SELECT TOP 1 * FROM [Com2900G10].[config].[configuracion_supermercado] 
+	IF NOT EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
 	WHERE descripcion = @descripcion)
 	BEGIN
-		INSERT INTO [Com2900G10].[config].[configuracion_supermercado]
+		INSERT INTO [Com2900G10].[configuracion].[configuracion_supermercado]
 		VALUES (@descripcion, @valor)
 		PRINT('Configuracion insertada con exito.');
 	END
@@ -42,15 +42,15 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE config.ModificarConfiguracion
+CREATE OR ALTER PROCEDURE configuracion.ModificarConfiguracion
 @descripcion varchar(70),
 @valor varchar(70)
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[config].[configuracion_supermercado]
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado]
 	WHERE descripcion = @descripcion)
 	BEGIN
-		UPDATE [Com2900G10].[config].[configuracion_supermercado]
+		UPDATE [Com2900G10].[configuracion].[configuracion_supermercado]
 		SET valor = @valor
 		WHERE descripcion = @descripcion
 
@@ -65,14 +65,14 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE config.EliminarConfiguracionPorID
+CREATE OR ALTER PROCEDURE configuracion.EliminarConfiguracionPorID
 @id_config INT
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[config].[configuracion_supermercado] 
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
 	WHERE id_configuracion_supermercado = @id_config)
 	BEGIN
-		DELETE FROM [Com2900G10].[config].[configuracion_supermercado]
+		DELETE FROM [Com2900G10].[configuracion].[configuracion_supermercado]
 		WHERE id_configuracion_supermercado = @id_config
 		PRINT ('Configuracion eliminada exitosamente.')
 	END
@@ -85,14 +85,14 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE config.EliminarConfiguracionPorDescripcion
+CREATE OR ALTER PROCEDURE configuracion.EliminarConfiguracionPorDescripcion
 @descripcion varchar(70)
 AS
 BEGIN
-	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[config].[configuracion_supermercado] 
+	IF EXISTS (SELECT TOP 1 * FROM [Com2900G10].[configuracion].[configuracion_supermercado] 
 	WHERE descripcion = @descripcion)
 	BEGIN
-		DELETE FROM [Com2900G10].[config].[configuracion_supermercado]
+		DELETE FROM [Com2900G10].[configuracion].[configuracion_supermercado]
 		WHERE descripcion = @descripcion
 		PRINT ('Configuracion eliminada exitosamente.')
 	END
