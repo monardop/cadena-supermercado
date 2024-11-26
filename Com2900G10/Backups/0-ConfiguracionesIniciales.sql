@@ -33,7 +33,7 @@ GO
 IF NOT EXISTS (SELECT 1 FROM configuracion.parametros_generales WHERE descripcion = configuracion.obtener_clave_path_backups())
 BEGIN
 	INSERT INTO configuracion.parametros_generales(descripcion,valor)
-	VALUES (configuracion.obtener_clave_path_backups(),'E:\');
+	VALUES (configuracion.obtener_clave_path_backups(),'E:\Backups\');
 END
 GO
 
