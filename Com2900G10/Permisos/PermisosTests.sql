@@ -55,7 +55,7 @@ EXEC venta.CrearNotaCreditoTotal 1, '000-00-9'
 (Puede tirar error de que ya existe una NC o ya se cubre el total de la factura , pero es parte de poder ejecutarlo) */
 execute as login = 'PepeGerente';
 EXEC venta.CrearNotaCreditoParcial 1, '000-00-9', 100
-
+GO
 
 /*******************************************************************************
 						Rol: Cajero
@@ -72,11 +72,29 @@ SELECT * FROM venta.factura;
 /* Resultado esperado: Error - No puede insertar una factura directamente*/
 execute as login = 'JoseCajero';
 INSERT INTO venta.factura VALUES ('000-00-9',1,1,1,1,'A','Normal','2024-11-1',1,10,1);
+GO
 
-/* Resultado esperado: Ok - Puede generar factura usando SP 
-(Si no existe el PDV tira error, pero es parte de ejecutar el SP) */
+/* Resultado esperado: Ok - Puede generar factura usando SP */
 execute as login = 'JoseCajero';
-EXEC venta.CrearFactura '000-00-8',1,1,123456,1,'A','Consumidor Final','2024-11-1',1
+/* Resultado esperado: Puede crear una factura */
+		DECLARE @legajo INT = 257020;
+		DECLARE @id_punto_venta_empleado INT = 2;
+		DECLARE @productos VARCHAR(400) = '1,3;3,2;2,1'; -- {producto},{cantidad};{producto},{cantidad};...
+		DECLARE @id_cliente INT = 1;
+		DECLARE @tipo_factura CHAR(1) = 'A';
+		DECLARE @numero_factura VARCHAR(11) = '000-01-012';
+		DECLARE @id_medio_pago SMALLINT = 3;
+		DECLARE @identificador_pago VARCHAR(200) = 'A3C-S1A-X90';
+		EXEC [Com2900G10].[venta].[CrearVentaConFactura] 
+			@legajo,
+			@id_punto_venta_empleado, 
+			@productos, 
+			@id_cliente, 
+			@tipo_factura, 
+			@numero_factura,
+			@id_medio_pago,
+			@identificador_pago;
+GO
 
 /* Resultado esperado: Error - No puede insertar una NC directamente*/
 execute as login = 'JoseCajero';
