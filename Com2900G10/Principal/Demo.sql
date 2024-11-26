@@ -32,6 +32,8 @@ GO
 		SELECT * FROM venta.cliente
 		SELECT * FROM venta.medio_pago
 
+		SELECT * FROM venta.venta
+
 	*/
 
 	/* Si se quiere probar con un cliente distinto al default de las importaciones */

@@ -10,12 +10,26 @@ CREATE SCHEMA reportes
 GO
 
 CREATE OR ALTER PROCEDURE reportes.reporte_mensual
-    @mes    INT,
-    @year   INT
+    @anio SMALLINT,
+	@mes TINYINT
 AS
 BEGIN
+	IF @mes < 1 OR @mes > 12
+	BEGIN
+		RAISERROR('El mes ingresado es invalido',10,1);
+
+		RETURN
+	END
+
+	IF @anio < 1900 OR @anio > YEAR(GETDATE())
+	BEGIN
+		RAISERROR('El año ingresado es invalido',10,1);
+
+		RETURN
+	END
+
     SELECT
-        CASE DATEPART(WEEKDAY, fechaHora)
+        CASE DATEPART(WEEKDAY, fecha_hora)
             WHEN 1 THEN 'Domingo'
             WHEN 2 THEN 'Lunes'
             WHEN 3 THEN 'Martes'
@@ -24,14 +38,17 @@ BEGIN
             WHEN 6 THEN 'Viernes'
             WHEN 7 THEN 'Sábado'
         END AS DiaSemana,
-        SUM(total) AS Ventas
+        SUM(total_con_iva) AS Ventas
     FROM venta.factura
     WHERE 
-        YEAR(fechaHora) = @year AND
-        MONTH(fechaHora) = @mes
-    GROUP BY DATEPART(WEEKDAY, fechaHora)
+        YEAR(fecha_hora) = @anio AND
+        MONTH(fecha_hora) = @mes
+    GROUP BY DATEPART(WEEKDAY, fecha_hora)
     FOR XML RAW, ELEMENTS, ROOT('XML')
 END
+
+-- SELECT * FROM venta.factura
+-- EXEC reportes.reporte_mensual 2019, 03
 
 GO
 CREATE OR ALTER PROCEDURE reportes.reporte_trimestral
@@ -61,18 +78,18 @@ AS
     -- Empieza la consulta
     SELECT
         CASE 
-            WHEN DATEPART(HOUR, fechaHora) < 12 THEN 'Mañana'
-            WHEN DATEPART(HOUR, fechaHora) >= 12 AND DATEPART(HOUR, fechaHora) < 19 THEN 'Tarde'
+            WHEN DATEPART(HOUR, fecha_hora) < 12 THEN 'Mañana'
+            WHEN DATEPART(HOUR, fecha_hora) >= 12 AND DATEPART(HOUR, fecha_hora) < 19 THEN 'Tarde'
             ELSE 'Noche'
         END AS Turno,
         SUM(total) AS Ventas
 	FROM venta.factura
-    WHERE YEAR(fechaHora) = @currYear
-        AND MONTH(fechaHora) BETWEEN @TrimestreInicio AND @TrimestreFin
+    WHERE YEAR(fecha_hora) = @currYear
+        AND MONTH(fecha_hora) BETWEEN @TrimestreInicio AND @TrimestreFin
     GROUP BY
              CASE
-                 WHEN DATEPART(HOUR, fechaHora) < 12 THEN 'Mañana'
-                 WHEN DATEPART(HOUR, fechaHora) >= 12 AND DATEPART(HOUR, fechaHora) < 19 THEN 'Tarde'
+                 WHEN DATEPART(HOUR, fecha_hora) < 12 THEN 'Mañana'
+                 WHEN DATEPART(HOUR, fecha_hora) >= 12 AND DATEPART(HOUR, fecha_hora) < 19 THEN 'Tarde'
                  ELSE 'Noche'
              END
     FOR XML RAW, ELEMENTS, ROOT('XML')
@@ -159,16 +176,16 @@ BEGIN
 			SELECT
 				p.id_producto,
 				p.nombre_producto,
-				DATEPART(WEEK, f.fechaHora) AS semana,
+				DATEPART(WEEK, f.fecha_hora) AS semana,
 				SUM(df.cantidad) AS cantidad
 			FROM venta.detalle_factura df
 				INNER JOIN venta.factura f ON 
 					f.id_factura = df.id_factura AND 
 					f.pagada = 1 AND
-					MONTH(f.fechaHora) = @mes AND
-					YEAR(f.fechaHora) = @anio
+					MONTH(f.fecha_hora) = @mes AND
+					YEAR(f.fecha_hora) = @anio
 				INNER JOIN producto.producto p ON p.id_producto = df.id_producto
-			GROUP BY p.id_producto, p.nombre_producto, DATEPART(WEEK, f.fechaHora)
+			GROUP BY p.id_producto, p.nombre_producto, DATEPART(WEEK, f.fecha_hora)
 		) AS t1
 	)
 	SELECT 
@@ -204,8 +221,8 @@ BEGIN
 				INNER JOIN venta.factura f ON 
 					f.id_factura = df.id_factura AND 
 					f.pagada = 1 AND
-					MONTH(f.fechaHora) = @mes AND
-					YEAR(f.fechaHora) = @anio
+					MONTH(f.fecha_hora) = @mes AND
+					YEAR(f.fecha_hora) = @anio
 				INNER JOIN producto.producto p ON p.id_producto = df.id_producto
 			GROUP BY p.id_producto, p.nombre_producto
 	)
@@ -236,12 +253,12 @@ BEGIN
 			SELECT
 				f.id_factura,
 				f.total,
-				f.fechaHora,
+				f.fecha_hora,
 				SUM(f.total) OVER(ORDER BY f.id_factura)
 			FROM  venta.factura f
 			WHERE
 				f.pagada = 1 AND
-				CAST(f.fechaHora AS date) = @fecha AND
+				CAST(f.fecha_hora AS date) = @fecha AND
 				f.id_sucursal = @id_sucursal
 	)
 	SELECT 
